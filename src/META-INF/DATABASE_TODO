@@ -1,0 +1,9 @@
+If you change any table, column names etc here then you have
+to rework the persistence layer
+Change sitename.timecreated and sitename.datemodified
+Change siteurl.sitename_sitenameid to siteurl.sitenameid
+Change columns state in all tables
+Move db2 to db1
+change sitename.datemodified to .timemodified
+Is there anything wrong with varchar 10000 if so change
+url here should not be unique as content may change for same url every day
