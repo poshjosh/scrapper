@@ -1,8 +1,8 @@
 package com.scrapper.util;
 
-import com.bc.process.AbstractStoppableTask;
-import com.bc.process.ConcurrentProgressList;
-import com.bc.process.StoppableTask;
+import com.bc.task.AbstractStoppableTask;
+
+import com.bc.task.StoppableTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -53,7 +53,7 @@ public class LimitedCacheTest {
 
         try{
             
-            final ConcurrentProgressList mgr = new ConcurrentProgressList(){
+            final ConcurrentProgressTaskList mgr = new ConcurrentProgressTaskList(){
                 @Override
                 protected List<StoppableTask> getList() {
                     return tasks;
@@ -111,7 +111,7 @@ if(cache != null) {
         }
     }
     
-    private void print(int index, TaskCache cache, ConcurrentProgressList mgr) {
+    private void print(int index, TaskCache cache, ConcurrentProgressTaskList mgr) {
 StringBuilder builder = new StringBuilder();        
 builder.append("================================================================\n");
 builder.append("@index: ").append(index);

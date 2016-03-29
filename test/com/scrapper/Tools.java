@@ -7,7 +7,6 @@ import com.scrapper.context.CapturerContext;
 import com.scrapper.filter.DefaultUrlFilter;
 import com.scrapper.formatter.DefaultFormatter;
 import com.scrapper.formatter.MyDateFormat;
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,7 +15,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -33,10 +34,53 @@ import java.util.regex.Pattern;
  */
 public class Tools {
     
+    private static Pattern referencePattern;
+    private static String resolveReferences(Properties props, String value) {
+        if(referencePattern == null) {
+            referencePattern = Pattern.compile("\\$\\{(.+?)\\}");
+        }
+        Matcher matcher = referencePattern.matcher(value);
+        StringBuffer buff = null;
+        while(matcher.find()) {
+            String key = matcher.group(1);
+            String val = props.getProperty(key);
+            if(val == null) {
+                val = System.getProperty(key);
+            }
+            if(val != null) {
+                if(buff == null) {
+                    buff = new StringBuffer();
+                }
+                matcher.appendReplacement(buff, val);
+            }
+        }
+        String output;
+        if(buff != null) {
+            matcher.appendTail(buff);
+            output = buff.toString();
+        }else{
+            output = value;
+        }
+        return output;
+    }
+    
     public static void main(String [] args) {
 
         try{
             
+            Properties props = new Properties();
+            props.setProperty("username", "Nonso");
+            props.setProperty("color", "Blue");
+            props.setProperty("greeting", "Hello ${username}, your favorite color is ${color}");
+            props.setProperty("question", "Please enter your password");
+            
+            String value = props.getProperty("greeting");
+System.out.println(value+" resolved to "+resolveReferences(props, value));
+            value = props.getProperty("question");
+System.out.println(value+" resolved to "+resolveReferences(props, value));
+if(true) {
+    return;
+}
 //            String s = "C:\\Users/USER";
 //System.out.println(s);
 //System.out.println(s.replaceAll("/", "[X]"));

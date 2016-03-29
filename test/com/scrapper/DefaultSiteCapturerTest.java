@@ -23,11 +23,11 @@ import org.junit.Test;
 /**
  * @author Josh
  */
-public class SiteCapturerImplTest {
+public class DefaultSiteCapturerTest {
     
     private URL insertURL;
     
-    public SiteCapturerImplTest() {
+    public DefaultSiteCapturerTest() {
         try{
             insertURL = new URL("http://localhost:8080/gx?rh=tempadmin");
         }catch(MalformedURLException e) {
@@ -37,6 +37,7 @@ public class SiteCapturerImplTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        AppProperties.load(System.getProperty("user.home")+"/Documents/NetBeansProjects/scrapper/src/META-INF/properties/app.properties");
         CapturerApp.getInstance().init(false);
     }
 
@@ -73,7 +74,7 @@ public class SiteCapturerImplTest {
             @Override
             protected PageDataConsumer createDataConsumer(CapturerContext context, List<String> urlList) {
                 // We use our own data consumer
-                return SiteCapturerImplTest.this.getDataConsumer(sitename);
+                return DefaultSiteCapturerTest.this.getDataConsumer(sitename);
             }
         };
         

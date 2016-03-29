@@ -1,8 +1,8 @@
 package com.aaa_upload;
 
-import com.bc.manager.Formatter;
 import com.bc.util.XLogger;
 import com.scrapper.BasePageDataConsumer;
+import com.scrapper.Formatter;
 import com.scrapper.formatter.DefaultFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;

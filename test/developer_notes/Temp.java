@@ -5,7 +5,6 @@ import com.bc.sql.ResultSetUtils;
 import com.scrapper.CapturerApp;
 import com.scrapper.config.Sitenames;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.context.TaafooContext.TaafooFormatter;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -93,8 +92,6 @@ System.out.println("Found: "+matcher.find());
 //            String path = System.getProperty("user.home") + "/Desktop/rows.sql";
 //            new Temp().convertMultipleInsertsToUpdates(path);
         CapturerContext context = CapturerApp.getInstance().getConfigFactory().getContext(Sitenames.TAAFOO);
-        
-        final TaafooFormatter fmt = (TaafooFormatter)context.getFormatter();
         
         }catch(Throwable t) {
             logger.log(Level.WARNING, "", t);

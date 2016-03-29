@@ -1,7 +1,7 @@
 package com.scrapper.util;
 
-import com.bc.process.AbstractStoppableTask;
-import com.bc.process.StoppableTask;
+import com.bc.task.AbstractStoppableTask;
+import com.bc.task.StoppableTask;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
