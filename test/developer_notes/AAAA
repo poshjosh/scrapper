@@ -1,0 +1,1784 @@
+Apr 26, 2014 12:36:30 AM org.apache.catalina.startup.SetAllPropertiesRule begin
+WARNING: [SetAllPropertiesRule]{Server/Service/Connector} Setting property 'debug' to '0' did not find a matching property.
+Apr 26, 2014 12:36:30 AM org.apache.tomcat.util.digester.SetPropertiesRule begin
+WARNING: [SetPropertiesRule]{Server/Service/Engine/Host/Context} Setting property 'debug' to '1' did not find a matching property.
+Apr 26, 2014 12:36:30 AM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["ajp-bio-8112"]
+Apr 26, 2014 12:36:30 AM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 319 ms
+Apr 26, 2014 12:36:30 AM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Catalina
+Apr 26, 2014 12:36:30 AM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/7.0.41
+Apr 26, 2014 12:36:32 AM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive /home3/loosebox/public_html/ROOT.war
+Apr 26, 2014 12:36:33 AM org.apache.tomcat.jdbc.pool.ConnectionPool init
+WARNING: maxIdle is smaller than minIdle, setting maxIdle to: 10
+Apr 26, 2014 12:36:33 AM org.apache.tomcat.jdbc.pool.ConnectionPool init
+WARNING: maxIdle is smaller than minIdle, setting maxIdle to: 10
+Apr 26, 2014 12:36:34 AM com.loosebox.web.listeners.ContextListener 
+INFO: Initializing Servlet Context.  4/26/14 12:36 AM
+Apr 26, 2014 12:36:34 AM com.loosebox.WebApp 
+INFO: Initializing
+Apr 26, 2014 12:36:34 AM com.loosebox.MyPathContext <init>
+INFO: ContextPath.getContextPath: 
+Context path formatted to: 
+Apr 26, 2014 12:36:34 AM com.loosebox.MyPathContext <init>
+INFO: Context.getRealPath(/): /home/loosebox/public_html/ROOT/
+Apr 26, 2014 12:36:34 AM com.loosebox.MyPathContext <init>
+INFO: Real path formatted to: /home/loosebox/public_html/ROOT
+Root path: /home/loosebox/public_html
+Apr 26, 2014 12:36:34 AM com.loosebox.properties.MyProperties 
+INFO: Initializing
+Apr 26, 2014 12:36:34 AM com.loosebox.LocalPathContext 
+INFO: RealPath: /home/loosebox/public_html/local
+Apr 26, 2014 12:36:34 AM com.loosebox.LocalPaths 
+INFO: Local folder: /local, Path: /home/loosebox/public_html/local
+Apr 26, 2014 12:36:34 AM com.loosebox.MyXLogger 
+INFO: java.util.logging.config.file: null
+Apr 26, 2014 12:36:34 AM com.loosebox.css.DefaultCSS 
+INFO: Loading /home/loosebox/public_html/ROOT/resources/default9.css
+Apr 26, 2014 12:36:34 AM com.loosebox.css.DefaultCSS 
+INFO: Loading /home/loosebox/public_html/ROOT/resources/mobile9.css
+Apr 26, 2014 12:36:34 AM com.loosedb.beans.database.Db1 
+INFO: Initializing
+Apr 26, 2014 12:36:34 AM com.loosedb.beans.database.Db1 
+INFO: Initializing DatabaseMetaData
+Apr 26, 2014 12:36:41 AM com.loosedb.beans.database.Db1 
+INFO: DataSource Interface: com.bc.sql.DataSourceImpl
+Apr 26, 2014 12:36:41 AM com.loosedb.beans.database.Db1 
+INFO: Initializing ConnectionPool: com.loosedb.sql.MyDatabase$1@1955dd4. Current size: 0, In use: 0, Max size: 16
+Apr 26, 2014 12:36:41 AM com.loosedb.beans.database.Db2 
+INFO: Initializing
+Apr 26, 2014 12:36:41 AM com.loosedb.beans.database.Db2 
+INFO: Initializing DatabaseMetaData
+Apr 26, 2014 12:36:41 AM com.loosedb.beans.database.Db2 
+INFO: DataSource Interface: com.bc.sql.DataSourceImpl
+Apr 26, 2014 12:36:41 AM com.loosedb.beans.database.Db2 
+INFO: Initializing ConnectionPool: com.loosedb.sql.MyDatabase$1@1f899e9. Current size: 0, In use: 0, Max size: 16
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+INFO: Validating loosebox_db1
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: The following fields from {0} could not be validated:
+[extraDetails]
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: The following fields from {0} could not be validated:
+[datein]
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: The following fields from {0} could not be validated:
+[extraDetails]
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: The following fields from {0} could not be validated:
+[extraDetails]
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: The following fields from {0} could not be validated:
+[datein]
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: The following fields from {0} could not be validated:
+[extraDetails]
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+INFO: Validating loosebox_db2
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: Unable to validate: null, reason: java.lang.ClassNotFoundException: com.loosedb.beans.database.tables.OAuthUsers$Column
+Apr 26, 2014 12:36:41 AM com.loosebox.web.validators.MyFieldsValidator 
+WARNING: Unable to validate: null, reason: java.lang.ClassNotFoundException: com.loosedb.beans.database.tables.RememberMe$Column
+Apr 26, 2014 12:36:41 AM com.loosebox.web.WebObjects 
+INFO: Initializing
+Apr 26, 2014 12:36:43 AM com.bc.util.SerializedSet 
+WARNING: java.io.FileNotFoundException: /home/loosebox/public_html/local/serializedTaskList/com.bc.util.SerializedSet.index (No such file or directory)
+Apr 26, 2014 12:36:43 AM com.bc.util.SerializedSet 
+WARNING: Index file not found for serialized collection. /home/loosebox/public_html/local/serializedTaskList/com.bc.util.SerializedSet.index
+Apr 26, 2014 12:36:43 AM com.bc.util.SerializedSet 
+WARNING: java.io.FileNotFoundException: /home/loosebox/public_html/local/serializedPendingTaskList/com.bc.util.SerializedSet.index (No such file or directory)
+Apr 26, 2014 12:36:43 AM com.bc.util.SerializedSet 
+WARNING: Index file not found for serialized collection. /home/loosebox/public_html/local/serializedPendingTaskList/com.bc.util.SerializedSet.index
+Apr 26, 2014 12:36:43 AM com.loosebox.scheduling.Schedule 
+INFO: Loading schedule properties: /home/loosebox/public_html/local/scheduling.properties
+Apr 26, 2014 12:36:43 AM com.loosebox.App 
+INFO: ProcessManager... Memory used: -2,029,160
+Apr 26, 2014 12:36:43 AM com.loosebox.WebApp 
+INFO: Open connections: 0, Failed to close connections: 0, Open prepared statements: -1
+Apr 26, 2014 12:36:43 AM com.loosebox.web.servlets.scrapper.ScrapperApp 
+INFO: Setting log level to: INFO
+Apr 26, 2014 12:36:43 AM com.scrapper.path.PathContextImpl 
+INFO: Root path: /home3/loosebox/public_html, Context: /ROOT
+Apr 26, 2014 12:36:43 AM com.scrapper.path.PathContextImpl 
+INFO: Root path: /home3/loosebox/public_html, Context: /scrapperlocal
+Apr 26, 2014 12:36:43 AM com.loosebox.web.listeners.ContextListener 
+INFO: Done Initializing Servlet Context  4/26/14 12:36 AM
+Apr 26, 2014 12:36:44 AM org.apache.catalina.session.StandardManager doLoad
+SEVERE: IOException while loading persisted sessions: java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: org.apache.catalina.core.ApplicationHttpRequest
+java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: org.apache.catalina.core.ApplicationHttpRequest
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1332)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:1946)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1870)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:1946)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1870)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:350)
+	at java.util.HashMap.readObject(HashMap.java:1030)
+	at sun.reflect.GeneratedMethodAccessor20.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at java.io.ObjectStreamClass.invokeReadObject(ObjectStreamClass.java:969)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1848)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:350)
+	at org.apache.catalina.session.StandardSession.readObject(StandardSession.java:1595)
+	at org.apache.catalina.session.StandardSession.readObjectData(StandardSession.java:1060)
+	at org.apache.catalina.session.StandardManager.doLoad(StandardManager.java:284)
+	at org.apache.catalina.session.StandardManager.load(StandardManager.java:204)
+	at org.apache.catalina.session.StandardManager.startInternal(StandardManager.java:491)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5390)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:901)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:877)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:633)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:976)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1653)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Caused by: java.io.NotSerializableException: org.apache.catalina.core.ApplicationHttpRequest
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1164)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1518)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1483)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1400)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1158)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1518)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1483)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1400)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1158)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:330)
+	at java.util.HashMap.writeObject(HashMap.java:1001)
+	at sun.reflect.GeneratedMethodAccessor153.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at java.io.ObjectStreamClass.invokeWriteObject(ObjectStreamClass.java:940)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1469)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1400)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1158)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:330)
+	at org.apache.catalina.session.StandardSession.writeObject(StandardSession.java:1671)
+	at org.apache.catalina.session.StandardSession.writeObjectData(StandardSession.java:1077)
+	at org.apache.catalina.session.StandardManager.doUnload(StandardManager.java:432)
+	at org.apache.catalina.session.StandardManager.unload(StandardManager.java:353)
+	at org.apache.catalina.session.StandardManager.stopInternal(StandardManager.java:518)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:232)
+	at org.apache.catalina.core.StandardContext.stopInternal(StandardContext.java:5569)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:232)
+	at org.apache.catalina.core.ContainerBase$StopChild.call(ContainerBase.java:1575)
+	at org.apache.catalina.core.ContainerBase$StopChild.call(ContainerBase.java:1564)
+	... 5 more
+Apr 26, 2014 12:36:44 AM org.apache.catalina.session.StandardManager startInternal
+SEVERE: Exception loading sessions from persistent storage
+java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: org.apache.catalina.core.ApplicationHttpRequest
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1332)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:1946)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1870)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:1946)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1870)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:350)
+	at java.util.HashMap.readObject(HashMap.java:1030)
+	at sun.reflect.GeneratedMethodAccessor20.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at java.io.ObjectStreamClass.invokeReadObject(ObjectStreamClass.java:969)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1848)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:350)
+	at org.apache.catalina.session.StandardSession.readObject(StandardSession.java:1595)
+	at org.apache.catalina.session.StandardSession.readObjectData(StandardSession.java:1060)
+	at org.apache.catalina.session.StandardManager.doLoad(StandardManager.java:284)
+	at org.apache.catalina.session.StandardManager.load(StandardManager.java:204)
+	at org.apache.catalina.session.StandardManager.startInternal(StandardManager.java:491)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5390)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:901)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:877)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:633)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:976)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1653)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Caused by: java.io.NotSerializableException: org.apache.catalina.core.ApplicationHttpRequest
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1164)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1518)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1483)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1400)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1158)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1518)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1483)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1400)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1158)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:330)
+	at java.util.HashMap.writeObject(HashMap.java:1001)
+	at sun.reflect.GeneratedMethodAccessor153.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at java.io.ObjectStreamClass.invokeWriteObject(ObjectStreamClass.java:940)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1469)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1400)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1158)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:330)
+	at org.apache.catalina.session.StandardSession.writeObject(StandardSession.java:1671)
+	at org.apache.catalina.session.StandardSession.writeObjectData(StandardSession.java:1077)
+	at org.apache.catalina.session.StandardManager.doUnload(StandardManager.java:432)
+	at org.apache.catalina.session.StandardManager.unload(StandardManager.java:353)
+	at org.apache.catalina.session.StandardManager.stopInternal(StandardManager.java:518)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:232)
+	at org.apache.catalina.core.StandardContext.stopInternal(StandardContext.java:5569)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:232)
+	at org.apache.catalina.core.ContainerBase$StopChild.call(ContainerBase.java:1575)
+	at org.apache.catalina.core.ContainerBase$StopChild.call(ContainerBase.java:1564)
+	... 5 more
+Apr 26, 2014 12:36:44 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory /home3/loosebox/public_html/.smileys
+Apr 26, 2014 12:36:44 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory /home3/loosebox/public_html/local
+Apr 26, 2014 12:36:44 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory /home3/loosebox/public_html/scrapperlocal
+Apr 26, 2014 12:36:44 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory /home3/loosebox/public_html/download
+Apr 26, 2014 12:36:44 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory /home3/loosebox/public_html/cgi-bin
+Apr 26, 2014 12:36:44 AM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["ajp-bio-8112"]
+Apr 26, 2014 12:36:44 AM org.apache.catalina.connector.MapperListener findDefaultHost
+WARNING: Unknown default host [localhost] for connector [Connector[AJP/1.3-8112]]
+Apr 26, 2014 12:36:44 AM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 13311 ms
+Apr 26, 2014 12:37:21 AM com.loosebox.io.MyObjectIO loadObject
+WARNING: 
+java.lang.ClassNotFoundException: org.lb.util.CurrencyRates$1
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1714)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1559)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at java.io.ObjectInputStream.resolveClass(ObjectInputStream.java:603)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1574)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1495)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1731)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:350)
+	at java.util.HashMap.readObject(HashMap.java:1030)
+	at sun.reflect.GeneratedMethodAccessor20.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at java.io.ObjectStreamClass.invokeReadObject(ObjectStreamClass.java:969)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1848)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1752)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1328)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:350)
+	at com.loosebox.io.MyObjectIO.readObject(MyObjectIO.java:126)
+	at com.loosebox.io.MyObjectIO.loadObject(MyObjectIO.java:93)
+	at com.loosebox.io.MyObjectIO.loadMyObject(MyObjectIO.java:84)
+	at com.loosebox.util.CurrencyRates.<clinit>(CurrencyRates.java:35)
+	at com.loosebox.formatters.CurrencyFormatter.getRate(CurrencyFormatter.java:44)
+	at com.loosebox.formatters.CurrencyFormatter.convertNumber(CurrencyFormatter.java:103)
+	at com.loosebox.formatters.CurrencyFormatter.numberToPrice(CurrencyFormatter.java:123)
+	at com.loosebox.formatters.map.DatabaseToWeb.formatCurrency(DatabaseToWeb.java:49)
+	at com.loosebox.formatters.DataFormatterImpl.format(DataFormatterImpl.java:37)
+	at com.loosedb.beans.record.TableRecord.format(TableRecord.java:87)
+	at com.loosedb.beans.record.TableRecord.get(TableRecord.java:74)
+	at com.loosedb.beans.Record.getStringValue(Record.java:39)
+	at com.loosedb.beans.Record.getStringValue(Record.java:35)
+	at com.loosedb.beans.record.ProductRecord.getPrice(ProductRecord.java:87)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at javax.el.BeanELResolver.getValue(BeanELResolver.java:87)
+	at org.apache.jasper.el.JasperELResolver.getValue(JasperELResolver.java:104)
+	at org.apache.el.parser.AstValue.getValue(AstValue.java:183)
+	at org.apache.el.ValueExpressionImpl.getValue(ValueExpressionImpl.java:185)
+	at org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate(PageContextImpl.java:1026)
+	at org.apache.jsp.tag.webitemSummary_tag._jspx_meth_c_005fwhen_005f1(webitemSummary_tag.java:377)
+	at org.apache.jsp.tag.webitemSummary_tag._jspx_meth_c_005fchoose_005f1(webitemSummary_tag.java:345)
+	at org.apache.jsp.tag.webitemSummary_tag._jspx_meth_c_005fwhen_005f0(webitemSummary_tag.java:269)
+	at org.apache.jsp.tag.webitemSummary_tag._jspx_meth_c_005fchoose_005f0(webitemSummary_tag.java:219)
+	at org.apache.jsp.tag.webitemSummary_tag.doTag(webitemSummary_tag.java:153)
+	at org.apache.jsp.tag.webdisplayadverts_tag._jspx_meth_loose_005fitemSummary_005f0(webdisplayadverts_tag.java:669)
+	at org.apache.jsp.tag.webdisplayadverts_tag.access$2(webdisplayadverts_tag.java:657)
+	at org.apache.jsp.tag.webdisplayadverts_tag$Helper.invoke1(webdisplayadverts_tag.java:911)
+	at org.apache.jsp.tag.webdisplayadverts_tag$Helper.invoke(webdisplayadverts_tag.java:972)
+	at org.apache.jsp.tag.webdisplayrows_tag._jspx_meth_c_005fotherwise_005f0(webdisplayrows_tag.java:615)
+	at org.apache.jsp.tag.webdisplayrows_tag._jspx_meth_c_005fchoose_005f0(webdisplayrows_tag.java:561)
+	at org.apache.jsp.tag.webdisplayrows_tag._jspx_meth_c_005fforEach_005f0(webdisplayrows_tag.java:437)
+	at org.apache.jsp.tag.webdisplayrows_tag.doTag(webdisplayrows_tag.java:205)
+	at org.apache.jsp.tag.webdisplayadverts_tag._jspx_meth_loose_005fdisplayrows_005f0(webdisplayadverts_tag.java:334)
+	at org.apache.jsp.tag.webdisplayadverts_tag._jspx_meth_c_005fif_005f0(webdisplayadverts_tag.java:270)
+	at org.apache.jsp.tag.webdisplayadverts_tag.doTag(webdisplayadverts_tag.java:153)
+	at org.apache.jsp.tag.webrootpage_tag._jspx_meth_loose_005fdisplayadverts_005f0(webrootpage_tag.java:1572)
+	at org.apache.jsp.tag.webrootpage_tag._jspx_meth_c_005fif_005f8(webrootpage_tag.java:1547)
+	at org.apache.jsp.tag.webrootpage_tag.doTag(webrootpage_tag.java:403)
+	at org.apache.jsp.tag.webpage_tag._jspx_meth_loose_005frootpage_005f0(webpage_tag.java:266)
+	at org.apache.jsp.tag.webpage_tag.doTag(webpage_tag.java:221)
+	at org.apache.jsp.search_jsp._jspService(search_jsp.java:189)
+	at org.apache.jasper.runtime.HttpJspBase.service(HttpJspBase.java:70)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:432)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:390)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:334)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:749)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:487)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:412)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:339)
+	at com.loosebox.web.request.MyRequestDispatcher.foward(MyRequestDispatcher.java:199)
+	at com.loosebox.web.request.MyRequestDispatcher.foward(MyRequestDispatcher.java:105)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.forward(LooseBoxesRequestHandler.java:123)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:88)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:37:36 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=14, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=899}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:05 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9369
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:07 AM org.apache.jasper.compiler.TldLocationsCache tldScanJar
+INFO: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+Apr 26, 2014 12:38:10 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9370
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:21 AM com.loosebox.html.CachedPagesMgr$TableProcess 
+WARNING: null
+java.io.FileNotFoundException: /home/loosebox/public_html/ROOT/categories/jobs/cached_pages/15565_Accountant-Degree-3-5-years-in-Lagos-Nigeria-Degree-3-5-years-Full-TimeAccountantin-LagosIndustryConsulting-SpecializationAccounting-Audit-TaxMinimum-QualificationDegree-Required-Experience3-5-years-Available-Slots1-Application-Deadline2-months-from-nowOur-Client-a-wholly-Nigerian-Aluminum-manufacturing-company-requires-the-services-of-exceptional-and-highly-motivated-professionals-who-ferociously-will-deliver-top-performanceconsistently-to-fill-the-position-arising-from-recent-expansion-Job-SummaryThe-position-establishes-financial-status-by-developing-and-implementing-systems-for-collecting-analyzing-verifying-and-reporting-financial-information-The-position-is-also-responsible-for-the-accurate-flow-of-products-from-the-organization-to-clients-ResponsibilitiesCompile-and-analyze-financial-information-to-prepare-entries-to-book-of-accounts-such-as-general-ledger-accounts-documenting-business-transactionsMaintain-Standard-journal-entriesAnalyze-daily-banking-transactions-and-journal-entriesReconcile-sub-ledger-accounts-such-as-inventory-Prepare-monthly-sales-reports-into-excel-spread-sheet-for-analysis-and-carry-out-payroll-reconciliationVerify-and-reconcile-contracts-orders-and-vouchers-and-prepare-reports-to-substantiate-individual-transactions-prior-to-settlement-Maintain-accounting-controls-by-preparing-and-recommending-policies-and-procedures-Monitor-compliance-with-generally-accepted-accounting-principles-and-company-procedures-Review-investigate-and-correct-errors-and-inconsistencies-in-financial-entries-documents-and-reportsQualification-and-RequirementsPrepare-asset-liability-and-capital-account-entries-by-compiling-and-analyzing-account-information-Document-financial-transactions-by-entering-account-information-Maintains-financial-security-by-following-internal-controls-Substantiates-financial-transactions-by-auditing-documents-Reconciles-financial-discrepancies-by-collecting-and-analyzing-account-information-Secures-financial-information-by-completing-data-base-backups-Answers-accounting-procedure-questions-by-researching-and-interpreting-accounting-policy-and-regulations-Excellent-communication-skills-including-both-verbal-and-written-presentation-skills-as-well-as-good-leadership-qualities-Excellent-interpersonal-skills-and-understand-the-importance-of-customer-serviceStrong-analytical-skills-with-the-ability-to-pay-attention-to-detailAbility-to-work-under-pressure-with-a-meeting-deadline-oriented-mindsetProblem-solving-skillsYou-can-also-apply-to-this-job-from-your-e-mail-box-by-sending-your-CV-to-1d6d6-jbng-me.html (File name too long)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:194)
+	at com.bc.io.FileOutput.write(FileOutput.java:81)
+	at com.bc.io.FileOutput.write(FileOutput.java:68)
+	at com.bc.io.FileIO.write(FileIO.java:95)
+	at com.loosebox.html.CachedPagesMgr.save(CachedPagesMgr.java:406)
+	at com.loosebox.html.CachedPagesMgr.generateCachedPage(CachedPagesMgr.java:346)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.x(CachedPagesMgr.java:244)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.doRun(CachedPagesMgr.java:193)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.execute(AbstractProcessManager.java:165)
+	at com.bc.process.AbstractProcessManager.doRun(AbstractProcessManager.java:148)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.run(AbstractProcessManager.java:116)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:22 AM com.loosebox.html.CachedPagesMgr$TableProcess 
+WARNING: null
+java.io.FileNotFoundException: /home/loosebox/public_html/ROOT/categories/household_items/cached_pages/1662_Citizen-2000VA-Citizen-2000VAModel-2000VA-200-Units-in-Stock-Manufactured-by-Citizen-Features-Voltage-1000V-Input-And-Output-Display-Reset-able-Circuit-Breaker-Delay-Undelay-Function-Low-Output-Voltage-Protection-High-Output-Voltage-Protection-High-Temperature-Protection-502-522-STOCK-CODE.html (File name too long)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:194)
+	at com.bc.io.FileOutput.write(FileOutput.java:81)
+	at com.bc.io.FileOutput.write(FileOutput.java:68)
+	at com.bc.io.FileIO.write(FileIO.java:95)
+	at com.loosebox.html.CachedPagesMgr.save(CachedPagesMgr.java:406)
+	at com.loosebox.html.CachedPagesMgr.generateCachedPage(CachedPagesMgr.java:346)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.x(CachedPagesMgr.java:244)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.doRun(CachedPagesMgr.java:193)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.execute(AbstractProcessManager.java:165)
+	at com.bc.process.AbstractProcessManager.doRun(AbstractProcessManager.java:148)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.run(AbstractProcessManager.java:116)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:23 AM com.loosebox.html.CachedPagesMgr$TableProcess 
+WARNING: null
+java.io.FileNotFoundException: /home/loosebox/public_html/ROOT/categories/gadgets/cached_pages/936_Haier-HTF-259H-Haier-HTF-259HModel-HTF-259H-100-Units-in-Stock-Manufactured-by-Haier-Features-Power-Indicator-Showing-Power-State-3-Years-Warranty-Tropicalized-System-Design-CFC-Free-Refrigeration-System-Interior-Light-Super-Freezing-102-105-STOCK-CODE.html (File name too long)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:194)
+	at com.bc.io.FileOutput.write(FileOutput.java:81)
+	at com.bc.io.FileOutput.write(FileOutput.java:68)
+	at com.bc.io.FileIO.write(FileIO.java:95)
+	at com.loosebox.html.CachedPagesMgr.save(CachedPagesMgr.java:406)
+	at com.loosebox.html.CachedPagesMgr.generateCachedPage(CachedPagesMgr.java:346)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.x(CachedPagesMgr.java:244)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.doRun(CachedPagesMgr.java:193)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.execute(AbstractProcessManager.java:165)
+	at com.bc.process.AbstractProcessManager.doRun(AbstractProcessManager.java:148)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.run(AbstractProcessManager.java:116)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:23 AM com.loosebox.html.CachedPagesMgr$TableProcess 
+WARNING: null
+java.io.FileNotFoundException: /home/loosebox/public_html/ROOT/categories/autos/cached_pages/3340_2011-DUCATI-300-000-NGN-Ad-Posted-27-December-2013-mileage-5000km-body-style-Other-vin-fuel-Petrol-transmission-Manual-Drivetrain-2WD-Other-Ext-Color-color-Yellow-interior-type-Leather-interior-color-Beige2011-DUCATI-300-000-NGNViews-95-fb-edge-widget-with-comment-iframe-position-absolute-facebook-like-hide-count-width-290px-height-30px-background-color-white-position-absolute-z-index-5-top-0-left-50px-Tweet.html (File name too long)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:194)
+	at com.bc.io.FileOutput.write(FileOutput.java:81)
+	at com.bc.io.FileOutput.write(FileOutput.java:68)
+	at com.bc.io.FileIO.write(FileIO.java:95)
+	at com.loosebox.html.CachedPagesMgr.save(CachedPagesMgr.java:406)
+	at com.loosebox.html.CachedPagesMgr.generateCachedPage(CachedPagesMgr.java:346)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.x(CachedPagesMgr.java:244)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.doRun(CachedPagesMgr.java:193)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.execute(AbstractProcessManager.java:165)
+	at com.bc.process.AbstractProcessManager.doRun(AbstractProcessManager.java:148)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.run(AbstractProcessManager.java:116)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:23 AM com.loosebox.html.CachedPagesMgr$TableProcess 
+WARNING: null
+java.io.FileNotFoundException: /home/loosebox/public_html/ROOT/categories/gifts/cached_pages/62_Britney-Spears-Midnight-Fantasy-EDP-100ml-Britney-Spears-Midnight-Fantasy-EDP-100mlSpecifications-of-Midnight-Fantasy-EDP-100ml-SKU-BR163HB26TGVNGAMZ-Weight-kg-0-3Product-Description-of-Midnight-Fantasy-EDP-100ml-Key-Features-Fruity-floral-fragrance-Top-Notes-black-cherries-and-exotic-plum-Middle-Notes-orchid-freesia-velvet-and-iris-Base-Notes-musk-amber-and-vanilla-100ml-NO-RETURNS-ACCEPTED-FOR-ALL-OPENED-ITEMS-Fantasy-midnight-is-the-fragrance-for-women-launched-by-Britney-spears-Fantasy-midnight-is-elegant-seductive-and-magnetic-A-flirty-fruity-floral-fragrance-Fantasy-midnight-an-unforgettable-sexy-and-mischievous-fragrance.html (File name too long)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:194)
+	at com.bc.io.FileOutput.write(FileOutput.java:81)
+	at com.bc.io.FileOutput.write(FileOutput.java:68)
+	at com.bc.io.FileIO.write(FileIO.java:95)
+	at com.loosebox.html.CachedPagesMgr.save(CachedPagesMgr.java:406)
+	at com.loosebox.html.CachedPagesMgr.generateCachedPage(CachedPagesMgr.java:346)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.x(CachedPagesMgr.java:244)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.doRun(CachedPagesMgr.java:193)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.execute(AbstractProcessManager.java:165)
+	at com.bc.process.AbstractProcessManager.doRun(AbstractProcessManager.java:148)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.run(AbstractProcessManager.java:116)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:24 AM com.loosebox.html.CachedPagesMgr$TableProcess 
+WARNING: null
+java.io.FileNotFoundException: /home/loosebox/public_html/ROOT/categories/classifieds/cached_pages/602_Goods-Bvlgari-Aqua-Pour-Homme-Tonic-100ml-in-Nigeria-Bvlgari-Aqua-Pour-Homme-Tonic-100mlSpecifications-of-Aqua-Pour-Homme-Tonic-100ml-SKU-BV326HB43UZKNGAMZ-Weight-kg-0-2Product-Description-of-Aqua-Pour-Homme-Tonic-100ml-Key-Features-Aqva-Pour-Homme-Toniq-is-an-invigorating-fragrance-that-creates-long-lasting-feeling-of-freshness-dynamic-and-clear-as-sparkling-water-NO-RETURNS-ACCEPTED-FOR-ALL-OPENED-ITEMS-Aqva-Pour-Homme-Toniq-opens-with-zesty-essential-oils-of-lemon-and-peppermint-Sharp-and-powerful-influence-of-crystal-ice-and-Posidonia-sea-weed-which-grows-in-the-seas-of-the-Mediterranean-and-southern-Australia-is-gradually-transformed-into-a-soothing-base-of-woody-dashmineral-character-made-of-vetiver-and-amber-notes.html (File name too long)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:194)
+	at com.bc.io.FileOutput.write(FileOutput.java:81)
+	at com.bc.io.FileOutput.write(FileOutput.java:68)
+	at com.bc.io.FileIO.write(FileIO.java:95)
+	at com.loosebox.html.CachedPagesMgr.save(CachedPagesMgr.java:406)
+	at com.loosebox.html.CachedPagesMgr.generateCachedPage(CachedPagesMgr.java:346)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.x(CachedPagesMgr.java:244)
+	at com.loosebox.html.CachedPagesMgr$TableProcess.doRun(CachedPagesMgr.java:193)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.execute(AbstractProcessManager.java:165)
+	at com.bc.process.AbstractProcessManager.doRun(AbstractProcessManager.java:148)
+	at com.bc.process.AbstractProcess.run(AbstractProcess.java:60)
+	at com.bc.process.AbstractProcessManager.run(AbstractProcessManager.java:116)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:54 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9372
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:38:58 AM com.loosebox.web.filters.ApplicationFilter 
+INFO: Redirecting from: /cached_pages/fashion/9344_New-Women-s-Shoes-For-Sale-Turn-heads-in-this-on-trend-yet-comfortable-4-heels-in-Leopard-print.html, to: /categories/fashion/cached_pages/9344_New-Women-s-Shoes-For-Sale-Turn-heads-in-this-on-trend-yet-comfortable-4-heels-in-Leopard-print.html
+Apr 26, 2014 12:38:59 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9373
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:09 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9374
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:17 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9376
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:22 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9377
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:30 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9378
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:33 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9381
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:37 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9384
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:41 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9389
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:46 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9391
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:49 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9402
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:51 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9403
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:39:57 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9404
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:40:09 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9406
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:40:13 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: fashion, productId: 9407
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:40:22 AM net.jforumplugins.securesso.JForumSecureSSO authenticateUser
+INFO: net.jforumplugins.securesso.JForumSecureSSO. sso mode: cookie
+Apr 26, 2014 12:40:22 AM net.jforumplugins.securesso.JForumSecureSSO authenticateUser
+INFO: net.jforumplugins.securesso.JForumSecureSSO. sso cookie: null
+Apr 26, 2014 12:40:29 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=13, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=726}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:40:41 AM com.loosebox.App$1 
+INFO: hibernated, Free memory: 9,623,304
+Apr 26, 2014 12:40:47 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:40:54 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:41:02 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:41:13 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:41:26 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:41:32 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:41:39 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+java.lang.NullPointerException
+	at com.loosebox.web.SessionObjects.setSearchBatch(SessionObjects.java:275)
+	at com.loosebox.web.servlets.util.NextSearchResult.execute(NextSearchResult.java:58)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+[EL Info]: 2014-04-26 00:43:14.193--ServerSession(32579632)--EclipseLink, version: Eclipse Persistence Services - 2.2.0.v20110202-r8913
+[EL Info]: 2014-04-26 00:43:14.403--ServerSession(32579632)--file:/home3/loosebox/public_html/ROOT/WEB-INF/lib/looseboxPU.jar_loosebox_scrapperPU login successful
+Apr 26, 2014 12:43:15 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://second.com.ng/search/cat/138/page_1/ipad mini
+Apr 26, 2014 12:43:16 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://second.com.ng/search/cat/138/page_1/ipad mini}
+Apr 26, 2014 12:46:34 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=12, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=361}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:46:57 AM com.loosebox.web.filters.ApplicationFilter 
+INFO: Redirecting from: /cached_pages/autos/2585_New-VANUCCI-RVX-2-RVX-2-For-Sale.html, to: /categories/autos/cached_pages/2585_New-VANUCCI-RVX-2-RVX-2-For-Sale.html
+Apr 26, 2014 12:50:06 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=11, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=149}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:50:12 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=10, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=143}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:50:16 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=9, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=139}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:50:18 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=8, limit=15, resetTimeInSeconds=1398469956, secondsUntilReset=137}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:52:46 AM com.scrapper.search.SearchSite$1 
+WARNING: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/Runway-4-69781.html (http://www.jumia.com.ng/Runway-4-69781.html).. Broken link ignored
+Apr 26, 2014 12:52:46 AM com.scrapper.search.SearchSite$1 
+WARNING: Parse failed for: http://www.jumia.com.ng/Runway-4-69781.html. Reason: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/Runway-4-69781.html (http://www.jumia.com.ng/Runway-4-69781.html).
+Apr 26, 2014 12:52:47 AM com.scrapper.search.SearchSite$1 
+WARNING: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/Music-Meets-Runway---The-Iconic-Editon-84055.html (http://www.jumia.com.ng/Music-Meets-Runway---The-Iconic-Editon-84055.html).. Broken link ignored
+Apr 26, 2014 12:52:47 AM com.scrapper.search.SearchSite$1 
+WARNING: Parse failed for: http://www.jumia.com.ng/Music-Meets-Runway---The-Iconic-Editon-84055.html. Reason: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/Music-Meets-Runway---The-Iconic-Editon-84055.html (http://www.jumia.com.ng/Music-Meets-Runway---The-Iconic-Editon-84055.html).
+Apr 26, 2014 12:52:47 AM com.scrapper.search.SearchSite$1 
+WARNING: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/Private-Lies-83223.html (http://www.jumia.com.ng/Private-Lies-83223.html).. Broken link ignored
+Apr 26, 2014 12:52:47 AM com.scrapper.search.SearchSite$1 
+WARNING: Parse failed for: http://www.jumia.com.ng/Private-Lies-83223.html. Reason: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/Private-Lies-83223.html (http://www.jumia.com.ng/Private-Lies-83223.html).
+Apr 26, 2014 12:52:47 AM com.scrapper.search.SearchSite$1 
+WARNING: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/The-Success-Factor-Seminar-84056.html (http://www.jumia.com.ng/The-Success-Factor-Seminar-84056.html).. Broken link ignored
+Apr 26, 2014 12:52:47 AM com.scrapper.search.SearchSite$1 
+WARNING: Parse failed for: http://www.jumia.com.ng/The-Success-Factor-Seminar-84056.html. Reason: org.htmlparser.util.ParserException: Exception getting input stream from http://www.jumia.com.ng/The-Success-Factor-Seminar-84056.html (http://www.jumia.com.ng/The-Success-Factor-Seminar-84056.html).
+Apr 26, 2014 12:52:48 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-5.0kva-48-volt-pure-sinewave-inverter-95332.html
+Apr 26, 2014 12:52:49 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-5.0kva-48-volt-pure-sinewave-inverte}
+Apr 26, 2014 12:52:49 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-5.0kva-96-volt-pure-sinewave-inverter-95335.html
+Apr 26, 2014 12:52:50 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-5.0kva-96-volt-pure-sinewave-inverte}
+Apr 26, 2014 12:52:51 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/collect-5-top-trumps-play-card-pink-74058.html
+Apr 26, 2014 12:52:52 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/collect-5-top-trumps-play-card-pink-74058.}
+Apr 26, 2014 12:52:52 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-160c-90773.html
+Apr 26, 2014 12:52:53 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-160c-90773.html}
+Apr 26, 2014 12:52:53 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-410-wood-90782.html
+Apr 26, 2014 12:52:55 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-410-wood-90782.html}
+Apr 26, 2014 12:52:55 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-fridge-with-bar-65-ltrs-brown-nx-65-90817.html
+Apr 26, 2014 12:52:56 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-fridge-with-bar-65-ltrs-brown-nx-65-}
+Apr 26, 2014 12:52:57 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-gas-cooker-nx-9001-42-90824.html
+Apr 26, 2014 12:52:58 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-gas-cooker-nx-9001-42-90824.html}
+Apr 26, 2014 12:52:59 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-145-ltrs-nx-145-90832.html
+Apr 26, 2014 12:52:59 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-145-ltrs-nx-145-90832.h}
+Apr 26, 2014 12:52:59 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-blue-nx-180-90833.html
+Apr 26, 2014 12:53:01 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-blue-nx-180-90}
+Apr 26, 2014 12:53:01 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-gold-phoenix-nx-180-90834.html
+Apr 26, 2014 12:53:02 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-gold-phoenix-n}
+Apr 26, 2014 12:53:03 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-yellow-with-flower-nx-180-90835.html
+Apr 26, 2014 12:53:04 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-yellow-with-fl}
+Apr 26, 2014 12:53:05 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-green-nx-180-90836.html
+Apr 26, 2014 12:53:06 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-green-nx-180-9}
+Apr 26, 2014 12:53:06 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-185-ltrs-silver-nx-185-90841.html
+Apr 26, 2014 12:53:08 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-185-ltrs-silver-nx-185-}
+Apr 26, 2014 12:53:08 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-225-ltrs-red-nx-225-90842.html
+Apr 26, 2014 12:53:09 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-225-ltrs-red-nx-225-908}
+Apr 26, 2014 12:53:10 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-225-ltrs-silver-nx-225-90843.html
+Apr 26, 2014 12:53:11 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-225-ltrs-silver-nx-225-}
+Apr 26, 2014 12:53:12 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-475-ltrs-red-nx-475-90855.html
+Apr 26, 2014 12:53:13 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-475-ltrs-red-nx-475-908}
+Apr 26, 2014 12:53:13 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-water-dispenser-nx-016-red-90871.html
+Apr 26, 2014 12:53:14 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=14, limit=15, resetTimeInSeconds=1398470894, secondsUntilReset=899}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:53:15 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-water-dispenser-nx-016-red-90871.htm}
+Apr 26, 2014 12:53:15 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-water-dispenser-nx-016-white-90872.html
+Apr 26, 2014 12:53:16 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-water-dispenser-nx-016-white-90872.h}
+Apr 26, 2014 12:53:17 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-water-dispenser-nx-018-white-90874.html
+Apr 26, 2014 12:53:18 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-water-dispenser-nx-018-white-90874.h}
+Apr 26, 2014 12:53:19 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-window-air-conditioner-2-h.p-96516.html
+Apr 26, 2014 12:53:20 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-window-air-conditioner-2-h.p-96516.h}
+Apr 26, 2014 12:53:20 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-gas-cooker-gc-nx-5000s-40-90821.html
+Apr 26, 2014 12:53:22 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-gas-cooker-gc-nx-5000s-40-90821.html}
+Apr 26, 2014 12:53:22 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-125-ltrs-nx-125-90831.html
+Apr 26, 2014 12:53:23 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-125-ltrs-nx-125-90831.h}
+Apr 26, 2014 12:53:24 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-850va-12-volt-pure-sinewave-inverter-95317.html
+Apr 26, 2014 12:53:25 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-850va-12-volt-pure-sinewave-inverter}
+Apr 26, 2014 12:53:26 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-1.45kva-24-volt-pure-sinewave-inverter-95320.html
+Apr 26, 2014 12:53:27 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-1.45kva-24-volt-pure-sinewave-invert}
+Apr 26, 2014 12:53:28 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-2.5kva-48-volt-pure-sinewave-inverter-95326.html
+Apr 26, 2014 12:53:29 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-2.5kva-48-volt-pure-sinewave-inverte}
+Apr 26, 2014 12:53:29 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-150c-silver-90771.html
+Apr 26, 2014 12:53:30 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-150c-silver-90771.h}
+Apr 26, 2014 12:53:31 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-150c-yellow-90772.html
+Apr 26, 2014 12:53:32 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-150c-yellow-90772.h}
+Apr 26, 2014 12:53:33 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-265c-90778.html
+Apr 26, 2014 12:53:34 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-265c-90778.html}
+Apr 26, 2014 12:53:34 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-269-90779.html
+Apr 26, 2014 12:53:36 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-269-90779.html}
+Apr 26, 2014 12:53:36 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-chest-freezer-nx-410-wine-90781.html
+Apr 26, 2014 12:53:37 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-chest-freezer-nx-410-wine-90781.html}
+Apr 26, 2014 12:53:38 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-gas-cooker-nx-6002-22-90822.html
+Apr 26, 2014 12:53:39 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-gas-cooker-nx-6002-22-90822.html}
+Apr 26, 2014 12:53:40 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-gas-cooker-nx-9002-42-90825.html
+Apr 26, 2014 12:53:41 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-gas-cooker-nx-9002-42-90825.html}
+Apr 26, 2014 12:53:41 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-microwave-oven-with-grill-20-ltrs-nx-801-90826.html
+Apr 26, 2014 12:53:43 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-microwave-oven-with-grill-20-ltrs-nx}
+Apr 26, 2014 12:53:43 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-red-nx-180-90837.html
+Apr 26, 2014 12:53:44 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-180-ltrs-red-nx-180-908}
+Apr 26, 2014 12:53:44 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=13, limit=15, resetTimeInSeconds=1398470894, secondsUntilReset=869}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:53:45 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-refrigerator-185-ltrs-red-nx-185-90840.html
+Apr 26, 2014 12:53:46 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-refrigerator-185-ltrs-red-nx-185-908}
+Apr 26, 2014 12:53:47 AM com.scrapper.PersistedScrapper 
+INFO: Scrapped: 0, scrapping: http://www.jumia.com.ng/nexus-water-dispenser-nx-018-red-90873.html
+Apr 26, 2014 12:53:47 AM com.scrapper.search.SearchSites$2 
+WARNING: Insufficient data: {extraDetails=url=http://www.jumia.com.ng/nexus-water-dispenser-nx-018-red-90873.htm}
+Apr 26, 2014 12:53:57 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: jobs, productId: 46
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.SessionObjects.findById(SessionObjects.java:196)
+	at com.loosebox.components.SelectedItem.loadRecord(SelectedItem.java:65)
+	at com.loosebox.web.servlets.util.DisplayProduct.doHandleRequest(DisplayProduct.java:125)
+	at com.loosebox.web.servlets.util.DisplayProduct.execute(DisplayProduct.java:99)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 12:57:16 AM com.loosebox.web.filters.ApplicationFilter 
+INFO: Redirecting from: /cached_pages/gadgets/744_London-Used-Gionee-E6-Smart-Phone-For-Sale-City-KadunaLondon-Used-Gionee-E6-Smart-PhoneDescription-Trend-Digital-Limited-Sell-both-Brand-new-and.html, to: /categories/gadgets/cached_pages/744_London-Used-Gionee-E6-Smart-Phone-For-Sale-City-KadunaLondon-Used-Gionee-E6-Smart-PhoneDescription-Trend-Digital-Limited-Sell-both-Brand-new-and.html
+Apr 26, 2014 12:58:56 AM com.loosebox.web.request.MyRequestDispatcher 
+WARNING: null
+com.loosedb.sql.dao.RecordNotFoundException: Not found:: Database: loosebox_db1, table: classifieds, productId: 384
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:298)
+	at com.loosedb.sql.dao.MyDAO.selectFirst(MyDAO.java:290)
+	at com.loosebox.web.servlets.util.DisplayImage.getImagePath(DisplayImage.java:114)
+	at com.loosebox.web.servlets.util.DisplayImage.getImage(DisplayImage.java:61)
+	at com.loosebox.web.servlets.util.DisplayImage.execute(DisplayImage.java:47)
+	at com.loosebox.web.request.LooseBoxesRequestHandler.processRequest(LooseBoxesRequestHandler.java:86)
+	at com.loosebox.web.servlets.Controller.processRequest(Controller.java:80)
+	at com.loosebox.web.servlets.Controller.doGet(Controller.java:223)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at com.loosebox.web.filters.MyFilter.doFilter(MyFilter.java:102)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Apr 26, 2014 1:00:19 AM com.loosebox.plugins.twitter.TwitterClient 
+WARNING: null
+404:The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.
+message - Sorry, that page does not exist
+code - 34
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=6fccf061 or
+	http://www.google.co.jp/search?q=5f6982f4
+TwitterException{exceptionCode=[6fccf061-5f6982f4], statusCode=404, message=Sorry, that page does not exist, code=34, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=12, limit=15, resetTimeInSeconds=1398470894, secondsUntilReset=474}, version=3.0.5}
+	at twitter4j.internal.http.HttpClientImpl.request(HttpClientImpl.java:162)
+	at twitter4j.internal.http.HttpClientWrapper.request(HttpClientWrapper.java:61)
+	at twitter4j.internal.http.HttpClientWrapper.get(HttpClientWrapper.java:81)
+	at twitter4j.TwitterImpl.get(TwitterImpl.java:1929)
+	at twitter4j.TwitterImpl.searchPlaces(TwitterImpl.java:1671)
+	at com.loosebox.plugins.twitter.TwitterClient.getGeoLocation(TwitterClient.java:154)
+	at com.loosebox.plugins.twitter.TwitterClient.getLocationTrends(TwitterClient.java:185)
+	at com.loosebox.web.listeners.RequestListener.requestInitialized(RequestListener.java:65)
+	at org.apache.catalina.core.StandardContext.fireRequestInitEvent(StandardContext.java:6050)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:167)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
