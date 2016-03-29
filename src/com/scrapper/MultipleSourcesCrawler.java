@@ -1,7 +1,7 @@
 package com.scrapper;
 
-import com.bc.util.XLogger;
 import com.bc.json.config.JsonConfig;
+import com.bc.util.XLogger;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.url.ConfigURLPartList;
 import com.scrapper.util.PageNodes;
@@ -9,159 +9,119 @@ import com.scrapper.util.Util;
 import java.util.List;
 import java.util.logging.Level;
 
-/**
- * @(#)MultipleSourcesCrawler.java   29-Dec-2013 00:06:17
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.0
- */
-public class MultipleSourcesCrawler extends Crawler {
+public class MultipleSourcesCrawler
+  extends Crawler
+{
+  boolean addedIndirectSource;
+  private int sourcesIndex;
+  private List<String> sources;
+  
+  public MultipleSourcesCrawler(CapturerContext context, List<String> sources)
+  {
+    this(context);
     
-    boolean addedIndirectSource;
+    setSources(sources);
+  }
+  
+  public MultipleSourcesCrawler(CapturerContext context)
+  {
+    super(context);
+    
+    checkListGenerationMode(context.getConfig());
+  }
+  
+  protected void checkListGenerationMode(JsonConfig config)
+  {
+    ConfigURLPartList serialPart = ConfigURLPartList.getSerialPart(config, "counter");
+    
+    if (serialPart != null) {
+      throw new IllegalArgumentException("Invalid format for property: url.counter.part");
+    }
+  }
 
-    private int sourcesIndex;
+  public boolean hasNext()
+  {
+    updateBaseUrl(this.sources);
     
-    /**
-     * These are sources from which urls will be generated. These sources
-     * are links to actual urls which will be extracted; Therefore each url 
-     * in this list will only be crawled/parsed but not scrapped
-     */
-    private List<String> sources;
-    
-    public MultipleSourcesCrawler(CapturerContext context, List<String> sources) {
-        
-        this(context);
-        
-        MultipleSourcesCrawler.this.setSources(sources);
-    }
-    
-    public MultipleSourcesCrawler(CapturerContext context) {
-        
-        super(context);
-        
-        MultipleSourcesCrawler.this.checkListGenerationMode(context.getConfig());
-    }
-    
-    protected void checkListGenerationMode(JsonConfig config) { 
-    
-        ConfigURLPartList serialPart = ConfigURLPartList.getSerialPart(config, "counter");
-        
-        if(serialPart != null) {
-            throw new IllegalArgumentException("Invalid format for property: url.counter.part");
-        }
-    }
-    
-//    @Override
-//    protected void preparseUpdate(String url) {
-//        if(this.addedIndirectSource) {
-//XLogger.getInstance().log(Level.INFO, "@preparse ignoring indirect source: {0}", 
-//        this.getClass(), sources.get(sourcesIndex-1));
-//            return;
-//        }
-//        super.preparseUpdate(url);
-//    }
-    
-//    @Override
-//    protected void postparseUpdate() {
-//        if(this.addedIndirectSource) {
-//XLogger.getInstance().log(Level.INFO, "@postparse ignoring indirect source: {0}", 
-//        this.getClass(), sources.get(sourcesIndex-1));
-//            return;
-//        }
-//        super.postparseUpdate();
-//    }
-    
-    @Override
-    public boolean hasNext() {
-        
-        this.updateBaseUrl(sources);
-        
-        if(this.hasMoreSources()) {
-            
-            String addedSrc = this.sources.get(sourcesIndex);
-            
-            this.getPageLinks().add(addedSrc);
-            
-            addedIndirectSource = true;
-            
-XLogger.getInstance().log(Level.FINE, "Added indirect source: {0}", 
-        this.getClass(), addedSrc);
+    if (hasMoreSources())
+    {
+      String addedSrc = (String)this.sources.get(this.sourcesIndex);
+      
+      getPageLinks().add(addedSrc);
+      
+      this.addedIndirectSource = true;
+      
+      XLogger.getInstance().log(Level.FINE, "Added indirect source: {0}", getClass(), addedSrc);
 
-        }else{
-            
-            addedIndirectSource = false;
-        }
-        
-        return super.hasNext();
+    }
+    else
+    {
+      this.addedIndirectSource = false;
     }
     
-    @Override
-    public PageNodes next() {
-        
-        this.updateBaseUrl(this.sources);
-        
-        String addedSrc;
-        
-        if(addedIndirectSource) {
-            
-            addedSrc = this.sources.get(sourcesIndex++);
+    return super.hasNext();
+  }
+  
 
-        }else{
-            
-            addedSrc = null;
-        }  
-        
-        PageNodes page = super.next();
-        
-        if(addedSrc == null) {
-            
-            return page;
-        }
-        
-        if(page == null) {
-            return null;
-        }
-
-        if(page.getURL().equals(addedSrc)) {
-XLogger.getInstance().log(Level.FINE, "After crawling, ignoring indirect source: {0}", this.getClass(), addedSrc);
-
-            return null;
-            
-        }else{
-            
-            return page;
-        }    
+  public PageNodes next()
+  {
+    updateBaseUrl(this.sources);
+    
+    String addedSrc;
+    if (this.addedIndirectSource)
+    {
+      addedSrc = (String)this.sources.get(this.sourcesIndex++);
+    }
+    else
+    {
+      addedSrc = null;
     }
     
-    public boolean hasMoreSources() {
-        return this.sources != null && sourcesIndex < this.sources.size();        
+    PageNodes page = super.next();
+    
+    if (addedSrc == null)
+    {
+      return page;
     }
     
-    public final void updateBaseUrl(List<String> urls) {
-        
-        if(this.getBaseUrl() == null && urls != null && !urls.isEmpty()) {
-            
-            String firstSource = urls.get(0);
-            
-            if(firstSource != null) {
-                
-                this.setBaseUrl(Util.getBaseURL(firstSource));
-            }
-        }
+    if (page == null) {
+      return null;
     }
+    
+    if (page.getURL().equals(addedSrc)) {
+      XLogger.getInstance().log(Level.FINE, "After crawling, ignoring indirect source: {0}", getClass(), addedSrc);
+      
+      return null;
+    }
+    
 
-    public List<String> getSources() {
-        return sources;
+    return page;
+  }
+  
+  public boolean hasMoreSources()
+  {
+    return (this.sources != null) && (this.sourcesIndex < this.sources.size());
+  }
+  
+  public final void updateBaseUrl(List<String> urls)
+  {
+    if ((getBaseUrl() == null) && (urls != null) && (!urls.isEmpty()))
+    {
+      String firstSource = (String)urls.get(0);
+      
+      if (firstSource != null)
+      {
+        setBaseUrl(com.bc.util.Util.getBaseURL(firstSource));
+      }
     }
-
-    public void setSources(List<String> sources) {
-        this.sources = sources;
-        this.updateBaseUrl(sources);
-    }
+  }
+  
+  public List<String> getSources() {
+    return this.sources;
+  }
+  
+  public void setSources(List<String> sources) {
+    this.sources = sources;
+    updateBaseUrl(sources);
+  }
 }

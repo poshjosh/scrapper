@@ -1,119 +1,89 @@
 package com.scrapper.util;
 
-import com.bc.manager.Filter;
-import com.scrapper.CapturerApp;
 import com.bc.json.config.JsonConfig;
-import com.scrapper.config.ScrapperConfigFactory;
+import com.scrapper.CapturerApp;
+import com.scrapper.Filter;
 import com.scrapper.config.Config;
+import com.scrapper.config.ScrapperConfigFactory;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * @(#)RemoteSitesMap.java   15-Mar-2014 13:18:49
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * A Map whose keys are table names for all items/products in the database
- * and whose values are list the remote sites offering content for the 
- * corresponding table key.
- * <br/><br/>
- * <b>Format:</b>
- * <tt>table name = List of sites</tt> 
- * <br/><br/>
- * <b>Example:</b>
- * <br/><br/>
- * gadgets = [sitename1, sitename3, sitename17]
- * <b>Note:</b>
- * <br/><br/>
- * Since the table names and corresponding sites don't change readily,
- * The load factor is <tt>1</tt> and the Map is not modifiable.
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.2
- */
-public class RemoteSitesMap extends HashMap<String, Set<String>> 
-        implements Filter<JsonConfig> {
+public class RemoteSitesMap
+  extends HashMap<String, Set<String>>
+  implements Filter<JsonConfig>
+{
+  public RemoteSitesMap()
+  {
+    init();
+  }
+  
+  public RemoteSitesMap(int initialCapacity, float loadfactor)
+  {
+    super(initialCapacity, loadfactor);
     
-    public RemoteSitesMap() {
-
-        this.init();
-    }
+    init();
+  }
+  
+  private void init()
+  {
+    String name;
+    ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
     
-    public RemoteSitesMap(int initialCapacity, float loadfactor) {
-        
-        super(initialCapacity, loadfactor);
-        
-        this.init();
-    }
+    Set<String> names = factory.getSitenames();
     
-    private void init() {
-        
-        ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
+    for (Iterator i$ = names.iterator(); i$.hasNext();) { name = (String)i$.next();
 
-        Set<String> names = factory.getSitenames();
+      JsonConfig config = factory.getConfig(name, true);
+      
+      if (config != null)
+      {
 
-        for(String name:names) {
+        if (!accept(config))
+        {
 
-            // Second method arg = true, indicates 'refresh'. We refresh because 
-            // the config file may have been updated since it was last loaded
-            //
-            JsonConfig config = factory.getConfig(name, true);
-            
-            if(config == null) {
-                continue;
-            }
-            
-            if(!RemoteSitesMap.this.accept(config)) {
-                
-                // We only accept configs which have search url producers 
-                //
-                factory.removeConfig(name);
-                
-                continue;
-                
-            }
-            
-            Map map = config.getMap(Config.Site.url, "mappings", Config.Extractor.table.name());
+          factory.removeConfig(name);
 
-            Collection tables;
-            if(map == null) {
-
-                tables = config.getList(Config.Site.tables);
-                
-            }else{
-
-                tables = map.values();
-            }
-            
-            for(Object table:tables) {
-
-                this.add(table.toString(), name);
-            }
         }
-    }
+        else
+        {
 
-    @Override
-    public boolean accept(JsonConfig config) {
-        return true;
+          Map map = config.getMap(new Object[] { Config.Site.url, "mappings", Config.Extractor.table.name() });
+          Collection tables;
+          if (map == null)
+          {
+            tables = config.getList(new Object[] { Config.Site.tables });
+          }
+          else
+          {
+            tables = map.values();
+          }
+          
+          for (Object table : tables)
+          {
+            add(table.toString(), name); }
+        } }
+    }
+  }
+  
+  public boolean accept(JsonConfig config) {
+    return true;
+  }
+  
+  private void add(String table, String sitenameToAdd)
+  {
+    Set<String> tableSitenames = (Set)get(table);
+    
+    if (tableSitenames == null)
+    {
+      tableSitenames = new TreeSet();
+      
+      put(table, tableSitenames);
     }
     
-    private void add(String table, String sitenameToAdd) {
-        
-        Set<String> tableSitenames = this.get(table);
-        
-        if(tableSitenames == null) {
-            
-            tableSitenames = new TreeSet();
-            
-            this.put(table, tableSitenames);
-        }
-        
-        tableSitenames.add(sitenameToAdd);
-    }
+    tableSitenames.add(sitenameToAdd);
+  }
 }

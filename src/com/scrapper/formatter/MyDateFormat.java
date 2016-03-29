@@ -7,194 +7,188 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author  chinomso bassey ikwuagwu
- * @version  0.3
- * @since   1.0
- */
-public class MyDateFormat extends SimpleDateFormat {
+public class MyDateFormat
+  extends SimpleDateFormat
+{
+  private Pattern validationPattern;
+  private String[] acceptedPatterns;
+  
+  public MyDateFormat()
+  {
+    setLenient(false);
+  }
+  
+  public MyDateFormat(String[] patterns) {
+    this.acceptedPatterns = patterns;
+    setLenient(false);
+  }
+  
 
-    private Pattern validationPattern;
+  public Date parse(String text, ParsePosition pos)
+  {
+    Calendar cal = null;
     
-    // Default value
-    //
-    private String [] acceptedPatterns;
+    for (String pattern : this.acceptedPatterns)
+    {
+      applyPattern(pattern);
+      
+      Date date = super.parse(text, pos);
+      
 
-    public MyDateFormat() { 
-        this.setLenient(false);
-    }
 
-    public MyDateFormat(String [] patterns){
-        this.acceptedPatterns = patterns;
-        this.setLenient(false);
-    }
+      if (date != null)
+      {
 
-    @Override
-    public Date parse(String text, ParsePosition pos) {
-
-        Calendar cal = null;
-        
-        for(String pattern: acceptedPatterns) {
-
-            this.applyPattern(pattern);
-
-            Date date = super.parse(text, pos);
-
-//System.out.println("Pattern: "+pattern+", date: "+date);
-
-            if(date == null) {
-                continue;
-            }
-
-            pattern = pattern.trim();
-            
-            if(!this.requiresValidation(pattern)) {
-                
-                return date;
-            }
-            
-            if(cal == null) {
-                cal = Calendar.getInstance();
-            }
-// Validation            
-//
-// Both dd MM yyyy and MM dd yyyy matches 26 10 2013            
-// Also dd MM yyyy matches both 26 10 2013, 10 26 2013
-
-// We decide which pattern to use by examining the date
-
-// If the first 2 pairs of digits have a value greater than 12,
-// then it is considered the 'dd' part
-
-            
-            if(this.isValid(text, pattern, date, cal)) {
-                
-                return date;
-            }
-        }
-
-        return null;
-    }
-    
-    private boolean requiresValidation(String pattern) {
-        
-        if(!this.isLenient()) {
-            return false;
-        }
-        
-        if(validationPattern == null) {
-            validationPattern = Pattern.compile("(MM(-|\\s|/){1}dd)|(dd(-|\\s|/){1}MM)");
-        }
 
         pattern = pattern.trim();
+        
+        if (!requiresValidation(pattern))
+        {
+          return date;
+        }
+        
+        if (cal == null) {
+          cal = Calendar.getInstance();
+        }
+        
 
-        Matcher m = validationPattern.matcher(pattern);
 
-        return m.find() && m.start() == 0;
+
+
+
+
+
+
+
+
+        if (isValid(text, pattern, date, cal))
+        {
+          return date;
+        }
+      }
+    }
+    return null;
+  }
+  
+  private boolean requiresValidation(String pattern)
+  {
+    if (!isLenient()) {
+      return false;
     }
     
-    private boolean isValid(String input, String pattern, Date date, Calendar cal) {
-        
-//System.out.println("Checking validity. Input: "+input+", pattern: "+pattern+", date output: "+date);
-
-        boolean isValid = true;
-
-        cal.setTime(date);
-        
-        boolean a = pattern.contains("yyyy") && this.matchesYear(input, "yyyy", cal);
-        boolean b = pattern.contains("yy") && this.matchesYear(input, "yy", cal);
-//System.out.println("Matches long year: "+a+", short year: "+b);        
-
-        boolean matchesYear = a || b;
-
-        if(!matchesYear) {
-
-            isValid = false;
-
-        }else{
-
-            if(pattern.startsWith("MM")) {
-
-                boolean matchesMonth = this.matchesFirstField(2, input, cal, Calendar.MONTH);
-//System.out.println("Matches month: "+matchesMonth);
-                if(!matchesMonth) {
-
-                    isValid = false;
-                }
-            }else if(pattern.startsWith("dd")) {
-
-                boolean matchesDate = this.matchesFirstField(2, input, cal, Calendar.DATE);
-//System.out.println("Matches date: "+matchesDate);
-                if(!matchesDate) {
-
-                    isValid = false;
-                }
-            }
-        }
-        
-        return isValid;
+    if (this.validationPattern == null) {
+      this.validationPattern = Pattern.compile("(MM(-|\\s|/){1}dd)|(dd(-|\\s|/){1}MM)");
     }
     
-    private boolean matchesYear(String input, String patternPart, Calendar cal) {
-        
-        boolean contains;
-        
-        int field = cal.get(Calendar.YEAR);
+    pattern = pattern.trim();
+    
+    Matcher m = this.validationPattern.matcher(pattern);
+    
+    return (m.find()) && (m.start() == 0);
+  }
+  
 
-        String sval = Integer.toString(field);
 
-        // part = yy where as value = 2014
-        if(patternPart.length() < sval.length()) {
-            int diff = sval.length() - patternPart.length();
-            sval = sval.substring(diff);
-        }
+  private boolean isValid(String input, String pattern, Date date, Calendar cal)
+  {
+    boolean isValid = true;
+    
+    cal.setTime(date);
+    
+    boolean a = (pattern.contains("yyyy")) && (matchesYear(input, "yyyy", cal));
+    boolean b = (pattern.contains("yy")) && (matchesYear(input, "yy", cal));
+    
 
-        StringBuilder buff = new StringBuilder();
-        buff.append(' ').append(sval).append(' ');
+    boolean matchesYear = (a) || (b);
+    
+    if (!matchesYear)
+    {
+      isValid = false;
 
-        if(!input.contains(buff)) {
 
-            contains = false;
-
-        }else{
-
-            contains = true;
-        }
-        
-        return contains;
+    }
+    else if (pattern.startsWith("MM"))
+    {
+      boolean matchesMonth = matchesFirstField(2, input, cal, 2);
+      
+      if (!matchesMonth)
+      {
+        isValid = false;
+      }
+    } else if (pattern.startsWith("dd"))
+    {
+      boolean matchesDate = matchesFirstField(2, input, cal, 5);
+      
+      if (!matchesDate)
+      {
+        isValid = false;
+      }
     }
     
-    private boolean matchesFirstField(int digitsInField, String input, Calendar cal, int calendarField) {
-        
-        String expected = input.trim().substring(0, digitsInField);
 
-        int toAdd;
-        
-        switch(calendarField) {
-            case Calendar.MONTH:
-                toAdd = 1; break;
-            case Calendar.DATE:
-                toAdd = 0; break;
-            default:
-                throw new UnsupportedOperationException("Unexpected calendar field: "+calendarField);
-        }
+    return isValid;
+  }
+  
 
-        int n = cal.get(calendarField) + toAdd;
-        
-        String prefix = n < 10 ? "0" : "";
-        
-        String found = prefix + n;
-        
-//System.out.println("Expected: "+expected+", found: "+found);        
 
-        return expected.equals(found);
+  private boolean matchesYear(String input, String patternPart, Calendar cal)
+  {
+    int field = cal.get(1);
+    
+    String sval = Integer.toString(field);
+    
+
+    if (patternPart.length() < sval.length()) {
+      int diff = sval.length() - patternPart.length();
+      sval = sval.substring(diff);
     }
-
-    public String[] getAcceptedPatterns() {
-        return acceptedPatterns;
+    
+    StringBuilder buff = new StringBuilder();
+    buff.append(' ').append(sval).append(' ');
+    boolean contains;
+    if (!input.contains(buff))
+    {
+      contains = false;
     }
-
-    public void setAcceptedPatterns(String[] acceptedPatterns) {
-        this.acceptedPatterns = acceptedPatterns;
+    else
+    {
+      contains = true;
     }
-}//~END
+    
+    return contains;
+  }
+  
+  private boolean matchesFirstField(int digitsInField, String input, Calendar cal, int calendarField)
+  {
+    String expected = input.trim().substring(0, digitsInField);
+    
+    int toAdd;
+    
+    switch (calendarField) {
+    case 2: 
+      toAdd = 1; break;
+    case 5: 
+      toAdd = 0; break;
+    default: 
+      throw new UnsupportedOperationException("Unexpected calendar field: " + calendarField);
+    }
+    
+    int n = cal.get(calendarField) + toAdd;
+    
+    String prefix = n < 10 ? "0" : "";
+    
+    String found = prefix + n;
+    
+
+
+    return expected.equals(found);
+  }
+  
+  public String[] getAcceptedPatterns() {
+    return this.acceptedPatterns;
+  }
+  
+  public void setAcceptedPatterns(String[] acceptedPatterns) {
+    this.acceptedPatterns = acceptedPatterns;
+  }
+}

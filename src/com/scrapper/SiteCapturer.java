@@ -1,51 +1,40 @@
 package com.scrapper;
 
-import com.bc.process.StoppableTask;
+import com.bc.task.StoppableTask;
 import com.scrapper.context.CapturerContext;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
 
-/**
- * @(#)SiteCapturer.java   09-Nov-2013 16:03:21
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.0
- */
-public interface SiteCapturer 
-        extends StoppableTask, Resumable {
-
-    URLParser getCrawler();
-
-    PageDataConsumer getDataConsumer();
-
-    Scrapper getScrapper();
-
-    CapturerContext getContext();
-
-    Date getStartTime();
-
-    boolean isLogin();
-
-    boolean isRunning();
-
-    void login() throws MalformedURLException, IOException;
-
-    void setCrawler(URLParser crawler);
-
-    void setDataConsumer(PageDataConsumer dataConsumer);
-    
-    void setLogin(boolean login);
-
-    void setScrapper(Scrapper scrapper);
-
-    void setContext(CapturerContext context);
-
-    void setStartTime(Date startTime);
+public abstract interface SiteCapturer
+  extends StoppableTask, Resumable
+{
+  public abstract URLParser getCrawler();
+  
+  public abstract PageDataConsumer getDataConsumer();
+  
+  public abstract Scrapper getScrapper();
+  
+  public abstract CapturerContext getContext();
+  
+  public abstract Date getStartTime();
+  
+  public abstract boolean isLogin();
+  
+  public abstract boolean isRunning();
+  
+  public abstract void login()
+    throws MalformedURLException, IOException;
+  
+  public abstract void setCrawler(URLParser paramURLParser);
+  
+  public abstract void setDataConsumer(PageDataConsumer paramPageDataConsumer);
+  
+  public abstract void setLogin(boolean paramBoolean);
+  
+  public abstract void setScrapper(Scrapper paramScrapper);
+  
+  public abstract void setContext(CapturerContext paramCapturerContext);
+  
+  public abstract void setStartTime(Date paramDate);
 }

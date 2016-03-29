@@ -1,24 +1,14 @@
-/**
- * @(#)Sitenames.java   17-Apr-2011 02:23:04
- *
- * Copyright 2009 BC Enterprise, Inc. All rights reserved.
- * BCE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package com.scrapper.config;
 
-/**
- * @author  chinomso bassey ikwuagwu
- * @version  0.3
- * @since   1.0
- */
-public interface Sitenames {
-    String NGCAREERS = "ngcareers";
-    String NIGERIAJOBSONLINE = "nigeriajobsonline";
-    String CAREERSNIGERIA = "careersnigeria";
-    String NIGERIANDRIVER = "nigeriandriver";
-    String WHEELSNATIONWIDE = "wheelsnationwide";
-    String METALLICHORSES = "metallichorses";
-    String JOBSNIGERIANA = "jobsnigeriana";
-    String JOBBERMAN = "jobberman";
-    String TAAFOO = "taafoo";
-}//~END
+public abstract interface Sitenames
+{
+  public static final String NGCAREERS = "ngcareers";
+  public static final String NIGERIAJOBSONLINE = "nigeriajobsonline";
+  public static final String CAREERSNIGERIA = "careersnigeria";
+  public static final String NIGERIANDRIVER = "nigeriandriver";
+  public static final String WHEELSNATIONWIDE = "wheelsnationwide";
+  public static final String METALLICHORSES = "metallichorses";
+  public static final String JOBSNIGERIANA = "jobsnigeriana";
+  public static final String JOBBERMAN = "jobberman";
+  public static final String TAAFOO = "taafoo";
+}

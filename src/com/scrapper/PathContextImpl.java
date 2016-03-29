@@ -1,6 +1,5 @@
 package com.scrapper;
 
-import com.bc.manager.AbstractPathContext;
 import com.bc.util.XLogger;
 import java.io.File;
 import java.io.FileFilter;

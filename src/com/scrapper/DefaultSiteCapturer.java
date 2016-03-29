@@ -1,8 +1,8 @@
 package com.scrapper;
 
+import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
-import com.bc.json.config.JsonConfig;
 import com.scrapper.config.ScrapperConfigFactory;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.url.ConfigURLList;
@@ -13,254 +13,237 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-/**
- * @(#)DefaultSiteCapturer.java   28-Aug-2013 23:43:16
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.0
- */
-public class DefaultSiteCapturer extends BaseSiteCapturer {
+public class DefaultSiteCapturer
+  extends BaseSiteCapturer
+{
+  private ResumeHandler parseResumeHandler;
+  private ResumeHandler scrappResumeHandler;
+  
+  public DefaultSiteCapturer() {}
+  
+  public DefaultSiteCapturer(CapturerContext context)
+  {
+    super(context);
     
-    private ResumeHandler parseResumeHandler;
+    init(context, null, false, true);
+  }
+  
+  public DefaultSiteCapturer(CapturerContext context, List<String> urlList)
+  {
+    super(context);
     
-    private ResumeHandler scrappResumeHandler;
-    
-    public DefaultSiteCapturer() { }
-    
-    public DefaultSiteCapturer(final CapturerContext context) { 
-        
-        super(context);
+    init(context, urlList, false, true);
+  }
+  
 
-        this.init(context, null, false, true);
+  public DefaultSiteCapturer(CapturerContext context, List<String> urlList, boolean resume, boolean resumable)
+  {
+    super(context);
+    
+    init(context, urlList, resume, resumable);
+  }
+  
+  public DefaultSiteCapturer(String sitename)
+  {
+    this(sitename, null, -1, -1, false, true);
+  }
+  
+  public DefaultSiteCapturer(String sitename, List<String> urls)
+  {
+    this(sitename, urls, -1, -1, false, true);
+  }
+  
+
+  public DefaultSiteCapturer(String sitename, List<String> urls, boolean resume, boolean resumable)
+  {
+    this(sitename, urls, -1, -1, resume, resumable);
+  }
+  
+
+  public DefaultSiteCapturer(String sitename, List<String> urls, int batchSize, int batchInterval, boolean resume, boolean resumable)
+  {
+    ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
+    
+    JsonConfig config = factory.getConfig(sitename);
+    
+    if (config == null) {
+      throw new NullPointerException("Failed to load site config for: " + sitename);
     }
     
-    public DefaultSiteCapturer(final CapturerContext context, List<String> urlList) {
-        
-        super(context);
-        
-        this.init(context, urlList, false, true);
+    init(factory.getContext(config), urls, resume, resumable);
+    
+    if (urls == null) {
+      setScrappLimit(config.getInt(new Object[] { Config.Extractor.scrappLimit.name() }).intValue());
     }
 
-    public DefaultSiteCapturer(final CapturerContext context, 
-            List<String> urlList, boolean resume, boolean resumable) {
-        
-        super(context);
-        
-        this.init(context, urlList, resume, resumable);
+    if (batchSize > 0) {
+      setBatchSize(batchSize);
     }
     
-    public DefaultSiteCapturer(String sitename) {
-        
-        this(sitename, null, -1, -1, false, true);
+    if (batchInterval > 0) {
+      setBatchInterval(batchInterval);
     }
+  }
+  
+
+
+
+
+  private void init(CapturerContext context, List<String> urlList, boolean resume, boolean resumable)
+  {
+    setLogin(true);
+    setContext(context);
     
-    public DefaultSiteCapturer(String sitename, List<String> urls) {
-        
-        this(sitename, urls, -1, -1, false, true);
-    }
-
-    public DefaultSiteCapturer(String sitename, List<String> urls, 
-            boolean resume, boolean resumable) {
-        
-        this(sitename, urls, -1, -1, resume, resumable);
-    }
+    URLParser urlParser = createCrawler(context, urlList, resume, resumable);
+    setCrawler(urlParser);
     
-    public DefaultSiteCapturer(String sitename, List<String> urls, 
-            int batchSize, int batchInterval, boolean resume, boolean resumable) {
-        
-        ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
+    Scrapper scrapper = createScrapper(context, urlList, resume, resumable);
+    setScrapper(scrapper);
+    
+    PageDataConsumer dataConsumer = createDataConsumer(context, urlList);
+    setDataConsumer(dataConsumer);
+    
+    XLogger.getInstance().log(Level.FINE, "Created:: {0}", getClass(), this);
+  }
+  
 
-        JsonConfig config = factory.getConfig(sitename);
 
-        if(config == null) {
-            throw new NullPointerException("Failed to load site config for: "+sitename);
+  protected URLParser createCrawler(CapturerContext context, List<String> urlList, final boolean resume, final boolean resumable)
+  {
+    ResumableUrlParser urlParser;
+    
+    if (urlList != null)
+    {
+      urlParser = new ResumableUrlParser(context.getConfig().getName(), urlList)
+      {
+        public boolean isResumable()
+        {
+          return resumable;
         }
         
-        this.init(factory.getContext(config), urls, resume, resumable);
-        
-        if(urls == null) {
-            this.setScrappLimit(
-                config.getInt(Config.Extractor.scrappLimit.name())
-            );
+        public boolean isResume() {
+          return resume;
         }
-        
-        if(batchSize > 0) {
-            this.setBatchSize(batchSize);
-        }
-        
-        if(batchInterval > 0) {
-            this.setBatchInterval(batchInterval);
-        }
+      };
     }
-
-    private void init(
-            final CapturerContext context, 
-            List<String> urlList,
-            boolean resume,
-            boolean resumable) {
-    
-        this.setLogin(true);
-        this.setContext(context);
-        
-        URLParser urlParser = this.createCrawler(context, urlList, resume, resumable);
-        this.setCrawler(urlParser);
-        
-        Scrapper scrapper = this.createScrapper(context, urlList, resume, resumable);
-        this.setScrapper(scrapper);
-        
-        PageDataConsumer dataConsumer = this.createDataConsumer(context, urlList);
-        this.setDataConsumer(dataConsumer);
-        
-XLogger.getInstance().log(Level.FINE, "Created:: {0}", this.getClass(), this);        
-    }
-    
-    protected URLParser createCrawler(
-            CapturerContext context, 
-            List<String> urlList,
-            final boolean resume,
-            final boolean resumable) {
-
-        ResumableUrlParser urlParser;
-            
-        if(urlList != null) {
-            
-            urlParser = new ResumableUrlParser(
-                    context.getConfig().getName(), urlList){
-                @Override
-                public boolean isResumable() {
-                    return resumable;
-                }
-                @Override
-                public boolean isResume() {
-                    return resume;
-                }
-            };
-        }else{
-            
-            JsonConfig config = context.getConfig();
-
-            ConfigURLList urllist = new ConfigURLList();
-
-            urllist.update(config, "counter");
-
-            if(!urllist.isEmpty()) {
-
-                ConfigURLPartList serialPart = ConfigURLPartList.getSerialPart(config, "counter");
-
-                if(serialPart == null) {
-                    urlParser = new MultipleSourcesCrawler(context, urllist){
-                        @Override
-                        public boolean isResumable() {
-                            return resumable;
-                        }
-                        @Override
-                        public boolean isResume() {
-                            return resume;
-                        }
-                    };
-                }else{        
-                    urlParser = new DirectSourcesParser(context, urllist){
-                        @Override
-                        public boolean isResumable() {
-                            return resumable;
-                        }
-                        @Override
-                        public boolean isResume() {
-                            return resume;
-                        }
-                    };
-                }        
-            }else{
-
-                urlParser = new Crawler(context){
-                    @Override
-                    public boolean isResumable() {
-                        return resumable;
-                    }
-                    @Override
-                    public boolean isResume() {
-                        return resume;
-                    }
-                };
-            }
-        }
-        
-        if(parseResumeHandler != null) {
-            urlParser.setResumeHandler(parseResumeHandler);
-        }
-        
-        return urlParser;
-    }
-
-    protected Scrapper createScrapper(
-            CapturerContext context, 
-            List<String> urlList,
-            final boolean resume,
-            final boolean resumable) {
-        ResumableScrapper scrapper = new ResumableScrapper(context){
-            @Override
+    else {
+      JsonConfig config = context.getConfig();
+      
+      ConfigURLList urllist = new ConfigURLList();
+      
+      urllist.update(config, "counter");
+      if (!urllist.isEmpty())
+      {
+        ConfigURLPartList serialPart = ConfigURLPartList.getSerialPart(config, "counter");
+        if (serialPart == null) {
+          urlParser = new MultipleSourcesCrawler(context, urllist)
+          {
             public boolean isResumable() {
-                return resumable;
+              return resumable;
             }
-            @Override
+            
             public boolean isResume() {
-                return resume;
+              return resume;
             }
+          };
+        } else {
+          urlParser = new DirectSourcesParser(context, urllist)
+          {
+            public boolean isResumable() {
+              return resumable;
+            }
+            
+            public boolean isResume() {
+              return resume;
+            }
+          };
+        }
+      }
+      else {
+        urlParser = new Crawler(context)
+        {
+          public boolean isResumable() {
+            return resumable;
+          }
+          
+          public boolean isResume() {
+            return resume;
+          }
         };
-        if(scrappResumeHandler != null) {
-            scrapper.setResumeHandler(scrappResumeHandler);
-        }
-        return scrapper;
-    }
-
-    protected PageDataConsumer createDataConsumer(CapturerContext context, List<String> urlList) {
-        if(this.hasUploaderSettings(context)) {
-            PageDataConsumer uploader = new ScrappUploader(context);
-            return uploader;
-        }else{
-            return null;
-        }
+      }
     }
     
-    private boolean hasUploaderSettings(CapturerContext context) {
-        
-        try{
-            String urlStr = AppProperties.getProperty(AppProperties.INSERT_URL);
-            if(urlStr == null || urlStr.isEmpty()) {
-                return false;
-            }
-            URL url = new URL(AppProperties.getProperty(AppProperties.INSERT_URL));
-        }catch(MalformedURLException e) {
-            return false;
-        }
-        
-        JsonConfig config = context.getConfig();
-        
-        final Map m = config.getMap("uploadParameters");
-        
-        return !(m == null || m.isEmpty());
+    if (this.parseResumeHandler != null) {
+      urlParser.setResumeHandler(this.parseResumeHandler);
     }
     
+    return urlParser;
+  }
+  
 
-    public ResumeHandler getParseResumeHandler() {
-        return parseResumeHandler;
-    }
 
-    public void setParseResumeHandler(ResumeHandler parseResumeHandler) {
-        this.parseResumeHandler = parseResumeHandler;
-    }
 
-    public ResumeHandler getScrappResumeHandler() {
-        return scrappResumeHandler;
+  protected Scrapper createScrapper(CapturerContext context, List<String> urlList, final boolean resume, final boolean resumable)
+  {
+    ResumableScrapper scrapper = new ResumableScrapper(context)
+    {
+      public boolean isResumable() {
+        return resumable;
+      }
+      
+      public boolean isResume() {
+        return resume;
+      }
+    };
+    if (this.scrappResumeHandler != null) {
+      scrapper.setResumeHandler(this.scrappResumeHandler);
     }
-
-    public void setScrappResumeHandler(ResumeHandler scrappResumeHandler) {
-        this.scrappResumeHandler = scrappResumeHandler;
+    return scrapper;
+  }
+  
+  protected PageDataConsumer createDataConsumer(CapturerContext context, List<String> urlList) {
+    if (hasUploaderSettings(context)) {
+      PageDataConsumer uploader = new ScrappUploader(context);
+      return uploader;
     }
+    return null;
+  }
+  
+  private boolean hasUploaderSettings(CapturerContext context)
+  {
+    URL url;
+    try
+    {
+      String urlStr = AppProperties.getProperty("insertUrl");
+      if ((urlStr == null) || (urlStr.isEmpty())) {
+        return false;
+      }
+      url = new URL(AppProperties.getProperty("insertUrl"));
+    } catch (MalformedURLException e) { 
+      return false;
+    }
+    
+    JsonConfig config = context.getConfig();
+    
+    Map m = config.getMap(new Object[] { "uploadParameters" });
+    
+    return (m != null) && (!m.isEmpty());
+  }
+  
+  public ResumeHandler getParseResumeHandler()
+  {
+    return this.parseResumeHandler;
+  }
+  
+  public void setParseResumeHandler(ResumeHandler parseResumeHandler) {
+    this.parseResumeHandler = parseResumeHandler;
+  }
+  
+  public ResumeHandler getScrappResumeHandler() {
+    return this.scrappResumeHandler;
+  }
+  
+  public void setScrappResumeHandler(ResumeHandler scrappResumeHandler) {
+    this.scrappResumeHandler = scrappResumeHandler;
+  }
 }

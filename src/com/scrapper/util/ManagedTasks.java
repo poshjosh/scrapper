@@ -1,7 +1,6 @@
 package com.scrapper.util;
 
-import com.bc.process.ConcurrentProgressList;
-import com.bc.process.StoppableTask;
+import com.bc.task.StoppableTask;
 import com.bc.util.XLogger;
 import com.scrapper.AppProperties;
 import java.util.ArrayList;
@@ -11,227 +10,211 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-/**
- * @(#)ManagedTasks.java   23-Oct-2014 16:27:22
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * This task shuts down after the specified {@link #getTimeout()}
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @param <T>
- * @since    0.2
- */
-public abstract class ManagedTasks<T extends StoppableTask> 
-        extends ConcurrentProgressList {
-
-    private int timeout;
+public abstract class ManagedTasks<T extends StoppableTask>
+  extends ConcurrentProgressTaskList
+{
+  private int timeout;
+  private List<T> tasks;
+  private final SortByFrequency sortByFrequency;
+  
+  public ManagedTasks()
+  {
+    this.sortByFrequency = new SortByFrequency();
     
-    private List<T> tasks;
+    init();
+  }
+  
+  public ManagedTasks(List<String> sitenames, String category)
+  {
+    this.sortByFrequency = new SortByFrequency();
     
-    private final SortByFrequency sortByFrequency;
-        
-    public ManagedTasks() {
-
-        sortByFrequency = new SortByFrequency();
-        
-        this.init();
-    }
-
-    public ManagedTasks(List<String> sitenames, final String category) {
-
-        sortByFrequency = new SortByFrequency();
-        
-        this.init();
-        
-        ManagedTasks.this.loadTasks(category, sitenames);
-    }
-
-    private void init() {
-        this.timeout = getInt(AppProperties.SITESEARCH_TIMEOUT);
-XLogger.getInstance().log(Level.FINER, "Setting timeout to: {0} for {1}", this.getClass(), timeout, this);
-        final int maxConcurrent = getInt(AppProperties.SEARCHSITE_MAXCONCURRENTPROCESSES);
-        this.setMaxConcurrentProcesses(maxConcurrent);
+    init();
+    
+    loadTasks(category, sitenames);
+  }
+  
+  private void init() {
+    this.timeout = getInt("siteSearch.timeout");
+    XLogger.getInstance().log(Level.FINER, "Setting timeout to: {0} for {1}", getClass(), Integer.valueOf(this.timeout), this);
+    int maxConcurrent = getInt("siteSearch.maxConcurrentProcesses");
+    setMaxConcurrentProcesses(maxConcurrent);
+  }
+  
+  protected abstract T newTask(String paramString);
+  
+  public void reset()
+  {
+    throw new UnsupportedOperationException("Not supported");
+  }
+  
+  public void loadTasks(String category, List<String> sitenames)
+  {
+    if ((category == null) || (sitenames == null)) {
+      throw new NullPointerException();
     }
     
-    protected abstract T newTask(String name);
+    this.sortByFrequency.setCategory(category);
     
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    public void loadTasks(String category, List<String> sitenames) {
-        
-        if(category == null || sitenames == null) {
-            throw new NullPointerException();
-        }
-        
-        sortByFrequency.setCategory(category);
-        
-        Collections.sort(sitenames, sortByFrequency);
-
-        // If we don't do this, some sites may never get airtime
-        //
-        // Factor: 0.2f
-        //  Input: [a, b, c, d, e, f, g, h, i, j]
-        // Output: [a, b, i, j, c, d, e, f, g, h]
-        //
-        sortByFrequency.rearrange(sitenames, 0.2f);
-        
-        this.tasks = new ArrayList<T>(sitenames.size());
-        
-        for(String sitename:sitenames) {
-            T task = this.newTask(sitename);
-            this.tasks.add(task);
-        }
-    }
-
-    @Override
-    public void doRun() {
-
-        this.checkTimeout();
-        
-        try{
-            
-            super.doRun();
-            
-        }finally{
-
-            this.shutdownAndAwaitTermination(timeout, TimeUnit.MILLISECONDS);
-        }
-    }
+    Collections.sort(sitenames, this.sortByFrequency);
     
-    private void checkTimeout() {
-        assert this.getTimeout() != 0 : "timeout cannot be equal to 0";
-    }
+
+
+
+
+
+
+    this.sortByFrequency.rearrange(sitenames, 0.2F);
     
-    public int computeLimitPerSite() {
-        int maxResults = this.getMaxResults();
-        final int maxConcurr = this.getMaxConcurrentProcesses();
-        int limit = maxResults / maxConcurr;
-        int rem = maxResults % maxConcurr;
-        if(rem > 0) {
-            ++limit;
-        }
-        if(limit <= 0) {
-            limit = 1;
-        }
-XLogger.getInstance().log(Level.FINE, "Limit: {0}", this.getClass(), limit);                
-        return limit;
-    }
+    this.tasks = new ArrayList(sitenames.size());
     
-    protected void preTaskUpdateTimeTaken(String name) {
-        
-        this.checkTimeout();
-
-        // Update time taken with a large value (in this case timeout)
-        // This way, if the request is not completed, we would still
-        // be able to compare this time taken in a fairly consistent way
-        // AN ADJUSTMENT HAS TO BE MADE if the request completes.
-        //
-        this.updateTimeTaken(name, this.getTimeout());
+    for (String sitename : sitenames) {
+      T task = newTask(sitename);
+      this.tasks.add(task);
     }
+  }
+  
+
+  public void doRun()
+  {
+    checkTimeout();
     
-    protected void postTaskUpdateTimeTaken(String name, long lastTaskTime, int lastTaskTimeTaken) {
-        
-        this.checkTimeout();
-XLogger.getInstance().log(Level.FINER, "Tasks: {0}", this.getClass(), tasks);
+    try
+    {
+      super.doRun();
+    }
+    finally
+    {
+      shutdownAndAwaitTermination(this.timeout, TimeUnit.MILLISECONDS);
+    }
+  }
+  
+  private void checkTimeout() {
+    assert (getTimeout() != 0) : "timeout cannot be equal to 0";
+  }
+  
+  public int computeLimitPerSite() {
+    int maxResults = getMaxResults();
+    int maxConcurr = getMaxConcurrentProcesses();
+    int limit = maxResults / maxConcurr;
+    int rem = maxResults % maxConcurr;
+    if (rem > 0) {
+      limit++;
+    }
+    if (limit <= 0) {
+      limit = 1;
+    }
+    XLogger.getInstance().log(Level.FINE, "Limit: {0}", getClass(), Integer.valueOf(limit));
+    return limit;
+  }
+  
+  protected void preTaskUpdateTimeTaken(String name)
+  {
+    checkTimeout();
+    
 
-        // Adjust time taken. This was done earlier.
-        // c = (previousAverage + timeout) / 2;
-        //
-        // We have to now solve for the previous average
-        // previousAverage = (c * 2) - timeout;
-        //  
-        Map<String, Integer> rt = sortByFrequency.getRequestTimes();
-        
-XLogger.getInstance().log(Level.FINER, "Product table: {0}, Request times: {1}", 
-        this.getClass(), sortByFrequency.getCategory(), sortByFrequency.getRequestTimes());        
 
-        if(rt == null) {
-            return;
-        }
-        
-        Integer i = rt.get(name);
-        
-        int adjustment = (i * 2) - this.getTimeout();
-        
-        this.updateTimeTaken(name, adjustment);
 
-        // Ensure this is available
-        assert lastTaskTime > 0 : ManagedTasks.class.getName()+".lastRequestTime == 0. This value should be set each time a request is sent to a URL";
 
-        // Update time taken
-        this.updateTimeTaken(name, lastTaskTimeTaken);
 
-XLogger.getInstance().log(Level.FINER, "Average request times for{0}={1}", 
-this.getClass(), sortByFrequency.getCategory(), sortByFrequency.getRequestTimes());        
+    updateTimeTaken(name, getTimeout());
+  }
+  
+  protected void postTaskUpdateTimeTaken(String name, long lastTaskTime, int lastTaskTimeTaken)
+  {
+    checkTimeout();
+    XLogger.getInstance().log(Level.FINER, "Tasks: {0}", getClass(), this.tasks);
+    
+
+
+
+
+
+
+    Map<String, Integer> rt = this.sortByFrequency.getRequestTimes();
+    
+    XLogger.getInstance().log(Level.FINER, "Product table: {0}, Request times: {1}", getClass(), this.sortByFrequency.getCategory(), this.sortByFrequency.getRequestTimes());
+    
+
+    if (rt == null) {
+      return;
     }
     
-    private void updateTimeTaken(String sitename, int timeTaken) {
-        
-        Map<String, Integer> rt = sortByFrequency.getRequestTimes();
+    Integer i = (Integer)rt.get(name);
+    
+    int adjustment = i.intValue() * 2 - getTimeout();
+    
+    updateTimeTaken(name, adjustment);
+    
 
-XLogger.getInstance().log(Level.FINER, "Product table: {0}, Request times: {1}", 
-        this.getClass(), sortByFrequency.getCategory(), sortByFrequency.getRequestTimes());        
-        
-        if(rt == null) {
-            return;
-        }
-        
-        Integer previousTimetaken = rt.get(sitename);
-        
-        // Not actual average
-        //
-        long average = previousTimetaken == null ? timeTaken : (previousTimetaken + timeTaken) / 2;
-        
-        rt.put(sitename, (int)average);
-    }
+    assert (lastTaskTime > 0L) : (ManagedTasks.class.getName() + ".lastRequestTime == 0. This value should be set each time a request is sent to a URL");
+    
 
-    @Override
-    protected List<StoppableTask> getList() {
-        return (List<StoppableTask>)tasks;
-    }
+    updateTimeTaken(name, lastTaskTimeTaken);
+    
+    XLogger.getInstance().log(Level.FINER, "Average request times for{0}={1}", getClass(), this.sortByFrequency.getCategory(), this.sortByFrequency.getRequestTimes());
+  }
+  
 
-    private int getInt(String name) {
-        String value = AppProperties.getProperty(name);
-        return Integer.parseInt(value);
-    }
+  private void updateTimeTaken(String sitename, int timeTaken)
+  {
+    Map<String, Integer> rt = this.sortByFrequency.getRequestTimes();
+    
+    XLogger.getInstance().log(Level.FINER, "Product table: {0}, Request times: {1}", getClass(), this.sortByFrequency.getCategory(), this.sortByFrequency.getRequestTimes());
+    
 
-    private int mr = - 1;
-    public int getMaxResults() {
-        if(mr == -1) {
-            mr = getInt(AppProperties.MAX_RESULTS);
-        }
-        return mr;
+    if (rt == null) {
+      return;
     }
+    
+    Integer previousTimetaken = (Integer)rt.get(sitename);
+    
 
-    public String getProductTable() {
-        return sortByFrequency.getCategory();
-    }
 
-    public void setProductTable(String productTable) {
-        this.sortByFrequency.setCategory(productTable);
+    long average = previousTimetaken == null ? timeTaken : (previousTimetaken.intValue() + timeTaken) / 2;
+    
+    rt.put(sitename, Integer.valueOf((int)average));
+  }
+  
+  protected List<StoppableTask> getList()
+  {
+    return (List<StoppableTask>)this.tasks;
+  }
+  
+  private int getInt(String name) {
+    String value = AppProperties.getProperty(name);
+    return Integer.parseInt(value);
+  }
+  
+  private int mr = -1;
+  
+  public int getMaxResults() { if (this.mr == -1) {
+      this.mr = getInt("siteSearch.maxResults");
     }
-
-    public List<T> getTasks() {
-        return tasks;
-    }
-
-    @Override
-    public String getTaskName() {
-        return this.getClass().getName();
-    }
-
-    public int getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
+    return this.mr;
+  }
+  
+  public String getProductTable() {
+    return this.sortByFrequency.getCategory();
+  }
+  
+  public void setProductTable(String productTable) {
+    this.sortByFrequency.setCategory(productTable);
+  }
+  
+  public List<T> getTasks() {
+    return this.tasks;
+  }
+  
+  public String getTaskName()
+  {
+    return getClass().getName();
+  }
+  
+  public int getTimeout() {
+    return this.timeout;
+  }
+  
+  public void setTimeout(int timeout) {
+    this.timeout = timeout;
+  }
 }

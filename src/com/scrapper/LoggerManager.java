@@ -6,36 +6,28 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-/**
- * @(#)LoggerManager.java   18-Jun-2015 12:12:23
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-public interface LoggerManager {
-
-    boolean addFileHandler();
-
-    void addHandler(Handler handler);
-
-    Handler createFileHandler() throws IOException;
-
-    int getCount();
-
-    Formatter getFormatter();
-
-    int getLimit();
-
-    String getLogFilePattern();
-
-    Level getLogLevel();
-
-    Logger getLogger();
-
-    String getLoggerName();
-
-    boolean isAppend();
-
+public abstract interface LoggerManager
+{
+  public abstract boolean addFileHandler();
+  
+  public abstract void addHandler(Handler paramHandler);
+  
+  public abstract Handler createFileHandler()
+    throws IOException;
+  
+  public abstract int getCount();
+  
+  public abstract Formatter getFormatter();
+  
+  public abstract int getLimit();
+  
+  public abstract String getLogFilePattern();
+  
+  public abstract Level getLogLevel();
+  
+  public abstract Logger getLogger();
+  
+  public abstract String getLoggerName();
+  
+  public abstract boolean isAppend();
 }

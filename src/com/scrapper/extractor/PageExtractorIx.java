@@ -7,47 +7,34 @@ import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 
-
-/**
- * @(#)PageExtractorIx.java   09-Oct-2015 00:18:38
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-public interface PageExtractorIx extends NodeListExtractorIx {
-
-    JsonConfig getCapturerConfig();
-
-    CapturerContext getCapturerContext();
-
-    CapturerSettings getCapturerSettings();    
-
-    String getPageTitle();
-
-    @Override
-    String getTaskName();
-
-    Tag getTitleTag();
-
-    boolean isDone();
-
-    boolean isTitleExtracted();
-
-    @Override
-    void reset();
-
-    void setPageTitle(String pageTitle);
-
-    @Override
-    void visitEndTag(Tag tag);
-
-    @Override
-    void visitRemarkNode(Remark remark);
-
-    @Override
-    void visitStringNode(Text node);
-
-    @Override
-    void visitTag(Tag tag);
+public abstract interface PageExtractorIx
+  extends NodeListExtractorIx
+{
+  public abstract JsonConfig getCapturerConfig();
+  
+  public abstract CapturerContext getCapturerContext();
+  
+  public abstract CapturerSettings getCapturerSettings();
+  
+  public abstract String getPageTitle();
+  
+  public abstract String getTaskName();
+  
+  public abstract Tag getTitleTag();
+  
+  public abstract boolean isDone();
+  
+  public abstract boolean isTitleExtracted();
+  
+  public abstract void reset();
+  
+  public abstract void setPageTitle(String paramString);
+  
+  public abstract void visitEndTag(Tag paramTag);
+  
+  public abstract void visitRemarkNode(Remark paramRemark);
+  
+  public abstract void visitStringNode(Text paramText);
+  
+  public abstract void visitTag(Tag paramTag);
 }

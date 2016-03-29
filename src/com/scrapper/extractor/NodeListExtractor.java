@@ -11,160 +11,160 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.visitors.NodeVisitor;
 
-/**
- * @author  chinomso bassey ikwuagwu
- * @version  0.3
- * @since   1.0
- */
-public class NodeListExtractor 
-        extends NodeVisitor 
-        implements NodeListExtractorIx {
+
+
+
+
+
+
+public class NodeListExtractor
+  extends NodeVisitor
+  implements NodeListExtractorIx
+{
+  private boolean started;
+  private boolean stopInitiated;
+  private boolean stopped;
+  private NodeList source;
+  private Map extractedData;
+  
+  public NodeListExtractor()
+  {
+    this.extractedData = new HashMap();
+  }
+  
+  public void reset()
+  {
+    this.started = false;
+    this.stopInitiated = false;
+    this.stopped = false;
+    this.source = null;
     
-    private boolean started;
-    private boolean stopInitiated;
-    private boolean stopped;
 
-    private NodeList source;
+    this.extractedData = new HashMap();
+  }
+  
+  public Map extractData(NodeList nodeList) throws ParserException
+  {
+    XLogger.getInstance().log(Level.FINE, "{0} process: {1}", getClass(), this.started ? "Resuming" : "Starting", this);
     
-    private Map extractedData;
 
-    public NodeListExtractor() {
-        this.extractedData = new HashMap();
-    }
+
+    this.started = true;
+    this.stopInitiated = false;
+    this.stopped = false;
     
-    @Override
-    public void reset() {
-        this.started = false;
-        this.stopInitiated = false;
-        this.stopped = false;
-        this.source = null;
-        // The previous reference may still be used else where
-        // So we don't call clear
-        this.extractedData = new HashMap();
+    try
+    {
+      reset();
+      nodeList.visitAllNodesWith(this);
     }
-    
-    @Override
-    public Map extractData(NodeList nodeList) throws ParserException {
-XLogger.getInstance().log(Level.FINE, "{0} process: {1}", this.getClass(), 
-started?"Resuming":"Starting", this);
-//System.out.println(started?"Resuming process":"Starting process "+this.getClass().getSimpleName());        
-        
-        this.started = true;
-        this.stopInitiated = false;
-        this.stopped = false;
-        
-        try{
-            
-            this.reset();
-            nodeList.visitAllNodesWith(this);
-            
-        }finally{
-            
-            stopped = true;
-            
-XLogger.getInstance().log(Level.FINE, "{0} process: {1}", this.getClass(), 
-stopInitiated?"Pausing":"Completed", this);
-//System.out.println(stopInitiated?"Pausing process":"Completed process "+this.getClass().getSimpleName());        
-        }
-        
-        return this.extractedData;
-    }
-        
-    // Stoppable Task interface
-    //
-    @Override
-    public void run() {
-        try{
-            this.extractData(source);
-        }catch(ParserException | RuntimeException e) {
-            XLogger.getInstance().log(Level.WARNING, null, this.getClass(), e);
-        }
-    }
-
-    @Override
-    public boolean isStopInitiated() {
-        return stopInitiated;
-    }
-
-    @Override
-    public boolean isStopped() {
-        return stopped;
-    }
-
-    @Override
-    public void stop() {
-        stopInitiated = true;
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return started && stopped && !stopInitiated;
-    }
-
-    @Override
-    public boolean isStarted() {
-        return started;
-    }
-
-    // NodeList methods
-    //
-    @Override
-    public void visitEndTag(Tag tag) {
-        if(stopInitiated) {
-            return;
-        }
-        super.visitEndTag(tag);
-    }
-
-    @Override
-    public void visitRemarkNode(Remark remark) {
-        if(stopInitiated) {
-            return;
-        }
-        super.visitRemarkNode(remark);
-    }
-
-    @Override
-    public void visitStringNode(Text string) {
-        if(stopInitiated) {
-            return;
-        }
-        super.visitStringNode(string);
-    }
-
-    @Override
-    public void visitTag(Tag tag) {
-        if(stopInitiated) {
-            return;
-        }
-        super.visitTag(tag);
-    }
-
-    protected Map getExtractedData() {
-        return extractedData;
-    }
-
-    @Override
-    public NodeList getSource() {
-        return source;
-    }
-
-    @Override
-    public void setSource(NodeList source) {
-        this.source = source;
-    }
-
-    @Override
-    public String getTaskName() {
-        return NodeListExtractor.class.getName();
+    finally
+    {
+      this.stopped = true;
+      
+      XLogger.getInstance().log(Level.FINE, "{0} process: {1}", getClass(), this.stopInitiated ? "Pausing" : "Completed", this);
     }
     
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder(this.getTaskName());
-        builder.append(", started: ").append(this.started);
-        builder.append(", stopInitiated: ").append(this.stopInitiated);
-        builder.append(", stopped: ").append(this.stopped);
-        return builder.toString();
+
+
+    return this.extractedData;
+  }
+  
+
+  public void run()
+  {
+    try
+    {
+      extractData(this.source);
+    } catch (ParserException|RuntimeException e) {
+      XLogger.getInstance().log(Level.WARNING, null, getClass(), e);
     }
-}//~END
+  }
+  
+  public boolean isStopInitiated()
+  {
+    return this.stopInitiated;
+  }
+  
+  public boolean isStopped()
+  {
+    return this.stopped;
+  }
+  
+  public void stop()
+  {
+    this.stopInitiated = true;
+  }
+  
+  public boolean isCompleted()
+  {
+    return (this.started) && (this.stopped) && (!this.stopInitiated);
+  }
+  
+  public boolean isStarted()
+  {
+    return this.started;
+  }
+  
+
+
+  public void visitEndTag(Tag tag)
+  {
+    if (this.stopInitiated) {
+      return;
+    }
+    super.visitEndTag(tag);
+  }
+  
+  public void visitRemarkNode(Remark remark)
+  {
+    if (this.stopInitiated) {
+      return;
+    }
+    super.visitRemarkNode(remark);
+  }
+  
+  public void visitStringNode(Text string)
+  {
+    if (this.stopInitiated) {
+      return;
+    }
+    super.visitStringNode(string);
+  }
+  
+  public void visitTag(Tag tag)
+  {
+    if (this.stopInitiated) {
+      return;
+    }
+    super.visitTag(tag);
+  }
+  
+  protected Map getExtractedData() {
+    return this.extractedData;
+  }
+  
+  public NodeList getSource()
+  {
+    return this.source;
+  }
+  
+  public void setSource(NodeList source)
+  {
+    this.source = source;
+  }
+  
+  public String getTaskName()
+  {
+    return NodeListExtractor.class.getName();
+  }
+  
+  public String toString()
+  {
+    StringBuilder builder = new StringBuilder(getTaskName());
+    builder.append(", started: ").append(this.started);
+    builder.append(", stopInitiated: ").append(this.stopInitiated);
+    builder.append(", stopped: ").append(this.stopped);
+    return builder.toString();
+  }
+}

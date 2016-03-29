@@ -1,174 +1,174 @@
 package com.scrapper.scheduling;
 
-import com.bc.process.AbstractTaskList;
+import com.bc.json.config.JsonConfig;
+import com.bc.task.AbstractTaskList;
 import com.bc.util.XLogger;
 import com.scrapper.SiteCapturer;
+import com.scrapper.context.CapturerContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
-/**
- * @(#)CaptureSitesTask.java   11-Jul-2014 11:36:17
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * If ${@linkplain #loop} is true, then this task will run coninuosly.
- * Once the task is completed, reset() is called and run() is recalled. 
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.2
- */
-public class CaptureSitesTask extends AbstractTaskList<String> {
-    
-    private boolean loop = true;
 
-    private CaptureSitesManager taskManager;
-    
-    private final List<String> sitenames;
-    
-    private SiteCapturer current;
-    
-    private int timeoutHours;
-    
-    public CaptureSitesTask() {
-        this(new CaptureSitesManager());        
-    }
-    
-    public CaptureSitesTask(CaptureSitesManager taskManager) {
-        
-        this.timeoutHours = 24;
-        
-        this.taskManager = taskManager;
-        
-        sitenames = new ArrayList<String>(taskManager.getSitenames());
-    }
-    
-    @Override
-    public void reset() {
-        super.reset();
-        loop = true;
-    }
 
-    @Override
-    public void doRun() {
-        try{
-            super.doRun();
-        }catch(RuntimeException e) {
-            this.loop = false;
-            throw e;
+
+
+
+
+
+
+
+
+
+public class CaptureSitesTask
+  extends AbstractTaskList<String>
+{
+  private boolean loop = true;
+  
+  private CaptureSitesManager taskManager;
+  
+  private final List<String> sitenames;
+  
+  private SiteCapturer current;
+  private int timeoutHours;
+  
+  public CaptureSitesTask()
+  {
+    this(new CaptureSitesManager());
+  }
+  
+  public CaptureSitesTask(CaptureSitesManager taskManager)
+  {
+    this.timeoutHours = 24;
+    
+    this.taskManager = taskManager;
+    
+    this.sitenames = new ArrayList(taskManager.getSitenames());
+  }
+  
+  public void reset()
+  {
+    super.reset();
+    this.loop = true;
+  }
+  
+  public void doRun()
+  {
+    try {
+      super.doRun();
+    } catch (RuntimeException e) {
+      this.loop = false;
+      throw e;
+    }
+  }
+  
+
+
+
+
+
+
+  protected void post()
+  {
+    if (!this.loop) {
+      return;
+    }
+    
+    XLogger.getInstance().log(Level.INFO, "= x = x = x = RESETTING. size: {0}, pos: {1}", getClass(), Integer.valueOf(getTaskCount()), Integer.valueOf(getPos()));
+    
+
+    reset();
+    
+    XLogger.getInstance().log(Level.INFO, "= x = x = x = RERUNNING. size: {0}, pos: {1}", getClass(), Integer.valueOf(getTaskCount()), Integer.valueOf(getPos()));
+    
+
+
+    run();
+  }
+  
+  protected List<String> getList()
+  {
+    return this.sitenames;
+  }
+  
+  public void execute(String sitename)
+  {
+    XLogger.getInstance().log(Level.INFO, "Executing: {0}", getClass(), sitename);
+    
+    try
+    {
+      boolean createnew = false;
+      
+      if (this.current != null) {
+        String currentName = this.current.getContext().getConfig().getName();
+        if (!currentName.equals(sitename)) {
+          createnew = true;
+        } else {
+          Date startTime = this.current.getStartTime();
+          Calendar cal = Calendar.getInstance();
+          cal.add(11, -this.timeoutHours);
+          if (startTime.before(cal.getTime())) {
+            createnew = true;
+          }
         }
-    }
-    
-    /**
-     * This method is called once on completion of the Process.
-     * The default implementation does nothing. In this implementation
-     * we restart the whole process again
-     */
-    @Override
-    protected void post() {
-
-        if(!this.loop) {
-            return;
+      } else {
+        createnew = true;
+      }
+      
+      if (createnew) {
+        if (this.current != null) {
+          this.current.stop();
         }
-        
-XLogger.getInstance().log(Level.INFO, "= x = x = x = RESETTING. size: {0}, pos: {1}", 
-this.getClass(), this.getTaskCount(), this.getPos());                            
-        // Reset
-        this.reset();
-        
-XLogger.getInstance().log(Level.INFO, "= x = x = x = RERUNNING. size: {0}, pos: {1}", 
-this.getClass(), this.getTaskCount(), this.getPos());                            
-
-        // Start all over
-        this.run();
+        this.current = this.taskManager.newTask(sitename);
+        XLogger.getInstance().log(Level.INFO, "Created task: {0}", getClass(), this.current);
+      }
+      
+      XLogger.getInstance().log(Level.INFO, "Running task: {0}", getClass(), this.current);
+      this.current.run();
     }
-    
-    @Override
-    protected List<String> getList() {
-        return sitenames;
+    catch (RuntimeException e) {
+      XLogger.getInstance().log(Level.WARNING, "Task failed: " + this.current, getClass(), e);
     }
-
-    @Override
-    public void execute(String sitename) {
-XLogger.getInstance().log(Level.INFO, "Executing: {0}", this.getClass(), sitename);                            
-        
-        try{
-
-            boolean createnew = false;
-
-            if(current != null) {
-                String currentName = current.getContext().getConfig().getName();
-                if(!currentName.equals(sitename)) {
-                    createnew = true;
-                }else{
-                    Date startTime = current.getStartTime();
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.HOUR_OF_DAY, -this.timeoutHours);
-                    if(startTime.before(cal.getTime())) {
-                        createnew = true;
-                    }
-                }
-            }else{
-                createnew = true;
-            }
-
-            if(createnew) {
-                if(this.current != null) {
-                    this.current.stop();
-                }
-                current = taskManager.newTask(sitename);
-XLogger.getInstance().log(Level.INFO, "Created task: {0}", this.getClass(), current);                            
-            }
-
-XLogger.getInstance().log(Level.INFO, "Running task: {0}", this.getClass(), current);                            
-            current.run();
-            
-        }catch(RuntimeException e) {
-            XLogger.getInstance().log(Level.WARNING, "Task failed: "+current, this.getClass(), e);
-        }
-XLogger.getInstance().log(Level.INFO, "DONE Executing: {0}", this.getClass(), this.current);                                    
+    XLogger.getInstance().log(Level.INFO, "DONE Executing: {0}", getClass(), this.current);
+  }
+  
+  public void stop(String sitename)
+  {
+    if ((this.current != null) && (this.current.getContext().getConfig().getName().equals(sitename))) {
+      XLogger.getInstance().log(Level.INFO, "Stopping: {0}", getClass(), this.current);
+      this.current.stop();
     }
-
-    @Override
-    public void stop(String sitename) {
-        if(this.current != null && this.current.getContext().getConfig().getName().equals(sitename)) {
-XLogger.getInstance().log(Level.INFO, "Stopping: {0}", this.getClass(), this.current);                                    
-            this.current.stop();
-        }
-    }
-
-    public CaptureSitesManager getTaskManager() {
-        return taskManager;
-    }
-
-    public void setTaskManager(CaptureSitesManager taskManager) {
-        this.taskManager = taskManager;
-    }
-
-    public boolean isLoop() {
-        return loop;
-    }
-
-    public void setLoop(boolean loop) {
-        this.loop = loop;
-    }
-
-    @Override
-    public String getTaskName() {
-        return CaptureSitesTask.class.getName();
-    }
-    
-    @Override
-    public void print(StringBuilder builder) {
-        super.print(builder);
-        builder.append(", timeout (hours): ").append(this.timeoutHours);
-        builder.append(", crawlLimit: ").append(this.taskManager==null?null:this.taskManager.getCrawlLimit());
-        builder.append(", parseLimit: ").append(this.taskManager==null?null:this.taskManager.getParseLimit());
-        builder.append(", scrappLimit: ").append(this.taskManager==null?null:this.taskManager.getScrappLimit());
-    }
+  }
+  
+  public CaptureSitesManager getTaskManager() {
+    return this.taskManager;
+  }
+  
+  public void setTaskManager(CaptureSitesManager taskManager) {
+    this.taskManager = taskManager;
+  }
+  
+  public boolean isLoop() {
+    return this.loop;
+  }
+  
+  public void setLoop(boolean loop) {
+    this.loop = loop;
+  }
+  
+  public String getTaskName()
+  {
+    return CaptureSitesTask.class.getName();
+  }
+  
+  public void print(StringBuilder builder)
+  {
+    super.print(builder);
+    builder.append(", timeout (hours): ").append(this.timeoutHours);
+    builder.append(", crawlLimit: ").append(this.taskManager == null ? null : Integer.valueOf(this.taskManager.getCrawlLimit()));
+    builder.append(", parseLimit: ").append(this.taskManager == null ? null : Integer.valueOf(this.taskManager.getParseLimit()));
+    builder.append(", scrappLimit: ").append(this.taskManager == null ? null : Integer.valueOf(this.taskManager.getScrappLimit()));
+  }
 }

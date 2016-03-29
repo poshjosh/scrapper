@@ -1,9 +1,8 @@
 package com.scrapper.extractor;
 
+import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.HasBounds;
-import com.bc.json.config.JsonConfig;
-import com.scrapper.filter.FilterFactory.FilterType;
 import com.scrapper.filter.BoundsMarker;
 import com.scrapper.filter.FilterFactory;
 import java.io.Serializable;
@@ -14,242 +13,216 @@ import org.htmlparser.Tag;
 import org.htmlparser.Text;
 import org.htmlparser.visitors.NodeVisitor;
 
-/**
- * @(#)BoundsVisitor.java   04-Oct-2013 05:21:48
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.0
- */
-public class BoundsVisitor extends NodeVisitor 
-        implements HasBounds, Serializable {
+public class BoundsVisitor
+  extends NodeVisitor
+  implements HasBounds, Serializable
+{
+  private boolean strict;
+  private boolean started;
+  private boolean done;
+  private boolean endAtNext;
+  private String id;
+  private Tag startTag;
+  private Tag endTag;
+  private NodeFilter filter;
+  private BoundsMarker boundsMarker;
+  
+  public BoundsVisitor(JsonConfig props, String propertyKey, FilterFactory.FilterType[] types)
+  {
+    this.id = propertyKey;
     
-    private boolean strict;
+    this.filter = FilterFactory.get(props, propertyKey, types);
     
-    private boolean started;
+    this.boundsMarker = BoundsMarker.newInstance(props, propertyKey);
     
-    private boolean done;
-    
-    private boolean endAtNext;
-    
-    private String id;
-    
-    private Tag startTag;
-    
-    private Tag endTag;
-    
-    private NodeFilter filter;
-    
-    private BoundsMarker boundsMarker;
-    
-    public BoundsVisitor(JsonConfig props, String propertyKey, FilterType [] types) { 
-        
-        id = propertyKey;
-        
-        filter = FilterFactory.get(props, propertyKey, types);
-
-        boundsMarker = BoundsMarker.newInstance(props, propertyKey);
-        
-XLogger.getInstance().log(Level.FINER, "{0}-BoundsFilter filter: {1}, startStopFilter: {2}", 
-this.getClass(), propertyKey, filter, boundsMarker);  
+    XLogger.getInstance().log(Level.FINER, "{0}-BoundsFilter filter: {1}, startStopFilter: {2}", getClass(), propertyKey, this.filter, this.boundsMarker);
+  }
+  
+  public BoundsVisitor(NodeFilter f0, BoundsMarker f1)
+  {
+    this.filter = f0;
+    this.boundsMarker = f1;
+    if (this.boundsMarker != null) {
+      this.id = f1.getId();
     }
-
-    public BoundsVisitor(NodeFilter f0, BoundsMarker f1) { 
-        this.filter = f0;
-        this.boundsMarker = f1;
-        if(this.boundsMarker != null) {
-            this.id = f1.getId();
-        }
+  }
+  
+  public BoundsVisitor(String id, NodeFilter f0, NodeFilter startAt, NodeFilter stopAt) {
+    this.id = id;
+    this.filter = f0;
+    if ((startAt != null) && (stopAt != null)) {
+      this.boundsMarker = new BoundsMarker(id, startAt, stopAt);
     }
-    
-    public BoundsVisitor(String id, NodeFilter f0, NodeFilter startAt, NodeFilter stopAt) { 
-        this.id = id;
-        this.filter = f0;
-        if(startAt != null && stopAt != null) {
-            this.boundsMarker = new BoundsMarker(id, startAt, stopAt);
-        }
+  }
+  
+  public void reset()
+  {
+    if (this.boundsMarker != null) {
+      this.boundsMarker.reset();
     }
-    
-    @Override
-    public void reset() {
-        if(this.boundsMarker != null) {
-            this.boundsMarker.reset();
-        }
-        this.done = false;
-        this.endAtNext = false;
-        this.endTag = null;
-        this.startTag = null;
-        this.started = false;
+    this.done = false;
+    this.endAtNext = false;
+    this.endTag = null;
+    this.startTag = null;
+    this.started = false;
+  }
+  
+  public void visitTag(Tag tag)
+  {
+    if (this.endAtNext) {
+      this.done = true;
     }
     
-    @Override
-    public void visitTag(Tag tag) {
-        
-        // Order of method call important
-        //
-        if(this.endAtNext) {
-            done = true;
-        }
-        
-        if(this.isDone()) {
-            return;
-        }
-        
-        // Bounds marker must viist all tags as long as we are not yet done
-        //
-        if(boundsMarker != null) {
-            boundsMarker.visitStartTag(tag);
-        }
-        
-        if(this.isStarted()) { // already started
-            return;
-        }
-        
-        // Both filter and boundsMarker accept ONLY start tags
-        //
-        boolean boundsAccept;
-        if(boundsMarker != null) {
-            boundsAccept = boundsMarker.isStarted() && !boundsMarker.isDone();
-        }else{
-            boundsAccept = true;
-        }
-        
-        boolean filterAccept = (filter == null || filter.accept(tag));
-
-XLogger.getInstance().log(Level.FINEST, 
-"{0}-BoundsVisitor, Accepted by, Filter: {1}, BoundsMarker: {2}, Node: {3}", 
-this.getClass(), this.id, filterAccept, boundsAccept, tag.getTagName());        
-        
-        if(this.isStrict()) {
-            // Good for extraction stage
-            started = filterAccept && boundsAccept;
-//            started (filterAccept || boundsEntered) && (filterAccept && !boundsExited);
-        }else{
-            // Good for filter stage
-            started = filterAccept || boundsAccept;
-        }
-        
-        if(started) { 
-
-XLogger.getInstance().log(Level.FINER, "{0}-BoundsVisitor Started at: {1}", 
-        this.getClass(), id, tag);            
-
-            startTag = tag;
-
-            endTag = tag.getEndTag();
-            
-            // We have found a NON CompositeTag
-            // Since and endTag signifies the end and NON CompositeTags
-            // don't have end tag, we have to end at the next node.
-            //
-            if(endTag == null) {
-                this.endAtNext = true;
-            }
-        }
+    if (isDone()) {
+      return;
     }
     
-    @Override
-    public void visitEndTag(Tag tag) {
-        
-        // Order of method call important
-        //
-        if(this.endAtNext) {
-            done = true;
-        }
-        
-        if(this.isDone()) {
-            return;
-        }
-
-        if(!this.isStarted()) {
-            return;
-        }
-        
-        boolean foundEnd = false;
-        if(tag.equals(endTag)) {
-            foundEnd = true;
-        }
-
-XLogger.getInstance().log(Level.FINER, "{0}-BoundsVisitor Done at: {1}", 
-    this.getClass(), id, foundEnd);            
-
-        done = foundEnd;
+    if (this.boundsMarker != null) {
+      this.boundsMarker.visitStartTag(tag);
     }
     
-    @Override
-    public void visitStringNode(Text string) { 
-        if(this.endAtNext) {
-            done = true;
-        }
-    }
-
-    @Override
-    public void visitRemarkNode(Remark remark) { 
-        if(this.endAtNext) {
-            done = true;
-        }
+    if (isStarted()) {
+      return;
     }
     
-    @Override
-    public boolean isDone() {
-        return done;
+    boolean boundsAccept;
+    if (this.boundsMarker != null) {
+      boundsAccept = (this.boundsMarker.isStarted()) && (!this.boundsMarker.isDone());
+    } else {
+      boundsAccept = true;
     }
+    
+    boolean filterAccept = (this.filter == null) || (this.filter.accept(tag));
+    
+    XLogger.getInstance().log(Level.FINEST, "{0}-BoundsVisitor, Accepted by, Filter: {1}, BoundsMarker: {2}, Node: {3}", getClass(), this.id, Boolean.valueOf(filterAccept), Boolean.valueOf(boundsAccept), tag.getTagName());
+    
 
-    @Override
-    public boolean isStarted() {
-        return started;
-    }
 
-    protected void setEndTag(Tag endTag) {
-        this.endTag = endTag;
+    if (isStrict())
+    {
+      this.started = ((filterAccept) && (boundsAccept));
     }
+    else
+    {
+      this.started = ((filterAccept) || (boundsAccept));
+    }
+    
+    if (this.started)
+    {
+      XLogger.getInstance().log(Level.FINER, "{0}-BoundsVisitor Started at: {1}", getClass(), this.id, tag);
+      
 
-    public Tag getEndTag() {
-        return endTag;
-    }
+      this.startTag = tag;
+      
+      this.endTag = tag.getEndTag();
+      
 
-    protected void setStartTag(Tag startTag) {
-        this.startTag = startTag;
-    }
 
-    public Tag getStartTag() {
-        return startTag;
-    }
 
-    public BoundsMarker getBoundsMarker() {
-        return boundsMarker;
-    }
 
-    public NodeFilter getFilter() {
-        return filter;
+      if (this.endTag == null) {
+        this.endAtNext = true;
+      }
     }
+  }
+  
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public boolean isStrict() {
-        return strict;
+  public void visitEndTag(Tag tag)
+  {
+    if (this.endAtNext) {
+      this.done = true;
     }
+    
+    if (isDone()) {
+      return;
+    }
+    
+    if (!isStarted()) {
+      return;
+    }
+    
+    boolean foundEnd = false;
+    if (tag.equals(this.endTag)) {
+      foundEnd = true;
+    }
+    
+    XLogger.getInstance().log(Level.FINER, "{0}-BoundsVisitor Done at: {1}", getClass(), this.id, Boolean.valueOf(foundEnd));
+    
 
-    public void setStrict(boolean strict) {
-        this.strict = strict;
+    this.done = foundEnd;
+  }
+  
+  public void visitStringNode(Text string)
+  {
+    if (this.endAtNext) {
+      this.done = true;
     }
-
-    public boolean isEndAtNext() {
-        return endAtNext;
+  }
+  
+  public void visitRemarkNode(Remark remark)
+  {
+    if (this.endAtNext) {
+      this.done = true;
     }
-
-    protected void setEndAtNext(boolean endAtNext) {
-        this.endAtNext = endAtNext;
-    }
+  }
+  
+  public boolean isDone()
+  {
+    return this.done;
+  }
+  
+  public boolean isStarted()
+  {
+    return this.started;
+  }
+  
+  protected void setEndTag(Tag endTag) {
+    this.endTag = endTag;
+  }
+  
+  public Tag getEndTag() {
+    return this.endTag;
+  }
+  
+  protected void setStartTag(Tag startTag) {
+    this.startTag = startTag;
+  }
+  
+  public Tag getStartTag() {
+    return this.startTag;
+  }
+  
+  public BoundsMarker getBoundsMarker() {
+    return this.boundsMarker;
+  }
+  
+  public NodeFilter getFilter() {
+    return this.filter;
+  }
+  
+  public String getId() {
+    return this.id;
+  }
+  
+  public void setId(String id) {
+    this.id = id;
+  }
+  
+  public boolean isStrict() {
+    return this.strict;
+  }
+  
+  public void setStrict(boolean strict) {
+    this.strict = strict;
+  }
+  
+  public boolean isEndAtNext() {
+    return this.endAtNext;
+  }
+  
+  protected void setEndAtNext(boolean endAtNext) {
+    this.endAtNext = endAtNext;
+  }
 }

@@ -7,135 +7,135 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-/**
- * @(#)ResumableUrlParser.java   28-Nov-2013 20:00:58
- *
- * Copyright 2011 NUROX Ltd, Inc. All rights reserved.
- * NUROX Ltd PROPRIETARY/CONFIDENTIAL. Use is subject to license 
- * terms found at http://www.looseboxes.com/legal/licenses/software.html
- */
-/**
- * @author   chinomso bassey ikwuagwu
- * @version  0.3
- * @since    0.0
- */
-public class ResumableUrlParser extends URLParser implements Resumable {
 
-    private String sitename;
+
+
+
+
+
+
+
+
+
+
+public class ResumableUrlParser
+  extends URLParser
+  implements Resumable
+{
+  private String sitename;
+  private ResumeHandler resumeHandler;
+  
+  public ResumableUrlParser()
+  {
+    this(null, new ArrayList());
+  }
+  
+  public ResumableUrlParser(String sitename)
+  {
+    this(sitename, new ArrayList());
+  }
+  
+  public ResumableUrlParser(String sitename, List<String> urls)
+  {
+    super(urls);
+    XLogger.getInstance().log(Level.FINER, "Creating", getClass());
     
-    private ResumeHandler resumeHandler;
+    this.sitename = sitename;
+    
+    if (isResume())
+    {
+      if (this.resumeHandler != null)
+      {
 
-    public ResumableUrlParser() { 
+        List<String> inclusive = this.resumeHandler.getAllPendingUrls(urls);
         
-        this(null, new ArrayList<String>());
+        setPageLinks(Collections.synchronizedList(inclusive));
+      }
+    }
+  }
+  
+
+  protected void preParse(String url)
+  {
+    if (this.sitename == null) {
+      throw new NullPointerException("sitename == null");
     }
     
-    public ResumableUrlParser(String sitename) { 
-        
-        this(sitename, new ArrayList<String>());
+    if (!isResumable()) {
+      return;
     }
     
-    public ResumableUrlParser(String sitename, List<String> urls) { 
+    XLogger.getInstance().log(Level.FINER, "Preparse URL: {0}", getClass(), url);
     
-        super(urls);
-XLogger.getInstance().log(Level.FINER, "Creating", this.getClass());
-        
-        this.sitename = sitename;
-        
-        if(ResumableUrlParser.this.isResume()) {
+    if (this.resumeHandler != null) {
+      this.resumeHandler.saveIfNotExists(url);
+    }
+  }
+  
 
-            if(this.resumeHandler != null) {
-                // This is inclusive of urls from the database
-                //
-                List<String> inclusive = this.resumeHandler.getAllPendingUrls(urls);
-                
-                this.setPageLinks(Collections.synchronizedList(inclusive));
-            }
-        }
+  protected void postParse(PageNodes page)
+  {
+    if (!isResumable()) {
+      return;
     }
     
-    @Override
-    protected void preParse(String url) { 
+    if (this.resumeHandler != null) {
+      this.resumeHandler.updateStatus(page);
+    }
+  }
+  
 
-        if(this.sitename == null) {
-            throw new NullPointerException("sitename == null");
-        }
+  protected boolean isAttempted(String link)
+  {
+    return (super.isAttempted(link)) || ((isResume()) && (isInDatabase(link)));
+  }
+  
 
-        if(!this.isResumable()) {
-            return;
-        }
-        
-XLogger.getInstance().log(Level.FINER, "Preparse URL: {0}", this.getClass(), url);
-
-        if(resumeHandler != null) {
-            resumeHandler.saveIfNotExists(url);
-        }
+  protected boolean isInDatabase(String link)
+  {
+    if (this.sitename == null) {
+      throw new NullPointerException("sitename == null");
     }
     
-    @Override
-    protected void postParse(PageNodes page) { 
-    
-        if(!this.isResumable()) {
-            return;
-        }
-
-        if(resumeHandler != null) {
-            resumeHandler.updateStatus(page);
-        }
+    boolean found = false;
+    if (this.resumeHandler != null) {
+      found = this.resumeHandler.isInDatabase(link);
     }
     
-    @Override
-    protected boolean isAttempted(String link) {
-        
-        return super.isAttempted(link) || 
-                (this.isResume() && this.isInDatabase(link));
-    }
-    
-    protected boolean isInDatabase(String link) {
-        
-        if(this.sitename == null) {
-            throw new NullPointerException("sitename == null");
-        }
-        
-        boolean found = false;
-        if(resumeHandler != null) {
-            found = resumeHandler.isInDatabase(link);
-        }
-        
-        return found;
-    }
-    
-    /**
-     * @return 
-     * @see com.scrapper.Resumable#isResume() 
-     */
-    @Override
-    public boolean isResume() {
-        return false;
-    }
+    return found;
+  }
+  
 
-    /**
-     * @return 
-     * @see com.scrapper.Resumable#isResumable() 
-     */
-    @Override
-    public boolean isResumable() {
-        return true;
-    }
 
-    public String getSitename() {
-        return sitename;
-    }
 
-    public void setSitename(String sitename) {
-        this.sitename = sitename;
-    }
 
-    public ResumeHandler getResumeHandler() {
-        return resumeHandler;
-    }
+  public boolean isResume()
+  {
+    return false;
+  }
+  
 
-    public void setResumeHandler(ResumeHandler resumeHandler) {
-        this.resumeHandler = resumeHandler;
-    }
+
+
+
+  public boolean isResumable()
+  {
+    return true;
+  }
+  
+  public String getSitename() {
+    return this.sitename;
+  }
+  
+  public void setSitename(String sitename) {
+    this.sitename = sitename;
+  }
+  
+  public ResumeHandler getResumeHandler() {
+    return this.resumeHandler;
+  }
+  
+  public void setResumeHandler(ResumeHandler resumeHandler) {
+    this.resumeHandler = resumeHandler;
+  }
 }
