@@ -5,6 +5,7 @@ import com.scrapper.Filter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -23,6 +24,11 @@ public class DefaultUrlFilter
   
   private Set<String> getDateStrings(String regex, String url)
   {
+      
+    if(true) {
+        return Collections.EMPTY_SET;
+    }  
+    
     Set<String> output = new HashSet(4);
     
     Calendar calendar = getCalendar();
@@ -38,7 +44,9 @@ public class DefaultUrlFilter
     } finally {
       calendar.add(5, amount);
     }
-    XLogger.getInstance().log(Level.FINER, "Date Strings: {0}", getClass(), output);
+    
+    XLogger.getInstance().log(Level.FINER, "URL: {0}, dates: {1}", getClass(), url, output);
+    
     return output;
   }
   
@@ -78,9 +86,8 @@ public class DefaultUrlFilter
     }
     return null;
   }
-  
 
-
+  @Override
   public boolean accept(String url)
   {
     url = format(url);
@@ -90,12 +97,12 @@ public class DefaultUrlFilter
     {
       if (this.unwantedPattern != null)
       {
-        Set<String> set = getDateStrings(this.unwantedPattern.pattern(), url);
+//        Set<String> set = getDateStrings(this.unwantedPattern.pattern(), url);
         
-        if ((!set.isEmpty()) && (contains(url, set))) {
-          output = false;
-          return false;
-        }
+//        if ((!set.isEmpty()) && (contains(url, set))) {
+//          output = false;
+//          return false;
+//        }
         
         boolean found = this.unwantedPattern.matcher(url).find();
         XLogger.getInstance().log(Level.FINER, "{0}, Accepted: {1}, URL: {2}, unwanted regex: {3}", getClass(), this.id, Boolean.valueOf(!found), url, this.unwantedPattern.pattern());
@@ -120,19 +127,18 @@ public class DefaultUrlFilter
       
       if (this.requiredPattern != null)
       {
-        Set<String> set = getDateStrings(this.requiredPattern.pattern(), url);
+//        Set<String> set = getDateStrings(this.requiredPattern.pattern(), url);
         
-        XLogger.getInstance().log(Level.FINER, "URL: {0}, dates: {1}", getClass(), url, set);
+//        XLogger.getInstance().log(Level.FINER, "URL: {0}, dates: {1}", getClass(), url, set);
         
-        if ((!set.isEmpty()) && (!contains(url, set))) {
-          output = false;
-          return false;
-        }
+//        if ((!set.isEmpty()) && (!contains(url, set))) {
+//          output = false;
+//          return false;
+//        }
         
         output = this.requiredPattern.matcher(url).find();
         
         XLogger.getInstance().log(Level.FINER, "{0}, Accepted: {1}, URL: {2}, required regex: {3}", getClass(), this.id, Boolean.valueOf(output), url, this.requiredPattern.pattern());
-        
 
         if (output) { 
           return true;
@@ -169,9 +175,9 @@ public class DefaultUrlFilter
   private String format(String s)
   {
     s = s.toLowerCase();
-    String amp = "&amp;";
-    if (s.length() >= "&amp;".length()) {
-      s = s.replace("&amp;", "&");
+    final String AMP = "&amp;";
+    if (s.length() >= AMP.length()) {
+      s = s.replace(AMP, "&");
     }
     try {
       s = URLDecoder.decode(s, "UTF-8");

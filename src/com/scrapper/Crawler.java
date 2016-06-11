@@ -14,44 +14,39 @@ import org.htmlparser.tags.FrameTag;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.ParserException;
 
-public class Crawler
-  extends ResumableUrlParser
-{
+public class Crawler extends ResumableUrlParser {
+    
   private boolean captureQueryLinks;
-  private boolean startCollectingLinks = true;
   
+  private boolean startCollectingLinks = true;
 
   private boolean stopCollectingLinks;
-  
 
   private int crawled;
-  
 
   private int crawlLimit;
   
-
   private String baseUrl;
   
-
+  private String baseUrl_wwwFormat;
+  
   private String startUrl;
   
-
   private Filter<String> urlFilter;
   
-
   private Filter<String> htmlLinkFilter;
   
-
   private Filter<String> htmlContentFilter;
   
-
   private CapturerContext context;
   
-
+  private final Class cls = Crawler.class;
+  private final XLogger logger = XLogger.getInstance();
+  
   public Crawler(CapturerContext context)
   {
     super(context.getConfig().getName());
-    XLogger.getInstance().log(Level.FINER, "Creating", getClass());
+    logger.log(Level.FINER, "Creating", cls);
     
     setContext(context);
     
@@ -59,19 +54,20 @@ public class Crawler
     PrototypicalNodeFactory factory = (PrototypicalNodeFactory)getParser().getNodeFactory();
     factory.registerTag(new LinkCollectingLinkTag());
     factory.registerTag(new LinkCollectingFrameTag());
-    XLogger.getInstance().log(Level.FINER, "Done creating: {0}", getClass(), this);
+    logger.log(Level.FINER, "Done creating: {0}", cls, this);
   }
   
   public boolean isWithinCrawlLimit() {
     boolean withinLimit = isWithLimit(this.crawled, this.crawlLimit);
-    XLogger.getInstance().log(Level.FINEST, "URLs: {0}, limit: {1}, within crawl limit: {2}", getClass(), Integer.valueOf(getPageLinks().size()), Integer.valueOf(this.crawlLimit), Boolean.valueOf(withinLimit));
-    
+    logger.log(Level.FINEST, "URLs: {0}, limit: {1}, within crawl limit: {2}", 
+            cls, getPageLinks().size(), (this.crawlLimit), (withinLimit));
     return withinLimit;
   }
 
+  @Override
   public boolean isToBeCrawled(String link)
   {
-    XLogger.getInstance().log(Level.FINEST, "@isToBeCaptured. Link: {0}", getClass(), link);
+    logger.log(Level.FINEST, "#isToBeCrawled. Link: {0}", cls, link);
     
     boolean toBeCrawled;
     if (link.equals(this.startUrl))
@@ -81,23 +77,27 @@ public class Crawler
     else
     {
       toBeCrawled = super.isToBeCrawled(link);
-      
+
       if (toBeCrawled)
       {
 
-        if (this.baseUrl.trim().isEmpty()) {
+        if (this.baseUrl.isEmpty()) { // base URL already trimmed
           toBeCrawled = true;
         } else if (link.trim().isEmpty()) {
           toBeCrawled = false;
-
         }
         else
         {
 
           try
           {
+           
+            if(baseUrl_wwwFormat == null)  {
+                baseUrl_wwwFormat = Util.toWWWFormat(this.baseUrl);
+            } 
 
-            toBeCrawled = Util.toWWWFormat(link).startsWith(Util.toWWWFormat(this.baseUrl));
+            toBeCrawled = Util.toWWWFormat(link).startsWith(baseUrl_wwwFormat);
+            
           } catch (MalformedURLException e) {
             toBeCrawled = false;
           }
@@ -109,31 +109,24 @@ public class Crawler
       }
       
       if (toBeCrawled) {
-        toBeCrawled = (-1 == link.indexOf("?")) || (isCaptureQueryLinks());
+        toBeCrawled = -1 == link.indexOf("?") || (isCaptureQueryLinks());
       }
       
       if ((toBeCrawled) && (getUrlFilter() != null))
       {
-        XLogger.getInstance().log(Level.FINER, "@isToBeCaptured. Filtering with: {0}", getClass(), getUrlFilter().getClass());
-        
+        logger.log(Level.FINER, "#isToBeCrawled. Filtering with: {0}", cls, getUrlFilter().getClass());
 
         toBeCrawled = getUrlFilter().accept(link);
-        XLogger.getInstance().log(Level.FINE, "Accepted by URL Filter: {0}, Link: {1}", getClass(), Boolean.valueOf(toBeCrawled), link);
+        
+        logger.log(Level.FINE, "Accepted by URL Filter: {0}, Link: {1}", cls, Boolean.valueOf(toBeCrawled), link);
       }
     }
     
-
     Level level = toBeCrawled ? Level.FINE : Level.FINER;
-    XLogger.getInstance().log(level, "To be captured: {0}, Link: {1}", getClass(), Boolean.valueOf(toBeCrawled), link);
+    logger.log(level, "To be captured: {0}, Link: {1}", cls, Boolean.valueOf(toBeCrawled), link);
     
     return toBeCrawled;
   }
-  
-
-
-
-
-
 
   protected boolean isHtml(String link)
   {
@@ -144,8 +137,6 @@ public class Crawler
     if (this.htmlLinkFilter.accept(link)) {
       return true;
     }
-    
-
 
     if (this.htmlContentFilter == null) {
       this.htmlContentFilter = new HtmlContentFilter();
@@ -158,28 +149,26 @@ public class Crawler
   {
     LinkCollectingLinkTag() {}
     
+    @Override
     public void doSemanticAction() throws ParserException {
+        
       if ((!Crawler.this.startCollectingLinks) || (Crawler.this.stopCollectingLinks)) {
         return;
       }
       
-
       String link = getLink();
       
-
-      if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link)))
-      {
-
-        synchronized (Crawler.this.pageLock)
-        {
-          if (!Crawler.this.getPageLinks().contains(link))
-          {
-
+      if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link))) {
+          
+        synchronized (Crawler.this.pageLock){
+            
+          if (!Crawler.this.getPageLinks().contains(link)){
 
             boolean html = Crawler.this.isHtml(link);
             
             if (html) {
-              XLogger.getInstance().log(Level.FINER, "Adding: {0}", getClass(), link);
+              logger.log(Level.FINER, "Adding: {0}", cls, link);
+              
               Crawler.this.getPageLinks().add(link);
               
               ++crawled;
@@ -193,14 +182,13 @@ public class Crawler
   class LinkCollectingFrameTag extends FrameTag {
     LinkCollectingFrameTag() {}
     
+    @Override
     public void doSemanticAction() throws ParserException {
       if ((!Crawler.this.startCollectingLinks) || (Crawler.this.stopCollectingLinks)) {
         return;
       }
-      
 
       String link = getFrameLocation();
-      
 
       if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link)))
       {
@@ -226,19 +214,13 @@ public class Crawler
   public String getBaseUrl() {
     return this.baseUrl;
   }
-  
-
-
-
-
-
 
   public void setBaseUrl(String baseUrl)
   {
     if (baseUrl == null) {
       throw new NullPointerException();
     }
-    this.baseUrl = baseUrl;
+    this.baseUrl = baseUrl.trim();
     if (this.startUrl == null) {
       this.startUrl = baseUrl;
     }
@@ -247,9 +229,6 @@ public class Crawler
   public String getStartUrl() {
     return this.startUrl;
   }
-  
-
-
 
   public void setStartUrl(String startUrl)
   {
@@ -270,7 +249,7 @@ public class Crawler
   }
   
   public void setContext(CapturerContext context) {
-    XLogger.getInstance().log(Level.FINER, "Updating context for: {0}", getClass(), this);
+    logger.log(Level.FINER, "Updating context for: {0}", cls, this);
     
     this.context = context;
     
@@ -284,6 +263,7 @@ public class Crawler
       if ((this.baseUrl == null) || (this.baseUrl.isEmpty())) {
         throw new NullPointerException("Both url.start and url.value cannot be null in config: " + config.getName());
       }
+      this.baseUrl = this.baseUrl.trim();
       setStartUrl(this.baseUrl);
     } else {
       setStartUrl(url_start);
@@ -296,7 +276,7 @@ public class Crawler
     int limit = config.getInt(new Object[] { Config.Extractor.parseLimit }).intValue();
     
     setParseLimit(limit);
-    XLogger.getInstance().log(Level.FINER, "Updated context for: {0}", getClass(), this);
+    logger.log(Level.FINER, "Updated context for: {0}", cls, this);
   }
   
   public int getCrawled() {
@@ -345,6 +325,7 @@ public class Crawler
     this.crawlLimit = limit;
   }
   
+  @Override
   public void print(StringBuilder builder)
   {
     super.print(builder);

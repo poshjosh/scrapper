@@ -38,8 +38,12 @@ public class SearchSiteTest {
             
             CapturerApp.getInstance().init(false);
             
-            XLogger.getInstance().setLogLevel(com.scrapper.CapturerApp.class.getPackage().getName(), Level.FINE);
-            XLogger.getInstance().setLogLevelForConsoleHandlers(Level.FINE);
+            Level logLevel = Level.FINE;
+            String packageLoggerName = com.scrapper.CapturerApp.class.getPackage().getName();
+            if(logLevel.intValue() <= Level.FINE.intValue()) {
+                XLogger.getInstance().transferConsoleHandler("", packageLoggerName, true);
+            }
+            XLogger.getInstance().setLogLevel(packageLoggerName, logLevel);
             
 // kaymu, kara, fouani
             

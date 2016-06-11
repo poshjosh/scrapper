@@ -28,7 +28,12 @@ public class SimpleLoggerManager
     addFileHandler();
     
     if (getLogLevel() != null) {
-      XLogger.getInstance().setLogLevel(getLoggerName(), getLogLevel());
+      final Level logLevel = getLogLevel();
+      final String packageLoggerName = getLoggerName();
+      if(logLevel.intValue() <= Level.FINE.intValue()) {
+        XLogger.getInstance().transferConsoleHandler("", packageLoggerName, true);
+      }
+      XLogger.getInstance().setLogLevel(packageLoggerName, logLevel);
     }
   }
   

@@ -25,9 +25,6 @@ public class CaptureUrlFilter
     }
     
     XLogger.getInstance().log(Level.FINE, "Text::\nRequired: {0}\nUnwanted: {1}", getClass(), getRequired() == null ? null : Arrays.toString(getRequired()), getUnwanted() == null ? null : Arrays.toString(getUnwanted()));
-    
-
-
 
     String regex = config.getString(new Object[] { Config.Extractor.captureUrlFilter_requiredRegex });
     

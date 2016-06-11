@@ -5,9 +5,8 @@ import com.bc.json.config.DefaultJsonData;
 import com.bc.json.config.JsonData;
 import com.bc.manager.Filter;
 import com.bc.manager.util.PropertiesExt;
-import com.bc.ui.tree.MapTreeBuilder;
-import com.bc.ui.tree.TreeBuilderFactory;
-import com.bc.ui.tree.TreePanel;
+import com.bc.ui.treebuilder.MapTreeBuilder;
+import com.bc.ui.treebuilder.TreeBuilderFactoryImpl;
 import com.bc.util.QueryParametersConverter;
 import com.bc.util.JsonFormat;
 import com.scrapper.AppProperties;
@@ -34,6 +33,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -190,7 +190,7 @@ System.out.println(Arrays.toString(key)+".containerForElement(2): "+obj);
         
 //        this.testJsonTree1(jsonData.getRootContainer());
 
-        MapTreeBuilder treeBuilder = TreeBuilderFactory.getMapInstance();
+        MapTreeBuilder treeBuilder = new TreeBuilderFactoryImpl().getMapInstance();
 
         Map.Entry jsonEntry = treeBuilder.getRootNode("ROOT", jsonData.getRootContainer());
 
@@ -647,15 +647,16 @@ System.err.println("Index: "+i+ ", Key: "+key+", current Map: "+val);
 
     private void testJsonTree(final Map jsonObject) {
         
-        final MapTreeBuilder treeBuilder = TreeBuilderFactory.getMapInstance();
+        final MapTreeBuilder treeBuilder = new TreeBuilderFactoryImpl().getMapInstance();
         
         TreeNode treeNode = treeBuilder.build(jsonObject);
         
         JTree tree = new JTree(treeNode);
 
         tree.setRootVisible(false);
-
-        TreePanel treeUI = new TreePanel(tree);
+        
+        JScrollPane treeUI = new javax.swing.JScrollPane(tree);
+        treeUI.setSize(300, 300);
         
         JOptionPane.showMessageDialog(null, treeUI);
     }

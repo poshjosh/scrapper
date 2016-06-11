@@ -23,7 +23,7 @@ public abstract interface NodeListExtractorIx
   
   public abstract boolean isStarted();
   
-  public abstract boolean isStopInitiated();
+  public abstract boolean isStopRequested();
   
   public abstract boolean isStopped();
   

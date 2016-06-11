@@ -123,7 +123,7 @@ builder.append(", Max active: ").append(mgr.getMaxConcurrentProcesses());
 builder.append(", Pos: ").append(mgr.getPos());
 builder.append(", Max: ").append(mgr.getMax());
 builder.append("\nStarted: ").append(mgr.isStarted());
-builder.append(", Stop initiated: ").append(mgr.isStopInitiated());
+builder.append(", Stop initiated: ").append(mgr.isStopRequested());
 builder.append(", Stopped: ").append(mgr.isStopped());
 builder.append(", Completed: ").append(mgr.isCompleted());
 builder.append("\n================================================================");

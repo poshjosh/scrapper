@@ -44,9 +44,12 @@ public class URLParser
   implements Iterator<PageNodes>, StoppableTask, Serializable
 {
   private boolean started;
-  private boolean stopInitiated;
+  private boolean stopRequested;
   private boolean stopped;
   protected final Serializable pageLock = new Serializable() {};
+  
+  private final Class cls = URLParser.class;
+  private final XLogger logger = XLogger.getInstance();
   
   private boolean removeParsedUrls;
   
@@ -93,7 +96,7 @@ public class URLParser
   }
   
   private void init(List<String> urlList) {
-    XLogger.getInstance().log(Level.FINER, "Creating", getClass());
+    logger.log(Level.FINER, "Creating", cls);
     
     this.removeParsedUrls = false;
     
@@ -145,51 +148,49 @@ public class URLParser
   
   public void completePendingActions() {}
   
-  private void setStarted() {
-    if (!this.started) {
-      this.started = true;
-      this.stopInitiated = false;
-      this.stopped = false;
-    }
-  }
-
+  @Override
   public boolean hasNext()
   {
-    setStarted();
-    
-    if (isStopInitiated()) {
+    if (!this.started) {
+      this.started = true;
+    }
+  
+    if (isStopRequested()) {
       return false;
     }
     
     boolean output = false;
-    
+
     while ((isWithinParseLimit()) && (hasMoreUrls()))
     {
-      if (isStopInitiated()) {
+
+      if (isStopRequested()) {
         output = false;
         break;
       }
       
       String s = (String)this.pageLinks.get(this.parsePos);
-      XLogger.getInstance().log(Level.FINER, "UrlParser.hasNext. checking: {0}", getClass(), s);
+      logger.log(Level.FINER, "UrlParser.hasNext. checking: {0}", cls, s);
       
       if (isToBeCrawled(s))
       {
         output = true;
-        
         break;
       }
       
       moveForward();
     }
     
-    XLogger.getInstance().log(Level.FINE, "UrlParser.hasNext: {0}", getClass(), Boolean.valueOf(output));
+    logger.log(Level.FINE, "UrlParser.hasNext: {0}", cls, Boolean.valueOf(output));
     return output;
   }
   
+  @Override
   public PageNodes next()
   {
-    setStarted();
+    if (!this.started) {
+      this.started = true;
+    }
     
     if ((this.batchSize > 0) && (++this.indexWithinBatch >= this.batchSize))
     {
@@ -210,7 +211,7 @@ public class URLParser
 
       String url = this.formatter == null ? rawUrl.replace("&amp;", "&") : (String)this.formatter.format(rawUrl.replace("&amp;", "&"));
 
-      XLogger.getInstance().log(Level.FINER, "Raw: {0}\nURL: {1}", getClass(), rawUrl, url);
+      logger.log(Level.FINER, "Raw: {0}\nURL: {1}", cls, rawUrl, url);
       
       NodeList list = parse(url);
       
@@ -227,11 +228,11 @@ public class URLParser
     catch (Exception e)
     {
       boolean added = this.failed.add(rawUrl);
-      if (XLogger.getInstance().isLoggable(Level.FINE, getClass())) {
-        XLogger.getInstance().log(Level.WARNING, "Parse failed for: " + rawUrl, getClass(), e);
+      if (logger.isLoggable(Level.FINE, cls)) {
+        logger.log(Level.WARNING, "Parse failed for: " + rawUrl, cls, e);
       } else {
         if(added) { // We don't want to log the same URL twice
-            XLogger.getInstance().log(Level.WARNING, "Parse failed for: {0}. Reason: {1}", getClass(), rawUrl, e.toString());
+            logger.log(Level.WARNING, "Parse failed for: {0}. Reason: {1}", cls, rawUrl, e.toString());
         }
       }
     }
@@ -240,7 +241,7 @@ public class URLParser
   
   private void moveForward()
   {
-    XLogger.getInstance().log(Level.FINEST, "Before moving forward. Parse pos: {0}, Url: {1}", getClass(), Integer.valueOf(this.parsePos), this.pageLinks.get(this.parsePos));
+    logger.log(Level.FINEST, "Before moving forward. Parse pos: {0}, Url: {1}", cls, Integer.valueOf(this.parsePos), this.pageLinks.get(this.parsePos));
     
     if (!isRemoveParsedUrls()) {
       this.parsePos += 1;
@@ -248,22 +249,31 @@ public class URLParser
       this.pageLinks.remove(this.parsePos);
     }
     
-    XLogger.getInstance().log(Level.FINER, "After moving forward. Parse pos {0}, Url: {1}", getClass(), Integer.valueOf(this.parsePos), this.parsePos < this.pageLinks.size() ? (String)this.pageLinks.get(this.parsePos) : "no more URLs");
+    logger.log(Level.FINER, "After moving forward. Parse pos {0}, Url: {1}", cls, Integer.valueOf(this.parsePos), this.parsePos < this.pageLinks.size() ? (String)this.pageLinks.get(this.parsePos) : "no more URLs");
   }
 
+  @Override
   public void remove()
   {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public final void run()
   {
+
     this.startTime = System.currentTimeMillis();
+    logger.entering(cls, "run()", this.startTime);
+    if (!this.started) {
+      this.started = true;
+      this.stopRequested = false;
+      this.stopped = false;
+    }
     try {
       doRun();
     }
     catch (Exception e) {
-      XLogger.getInstance().log(Level.WARNING, "Unexpected exception: {0}", getClass(), e.toString());
+      logger.log(Level.WARNING, "Unexpected exception: {0}", cls, e.toString());
     }
     finally {
       completePendingActions();
@@ -274,43 +284,51 @@ public class URLParser
     throw new UnsupportedOperationException("Please provide an implementation of this method");
   }
   
-  public boolean isStopInitiated()
+  @Override
+  public boolean isStopRequested()
   {
-    return this.stopInitiated;
+    return this.stopRequested;
   }
   
+  @Override
   public boolean isStopped()
   {
     return this.stopped;
   }
   
+  @Override
   public void stop()
   {
-    XLogger.getInstance().log(Level.FINER, "Stop Initiated: {0}", getClass(), this);
-    this.stopInitiated = true;
+    logger.log(Level.FINER, "Stop Initiated: {0}", cls, this);
+    this.stopRequested = true;
   }
   
+  @Override
   public boolean isCompleted()
   {
-    return (this.started) && (this.stopped) && (!this.stopInitiated);
+    return (this.started) && (this.stopped) && (!this.stopRequested);
   }
   
+  @Override
   public boolean isStarted()
   {
     return this.started;
   }
   
   protected boolean hasMoreUrls() {
+      
     boolean hasMore = this.parsePos < this.pageLinks.size();
     
-    XLogger.getInstance().log(Level.FINEST, "Has more urls: {0}", getClass(), Boolean.valueOf(hasMore));
+    logger.log(Level.FINEST, "Has more urls: {0}", cls, Boolean.valueOf(hasMore));
+    
     return hasMore;
   }
   
   public boolean isWithinParseLimit() {
+      
     boolean withinLimit = isWithLimit(this.parsePos, this.parseLimit);
     
-    XLogger.getInstance().log(Level.FINEST, "Parse pos: {0}, limit: {1}, within parse limit: {2}", getClass(), Integer.valueOf(this.parsePos), Integer.valueOf(this.parseLimit), Boolean.valueOf(withinLimit));
+    logger.log(Level.FINEST, "Parse pos: {0}, limit: {1}, within parse limit: {2}", cls, Integer.valueOf(this.parsePos), Integer.valueOf(this.parseLimit), Boolean.valueOf(withinLimit));
     
     return withinLimit;
   }
@@ -370,11 +388,10 @@ public class URLParser
       }
     }
     
-    XLogger logger = XLogger.getInstance();
-    if (logger.isLoggable(Level.FINEST, getClass())) {
-      logger.log(Level.FINEST, "URL: {0}, Nodes Found Html:\n{1}", getClass(), url, list.toHtml(false));
-    } else if (logger.isLoggable(Level.FINER, getClass())) {
-      logger.log(Level.FINER, "URL: {0}, Nodes Found : {1}", getClass(), url, list == null ? null : Integer.valueOf(list.size()));
+    if (logger.isLoggable(Level.FINEST, cls)) {
+      logger.log(Level.FINEST, "URL: {0}, Nodes Found Html:\n{1}", cls, url, list.toHtml(false));
+    } else if (logger.isLoggable(Level.FINER, cls)) {
+      logger.log(Level.FINER, "URL: {0}, Nodes Found : {1}", cls, url, list == null ? null : Integer.valueOf(list.size()));
     }
     
     return list;
@@ -387,7 +404,7 @@ public class URLParser
   }
   
   protected NodeList doParse_0(String url) throws ParserException {
-    XLogger.getInstance().log(Level.FINE, "Pages left: {0}, crawling: {1}", getClass(), Integer.valueOf(getPageLinks().size() - this.parsePos), url);
+    logger.log(Level.FINE, "Pages left: {0}, crawling: {1}", cls, Integer.valueOf(getPageLinks().size() - this.parsePos), url);
     
     this.parser.setURL(url);
     
@@ -406,13 +423,13 @@ public class URLParser
       list.add(node);
     }
     
-    XLogger.getInstance().log(Level.FINER, "Found: {0} nodes in page", getClass(), list == null ? null : Integer.valueOf(list.size()));
+    logger.log(Level.FINER, "Found: {0} nodes in page", cls, list == null ? null : Integer.valueOf(list.size()));
     
     return list;
   }
   
   protected NodeList doParse_1(String urlString) throws ParserException {
-    XLogger.getInstance().log(Level.FINE, "Pages left: {0}, crawling: {1}", getClass(), Integer.valueOf(getPageLinks().size() - this.parsePos), urlString);
+    logger.log(Level.FINE, "Pages left: {0}, crawling: {1}", cls, Integer.valueOf(getPageLinks().size() - this.parsePos), urlString);
     
     try
     {
@@ -428,8 +445,7 @@ public class URLParser
     }
     catch (IOException e)
     {
-      XLogger.getInstance().log(Level.WARNING, "{0}", getClass(), e.toString());
-      
+      logger.log(Level.WARNING, "{0}", cls, e.toString());
 
       this.parser.setURL(urlString);
     }
@@ -450,7 +466,7 @@ public class URLParser
       list.add(node);
     }
     
-    XLogger.getInstance().log(Level.FINER, "Found: {0} nodes in page", getClass(), list == null ? null : Integer.valueOf(list.size()));
+    logger.log(Level.FINER, "Found: {0} nodes in page", cls, list == null ? null : Integer.valueOf(list.size()));
     
 
     return list;
@@ -486,7 +502,7 @@ public class URLParser
 
     if (retry)
     {
-      XLogger.getInstance().log(Level.FINE, "Caught:{0}, Retrying: {1}", getClass(), t, url == null ? "" : url);
+      logger.log(Level.FINE, "Caught:{0}, Retrying: {1}", cls, t, url == null ? "" : url);
 
     }
     else
@@ -494,7 +510,7 @@ public class URLParser
       if (msg == null) { msg = "Link ignored";
       }
       
-      XLogger.getInstance().log(Level.FINE, "{0}. {1}", getClass(), msg, e);
+      logger.log(Level.FINE, "{0}. {1}", cls, msg, e);
     }
     
 
@@ -504,12 +520,7 @@ public class URLParser
   private NodeList applyBugfix991895(EncodingChangeException ece)
     throws ParserException
   {
-    XLogger.getInstance().log(Level.WARNING, "PARSER CRASHED! Caught: " + ece.getClass().getName() + "\nApplying bug fix #991895", getClass(), ece);
-    
-
-
-
-
+    logger.log(Level.WARNING, "PARSER CRASHED! Caught: " + ece.getClass().getName() + "\nApplying bug fix #991895", cls, ece);
 
     this.parser.reset();
     
@@ -541,14 +552,15 @@ public class URLParser
 
   public boolean isToBeCrawled(String link)
   {
+
     boolean toBeCrawled = !isAttempted(link);
+    
     if (!toBeCrawled) {
-      XLogger.getInstance().log(Level.FINE, "Already attempted: {0}", getClass(), link);
+      logger.log(Level.FINE, "Already attempted: {0}", cls, link);
     }
     
-    XLogger.getInstance().log(Level.FINER, "To be crawled: {0}, Link: {1}", getClass(), Boolean.valueOf(toBeCrawled), link);
+    logger.log(Level.FINER, "To be crawled: {0}, Link: {1}", cls, Boolean.valueOf(toBeCrawled), link);
     
-
     return toBeCrawled;
   }
   
@@ -567,17 +579,16 @@ public class URLParser
       if (interval > 0L)
       {
         long freeMemory = Runtime.getRuntime().freeMemory();
-        XLogger.getInstance().log(Level.FINER, "Waiting for {0} milliseconds, free memory: {1}", getClass(), Long.valueOf(interval), Long.valueOf(freeMemory));
-        
+        logger.log(Level.FINER, "Waiting for {0} milliseconds, free memory: {1}", cls, Long.valueOf(interval), Long.valueOf(freeMemory));
 
         wait(interval);
         
-        XLogger.getInstance().log(Level.FINE, "Done waiting for {0} milliseconds, memory saved: {1}", getClass(), Long.valueOf(interval), Long.valueOf(freeMemory - Runtime.getRuntime().freeMemory()));
+        logger.log(Level.FINE, "Done waiting for {0} milliseconds, memory saved: {1}", cls, Long.valueOf(interval), Long.valueOf(freeMemory - Runtime.getRuntime().freeMemory()));
       }
     }
     catch (InterruptedException e)
     {
-      XLogger.getInstance().log(Level.WARNING, "", getClass(), e);
+      logger.log(Level.WARNING, "Wait interrupted", cls, e);
     } finally {
       notifyAll();
     }
@@ -587,6 +598,7 @@ public class URLParser
   {
     return new ConnectionMonitor()
     {
+      @Override
       public void preConnect(HttpURLConnection connection) throws ParserException {
         XLogger.getInstance().log(Level.FINER, "@preConnect. Connection: {0}", getClass(), connection);
         
@@ -605,8 +617,8 @@ public class URLParser
         }
       }
       
-      public void postConnect(HttpURLConnection connection) throws ParserException
-      {}
+      @Override
+      public void postConnect(HttpURLConnection connection) throws ParserException {}
     };
   }
   
@@ -708,11 +720,13 @@ public class URLParser
     return this.startTime;
   }
   
+  @Override
   public String getTaskName()
   {
     return getClass().getName();
   }
   
+  @Override
   public String toString()
   {
     StringBuilder builder = new StringBuilder();
@@ -723,7 +737,7 @@ public class URLParser
   public void print(StringBuilder builder) {
     builder.append(getTaskName());
     builder.append(", started: ").append(this.started);
-    builder.append(", stopInitiated: ").append(this.stopInitiated);
+    builder.append(", stopInitiated: ").append(this.stopRequested);
     builder.append(", stopped: ").append(this.stopped);
     builder.append(", ParsePos: ").append(this.parsePos);
     builder.append(", Urls Left: ").append(this.pageLinks == null ? null : Integer.valueOf(this.pageLinks.size() - this.parsePos));

@@ -81,7 +81,7 @@ public class NodeListExtractor
     }
   }
   
-  public boolean isStopInitiated()
+  public boolean isStopRequested()
   {
     return this.stopInitiated;
   }

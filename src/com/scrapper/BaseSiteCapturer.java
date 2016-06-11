@@ -70,7 +70,7 @@ public class BaseSiteCapturer
 
       while ((this.crawler.hasNext()) && (isWithinScrappLimit()))
       {
-        if (isStopInitiated()) {
+        if (isStopRequested()) {
           break;
         }
         
@@ -222,7 +222,7 @@ public class BaseSiteCapturer
     return (this.stopped) && (this.crawler != null) && (this.crawler.isStopped());
   }
   
-  public boolean isStopInitiated()
+  public boolean isStopRequested()
   {
     return this.stopInitiated;
   }

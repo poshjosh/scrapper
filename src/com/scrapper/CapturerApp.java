@@ -7,11 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 
 public class CapturerApp
@@ -60,7 +58,7 @@ public class CapturerApp
     
     setLoggerManager(lMgr);
     
-    XLogger.getInstance().setLogLevel(lMgr.getLogLevel());
+    XLogger.getInstance().setLogLevel(lMgr.getLoggerName(), lMgr.getLogLevel());
     
     String sval = getProperty("targetNodesToTrack");
     if (sval != null) {
@@ -68,7 +66,7 @@ public class CapturerApp
     }
     XLogger.getInstance().log(Level.FINER, "TargetNodesToTrack: {0}", getClass(), this.targetNodesToTrack);
     
-    XLogger.getInstance().log(Level.FINER, "Adding shut down hook", getClass());
+    XLogger.getInstance().log(Level.FINER, "Adding shut down hook for saving app properties updates", getClass());
     
     Runtime.getRuntime().addShutdownHook(new Thread()
     {
