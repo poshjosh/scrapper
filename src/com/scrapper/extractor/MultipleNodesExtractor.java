@@ -17,7 +17,6 @@ import org.htmlparser.Node;
 import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
-import org.htmlparser.util.Translate;
 
 public class MultipleNodesExtractor
   extends PageExtractor
@@ -231,7 +230,10 @@ public class MultipleNodesExtractor
     {
       MappingsExtractor extractor = (MappingsExtractor)this.mappingsExtractors.get(id);
       
-      m = extractor.extractData(Translate.decode(node.getText()));
+      String text = node.getText();
+//      text = Translate.decode(text);
+      
+      m = extractor.extractData(text);
       
       if (m != null)
       {

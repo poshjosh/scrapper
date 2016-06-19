@@ -809,8 +809,7 @@ print(samplePath, "siblingPaths", jsonData.getSiblingPaths(samplePath));
         Map root = jsonData.getRootContainer();
         Set rootKeys = root.keySet();
 System.out.println("JSONData.root.keys: "+rootKeys);        
-        JsonFormat string = new JsonFormat();
-        string.setTidyOutput(true);
+        JsonFormat string = new JsonFormat(true);
 System.out.println("JSONData.root: "+string.toJSONString(root));        
     }
     

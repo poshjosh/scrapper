@@ -8,14 +8,12 @@ import java.util.logging.Level;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
-public class CustomJsonConverter
-{
-  private boolean escapeOutput;
+public class CustomJsonConverter {
+    
   private Class type;
   private final JsonFormat jsonFormat;
   
-  public CustomJsonConverter()
-  {
+  public CustomJsonConverter() {
     this.jsonFormat = new JsonFormat();
   }
   
@@ -84,8 +82,6 @@ public class CustomJsonConverter
     
 
     sval = sval.trim();
-    
-    this.jsonFormat.setEscapeOutput(isEscapeOutput());
     
     String json;
    
@@ -167,14 +163,6 @@ public class CustomJsonConverter
     XLogger.getInstance().log(Level.FINEST, "Output: {0}", getClass(), output);
     
     return output;
-  }
-  
-  public boolean isEscapeOutput() {
-    return this.escapeOutput;
-  }
-  
-  public void setEscapeOutput(boolean escapeOutput) {
-    this.escapeOutput = escapeOutput;
   }
   
   public Class getType() {

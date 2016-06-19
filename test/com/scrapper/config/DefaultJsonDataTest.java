@@ -37,8 +37,8 @@ public class DefaultJsonDataTest {
         group0.put("map.number", 23);
         root.put("group0", group0);
         data.setRootContainer(root);
-JsonFormat fmt = new JsonFormat();
-fmt.setTidyOutput(true);
+JsonFormat fmt = new JsonFormat(true, true);
+
 System.out.println("===== ==== === == = ROOT = == === ==== =====");
 System.out.println(data.getRootContainer());
         Map ss = data.getMap("group0");

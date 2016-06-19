@@ -172,6 +172,7 @@ public class DefaultCapturerContext
   }
   
   public MultipleNodesExtractorIx getExtractor(JsonConfig config) {
+      
     MultipleNodesExtractorIx extractor = (MultipleNodesExtractorIx)loadInstance(config, "extractor");
     
     if (extractor == null)

@@ -23,11 +23,7 @@ import java.util.Set;
  */
 public class PrintJson {
     
-    private JsonFormat jsonFmt;
-    
-    public PrintJson() {
-        jsonFmt = new JsonFormat();
-    }
+    public PrintJson() { }
     
     private static Map<String, Object> getDefaultProperties() {
         HashMap<String, Object> props = new HashMap<>();
@@ -67,7 +63,7 @@ System.out.println("= = = = = = = : "+sitename+"."+Arrays.toString(jsonPath));
 System.out.println("NULL");            
         }else{
             StringBuilder jsonStr = new StringBuilder();
-            jsonFmt.setTidyOutput(tidy);
+            JsonFormat jsonFmt = new JsonFormat(tidy);
             jsonFmt.appendJSONString(jsonObj, jsonStr);
 System.out.println(jsonStr);
         }
