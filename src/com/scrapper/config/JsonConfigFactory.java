@@ -1,5 +1,6 @@
 package com.scrapper.config;
 
+import com.bc.json.config.JsonDataIO;
 import com.bc.json.config.ConfigSubset;
 import com.bc.json.config.JsonConfig;
 import com.bc.json.config.SimpleJsonConfig;
@@ -25,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
+import org.json.simple.parser.ContainerFactory;
+import org.json.simple.parser.ParseException;
 
 public abstract class JsonConfigFactory
 {
@@ -101,23 +104,26 @@ public abstract class JsonConfigFactory
     return success;
   }
   
-  public void loadValues(JsonConfig config) throws IOException
-  {
-    FileInterface file = getFile(config.getName());
+  public JsonConfig loadValues(String configName) throws IOException, ParseException {
+      
+    FileInterface file = getFile(configName);
     
     InputStream in = file.getInputStream();
     
     InputStreamReader reader = null;
-    try
-    {
+    
+    try {
+        
       reader = new InputStreamReader(in);
       
-      config.load(reader); return;
-    }
-    finally {
+      return new JsonDataIO().load(reader, this.getContainerFactory());
+      
+    }finally {
       if (reader != null) {
-        try { reader.close();
-        } catch (IOException e) { XLogger.getInstance().log(Level.WARNING, "{0}", getClass(), e.toString());
+        try { 
+          reader.close();
+        } catch (IOException e) { 
+          XLogger.getInstance().log(Level.WARNING, "{0}", getClass(), e.toString());
         }
       }
       if (in != null) {
@@ -128,13 +134,16 @@ public abstract class JsonConfigFactory
     }
   }
   
-  public void saveValues(JsonConfig config) throws IOException
-  {
+  public ContainerFactory  getContainerFactory() {
+    return new SimpleJsonConfig();
+  }
+  
+  public void saveValues(JsonConfig config) throws IOException {
     saveValues(config, isRemote());
   }
   
-  public void saveValues(JsonConfig config, boolean remote) throws IOException
-  {
+  public void saveValues(JsonConfig config, boolean remote) throws IOException {
+      
     FileInterface file = getFile(config.getName(), remote);
     SafeSave safeSave;
     if (remote) {
@@ -163,83 +172,64 @@ public abstract class JsonConfigFactory
     return deleted;
   }
   
-  protected JsonConfig createNew() {
-    JsonConfig config = new SimpleJsonConfig();
+  protected JsonConfig createNew(String name, JsonConfig defaults) {
+    JsonConfig config = new SimpleJsonConfig(name, defaults);
     return config;
   }
   
-  protected void postCreate(JsonConfig config) throws IOException
-  {}
+  protected void postCreate(JsonConfig config) throws IOException {}
   
-  private JsonConfig initConfig(String configName, boolean create, boolean loadData) throws IOException
-  {
+  private JsonConfig initConfig(String configName, boolean create, boolean loadData) throws IOException, ParseException {
+      
     if ((configName == null) || (configName.isEmpty())) {
       throw new NullPointerException();
     }
     
-    FileInterface file = getFile(configName);
-    
-
-
-    JsonConfig config = createNew();
-    
-    config.setName(configName);
+    final FileInterface file = getFile(configName);
     
     XLogger.getInstance().log(Level.FINER, "Path: {0}", getClass(), file.getPath());
     
     boolean newlyCreated = false;
     
-    if (create)
-    {
+    if (create) {
 
-
-
-
-      if (!file.exists())
-      {
-
-
-
+      if (!file.exists()) {
 
         file.createNew();
+        
+        newlyCreated = true;
       }
-    }
-    
-    if ((!newlyCreated) && (loadData))
-    {
-      loadValues(config);
     }
     
     XLogger.getInstance().log(Level.FINER, "Properties: {0}", getClass(), this);
     
+    final JsonConfig defaultConfig;
+    
     if (!getDefaultConfigName().equals(configName)) {
-      JsonConfig defaultConfig = getConfig(getDefaultConfigName());
-      
-      config.setDefaults(defaultConfig);
-    }
-    
-    if (newlyCreated)
-    {
-      postCreate(config);
-    }
-    
-    if (this.search) { if (config.getObject(new Object[] { getSearchNodeName() }) != null)
-      {
-
-
-
-
-
-
-
-
-        JsonConfig searchConfig = new ConfigSubset(config.getName(), config, new Object[] { getSearchNodeName() });
         
+      defaultConfig = getConfig(getDefaultConfigName());
+      
+    }else{
+       
+      defaultConfig = null;  
+    }
+    
+    JsonConfig config = createNew(configName, defaultConfig);
+    
+    if (newlyCreated) {
+      postCreate(config);
+    }else{
+      if(loadData) {
+          config = this.loadValues(configName);
+      }
+    }
+    
+    if (this.search) {
+        
+      if (config.getObject(getSearchNodeName()) != null) {
 
-
-
-
-        searchConfig.setDefaults(config);
+//        JsonConfig searchConfig = new ConfigSubset(config.getName(), config, config, getSearchNodeName());
+        JsonConfig searchConfig = new ConfigSubset(config.getName(), null, config, getSearchNodeName());
         
         config = searchConfig;
       }
@@ -247,26 +237,17 @@ public abstract class JsonConfigFactory
     return config;
   }
   
-
-
-
-
-
-
-
-  public Set<String> deleteOrphanSyncPairs()
-    throws IOException
-  {
+  public Set<String> deleteOrphanSyncPairs() throws IOException, ParseException {
+      
     Set<String> sites = getSitenames();
     
     Set<String> syncSites = getSyncSitenames();
     
     HashMap<String, JsonConfig> toDelete = new HashMap();
     
-    for (String syncSite : syncSites)
-    {
-      if (!sites.contains(syncSite))
-      {
+    for (String syncSite : syncSites) {
+        
+      if (!sites.contains(syncSite)) {
 
         JsonConfig syncPair = newSyncPair(syncSite);
         
@@ -292,15 +273,15 @@ public abstract class JsonConfigFactory
     return failed;
   }
   
-  public void sync(String sitename) throws IOException
-  {
+  public void sync(String sitename) throws IOException, ParseException {
+      
     JsonConfig config = load(sitename, false);
     
     sync(config);
   }
   
-  public void sync(JsonConfig src) throws IOException
-  {
+  public void sync(JsonConfig src) throws IOException, ParseException {
+      
     if (src == null) {
       throw new NullPointerException();
     }
@@ -310,8 +291,8 @@ public abstract class JsonConfigFactory
     sync(src, tgt);
   }
   
-  public void sync(JsonConfig src, JsonConfig tgt) throws IOException
-  {
+  public void sync(JsonConfig src, JsonConfig tgt) throws IOException {
+      
     if ((src == null) || (tgt == null)) {
       throw new NullPointerException();
     }
@@ -320,33 +301,25 @@ public abstract class JsonConfigFactory
     
     XLogger.getInstance().log(Level.FINER, "After update Src size: {0}, tgt size: {1}", getClass(), Integer.valueOf(src.getRootContainer().size()), Integer.valueOf(tgt.getRootContainer().size()));
     
-
     FileInterface srcFile = getFile(src.getName(), isRemote());
     FileInterface tgtFile = getFile(tgt.getName(), !isRemote());
     
     XLogger.getInstance().log(Level.FINE, "Updated {0} with {1}", getClass(), tgtFile, srcFile);
     
-
-
-
-    try
-    {
+    try {
       if (!tgtFile.exists()) {
         tgtFile.createNew();
       }
     }
     catch (IOException e) {}
     
-
     saveValues(tgt, !isRemote());
   }
   
   public JsonConfig replaceConfig(String oldName, String newName) {
     JsonConfig config = removeConfig(oldName);
-    this.loadedConfigs.put(newName, config);
-    config.setName(newName);
-    if (isRemote())
-    {
+    this.loadedConfigs.put(newName, new SimpleJsonConfig(newName, config.getDefaults(), config.getParent(), config.getPath())); 
+    if (isRemote()) {
       getSitenames().remove(oldName);
       getSitenames().add(newName);
     }
@@ -358,8 +331,7 @@ public abstract class JsonConfigFactory
       return null;
     }
     JsonConfig config = (JsonConfig)this.loadedConfigs.remove(configName);
-    if (isRemote())
-    {
+    if (isRemote()) {
       getSitenames().remove(configName);
     }
     return config;
@@ -367,45 +339,30 @@ public abstract class JsonConfigFactory
   
 
 
-  public JsonConfig getConfig(String sitename)
-  {
+  public JsonConfig getConfig(String sitename) {
     return getConfig(sitename, false);
   }
   
 
-  public JsonConfig getConfig(String sitename, boolean refresh)
-  {
+  public JsonConfig getConfig(String sitename, boolean refresh) {
     JsonConfig output;
-    try
-    {
+    try {
       output = load(sitename, refresh, false);
-    } catch (IOException e) {
+    } catch (IOException | ParseException e) {
       output = null;
       XLogger.getInstance().log(Level.WARNING, null, getClass(), e);
     }
     return output;
   }
   
-
-
-
-
   public JsonConfig load(String sitename, boolean create)
-    throws IOException
-  {
+    throws IOException, ParseException {
     return load(sitename, false, create);
   }
   
-
-
-
-
-
-
-
   public JsonConfig load(String sitename, boolean refresh, boolean create)
-    throws IOException
-  {
+    throws IOException, ParseException {
+      
     if ((sitename == null) || (sitename.isEmpty())) {
       throw new NullPointerException();
     }
@@ -451,10 +408,9 @@ public abstract class JsonConfigFactory
     return config;
   }
   
-  protected JsonConfig newConfig(String sitename, boolean create) throws IOException {
+  protected JsonConfig newConfig(String sitename, boolean create) throws IOException, ParseException {
     JsonConfig config = initConfig(sitename, create, true);
-    if (isRemote())
-    {
+    if (isRemote()) {
       getSitenames().add(sitename);
     }
     return config;
@@ -484,40 +440,32 @@ public abstract class JsonConfigFactory
     
     names.remove(getDefaultConfigName());
     
-
-
-
-
-    for (String name : names)
-    {
-      try
-      {
+    for (String name : names) {
+        
+      try {
+          
         JsonConfig config = load(name, false);
         
         boolean accept = (srcFilter == null) || (srcFilter.accept(config));
         
-        if (accept)
-        {
-
-
+        if (accept) {
+            
           JsonConfig syncPair = newSyncPair(name);
           
           accept = (tgtFilter == null) || (tgtFilter.accept(syncPair));
           
-          if (accept)
-          {
-
-
-            sync(config, syncPair); }
+          if (accept) {
+            sync(config, syncPair); 
+          }
         }
-      } catch (IOException e) {
+      } catch (IOException | ParseException e) {
         XLogger.getInstance().log(Level.WARNING, null, getClass(), e);
       }
     }
   }
   
-  public JsonConfig newSyncPair(String configName) throws IOException
-  {
+  public JsonConfig newSyncPair(String configName) throws IOException, ParseException {
+      
     JsonConfigFactory syncFactory = newSyncFactory();
     
     JsonConfig config = syncFactory.initConfig(configName, true, false);

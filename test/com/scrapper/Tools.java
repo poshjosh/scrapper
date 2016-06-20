@@ -9,7 +9,6 @@ import com.scrapper.formatter.DefaultFormatter;
 import com.scrapper.formatter.MyDateFormat;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -145,7 +144,7 @@ if(true) {
         }
     }
     
-    public void run2() throws ParseException {
+    public void run2() throws java.text.ParseException {
 
         ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
 
@@ -255,7 +254,7 @@ System.out.println("Updating: "+name+"."+key+" = "+val);
 System.out.println("Syncing: "+name);
                 factory.sync(config);
                 
-            }catch(IOException e) {
+            }catch(IOException | org.json.simple.parser.ParseException e) {
 
 System.out.println(name+". "+e);                
             }

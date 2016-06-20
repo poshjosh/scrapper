@@ -2,6 +2,8 @@ package developer_notes;
 
 import com.bc.json.config.DefaultJsonConfig;
 import com.bc.json.config.DefaultJsonData;
+import com.bc.json.config.JsonConfig;
+import com.bc.json.config.JsonConfigIO;
 import com.bc.json.config.JsonData;
 import com.bc.manager.Filter;
 import com.bc.manager.util.PropertiesExt;
@@ -91,17 +93,16 @@ if(true)            return;
             
             String fname = "/nigeriacar24.json";
             File file = new File(Paths.get(getConfigDir(false)).toFile(), fname);
-            DefaultJsonConfig config = new DefaultJsonConfig();
-            config.setTidyOutput(true);
+            JsonConfigIO configIO = new JsonConfigIO();
             FileReader reader = new FileReader(file);
-            config.load(reader);
+            JsonConfig config = configIO.load(reader, new DefaultJsonConfig()); 
             
             String url = config.getString("url", "value");
 System.out.println("URL: "+url);            
             
             FileWriter writer = new FileWriter(file);
             try{
-                config.store(writer);
+                configIO.store(config, writer);
             }finally{
                 writer.close();
             }
@@ -128,9 +129,8 @@ if(true) return;
 
         JsonData jsonData = new DefaultJsonData();
 
-        JsonData childData = new DefaultJsonData();
         Map childMap = this.getSampleJson();
-        childData.setRootContainer(childMap);
+        JsonData childData = new DefaultJsonData(childMap);
         
         boolean testParent = false;
         if(testParent) {
