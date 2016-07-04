@@ -107,29 +107,19 @@ public abstract class ManagedTasks<T extends StoppableTask>
     return limit;
   }
   
-  protected void preTaskUpdateTimeTaken(String name)
-  {
+  protected void preTaskUpdateTimeTaken(String name) {
+      
     checkTimeout();
     
-
-
-
-
-
-    updateTimeTaken(name, getTimeout());
+    updateTimeTaken(name, (int)getTimeout());
   }
   
-  protected void postTaskUpdateTimeTaken(String name, long lastTaskTime, int lastTaskTimeTaken)
-  {
+  protected void postTaskUpdateTimeTaken(String name, long lastTaskTime, int lastTaskTimeTaken) {
+      
     checkTimeout();
+    
     XLogger.getInstance().log(Level.FINER, "Tasks: {0}", getClass(), this.tasks);
     
-
-
-
-
-
-
     Map<String, Integer> rt = this.sortByFrequency.getRequestTimes();
     
     XLogger.getInstance().log(Level.FINER, "Product table: {0}, Request times: {1}", getClass(), this.sortByFrequency.getCategory(), this.sortByFrequency.getRequestTimes());
@@ -141,9 +131,9 @@ public abstract class ManagedTasks<T extends StoppableTask>
     
     Integer i = (Integer)rt.get(name);
     
-    int adjustment = i.intValue() * 2 - getTimeout();
+    long adjustment = i.intValue() * 2 - getTimeout();
     
-    updateTimeTaken(name, adjustment);
+    updateTimeTaken(name, (int)adjustment);
     
 
     assert (lastTaskTime > 0L) : (ManagedTasks.class.getName() + ".lastRequestTime == 0. This value should be set each time a request is sent to a URL");
@@ -205,16 +195,13 @@ public abstract class ManagedTasks<T extends StoppableTask>
     return this.tasks;
   }
   
-  public String getTaskName()
-  {
+  @Override
+  public String getTaskName() {
     return getClass().getName();
   }
   
-  public int getTimeout() {
+  @Override
+  public long getTimeout() {
     return this.timeout;
-  }
-  
-  public void setTimeout(int timeout) {
-    this.timeout = timeout;
   }
 }

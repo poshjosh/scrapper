@@ -4,39 +4,36 @@ import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.context.DefaultCapturerContext;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.logging.Level;
 
-
-
-
-
-public abstract class ScrapperConfigFactory
-  extends JsonConfigFactory
-{
-  protected JsonConfig createNew()
-  {
+public abstract class ScrapperConfigFactory extends JsonConfigFactory {
+    
+  protected JsonConfig createNew() {
     JsonConfig config = new ScrapperConfig();
     return config;
   }
   
 
-  public JsonConfigFactory newSyncFactory()
-  {
+  @Override
+  public JsonConfigFactory newSyncFactory() {
+      
     final boolean isRemote = !isRemote();
     
-    JsonConfigFactory factory = new ScrapperConfigFactory()
-    {
+    JsonConfigFactory factory = new ScrapperConfigFactory() {
+        
+      @Override
       public boolean isRemote() {
         return isRemote;
       }
       
+      @Override
       protected URI getConfigDir() {
         return ScrapperConfigFactory.this.getConfigDir();
       }
       
+      @Override
       protected String getDefaultConfigName() {
         return ScrapperConfigFactory.this.getDefaultConfigName();
       }

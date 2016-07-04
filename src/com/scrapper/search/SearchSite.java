@@ -250,7 +250,7 @@ public class SearchSite
     multiCrawler.setBatchInterval(0L);
     
 
-    multiCrawler.setConnectionMonitor(null);
+    multiCrawler.setReconnectAfterExceptionFilter(null);
     
     return multiCrawler;
   }

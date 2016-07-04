@@ -13,9 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class DefaultSiteCapturer
-  extends BaseSiteCapturer
-{
+public class DefaultSiteCapturer extends BaseSiteCapturer {
+    
   private ResumeHandler parseResumeHandler;
   private ResumeHandler scrappResumeHandler;
   

@@ -4,6 +4,7 @@ import com.bc.io.CharFileIO;
 import com.bc.net.HttpStreamHandlerForBadStatusLine;
 import com.bc.net.RetryConnectionFilter;
 import com.bc.net.UserAgents;
+import com.bc.task.AbstractStoppableTask;
 import com.bc.task.StoppableTask;
 import com.bc.util.XLogger;
 import com.bc.webdatex.ParserConnectionManager;
@@ -24,10 +25,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -40,12 +41,9 @@ import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-public class URLParser
-  implements Iterator<PageNodes>, StoppableTask, Serializable
-{
-  private boolean started;
-  private boolean stopRequested;
-  private boolean stopped;
+public class URLParser extends AbstractStoppableTask
+  implements Iterator<PageNodes>, StoppableTask, Serializable {
+    
   protected final Serializable pageLock = new Serializable() {};
   
   private final Class cls = URLParser.class;
@@ -63,32 +61,24 @@ public class URLParser
   
   private long batchInterval;
   
-  private long startTime;
-  
   private Set<String> attempted;
   
-
   private Set<String> failed;
   
-
   private List<String> pageLinks;
   
-
   private Formatter<String> formatter;
   
-
   private Parser parser;
   
-
   private List<String> cookies;
   
   private RetryConnectionFilter reconnectAfterExceptionFilter;
   
   private com.bc.net.ConnectionManager connMgr;
 
-  public URLParser()
-  {
-    this(new ArrayList());
+  public URLParser() {
+    this(new LinkedList());
   }
   
   public URLParser(List<String> urlList) {
@@ -96,6 +86,7 @@ public class URLParser
   }
   
   private void init(List<String> urlList) {
+      
     logger.log(Level.FINER, "Creating", cls);
     
     this.removeParsedUrls = false;
@@ -145,14 +136,19 @@ public class URLParser
   protected void preParse(String url) {}
   
   protected void postParse(PageNodes page) {}
+
+  @Override
+  protected void post() {
+    this.completePendingActions();
+  }
   
   public void completePendingActions() {}
   
   @Override
-  public boolean hasNext()
-  {
-    if (!this.started) {
-      this.started = true;
+  public boolean hasNext() {
+      
+    if (!this.isStarted()) {
+      this.setStarted(true);
     }
   
     if (isStopRequested()) {
@@ -161,8 +157,7 @@ public class URLParser
     
     boolean output = false;
 
-    while ((isWithinParseLimit()) && (hasMoreUrls()))
-    {
+    while ((isWithinParseLimit()) && (hasMoreUrls())) {
 
       if (isStopRequested()) {
         output = false;
@@ -172,28 +167,30 @@ public class URLParser
       String s = (String)this.pageLinks.get(this.parsePos);
       logger.log(Level.FINER, "UrlParser.hasNext. checking: {0}", cls, s);
       
-      if (isToBeCrawled(s))
-      {
+      if (isToBeCrawled(s)) {
+          
         output = true;
+        
         break;
       }
       
       moveForward();
     }
     
-    logger.log(Level.FINE, "UrlParser.hasNext: {0}", cls, Boolean.valueOf(output));
+    logger.log(Level.FINE, "UrlParser.hasNext: {0}", cls, output);
+    
     return output;
   }
   
   @Override
-  public PageNodes next()
-  {
-    if (!this.started) {
-      this.started = true;
+  public PageNodes next() {
+      
+    if (!this.isStarted()) {
+      this.setStarted(true);
     }
     
-    if ((this.batchSize > 0) && (++this.indexWithinBatch >= this.batchSize))
-    {
+    if ((this.batchSize > 0) && (++this.indexWithinBatch >= this.batchSize)) {
+        
       this.indexWithinBatch = 0;
       
       waitBeforeNextBatch(this.batchInterval);
@@ -239,9 +236,10 @@ public class URLParser
     return null;
   }
   
-  private void moveForward()
-  {
-    logger.log(Level.FINEST, "Before moving forward. Parse pos: {0}, Url: {1}", cls, Integer.valueOf(this.parsePos), this.pageLinks.get(this.parsePos));
+  private void moveForward() {
+      
+    logger.log(Level.FINEST, "Before moving forward. Parse pos: {0}, Url: {1}", 
+            cls, this.parsePos, this.pageLinks.get(this.parsePos));
     
     if (!isRemoveParsedUrls()) {
       this.parsePos += 1;
@@ -249,77 +247,25 @@ public class URLParser
       this.pageLinks.remove(this.parsePos);
     }
     
-    logger.log(Level.FINER, "After moving forward. Parse pos {0}, Url: {1}", cls, Integer.valueOf(this.parsePos), this.parsePos < this.pageLinks.size() ? (String)this.pageLinks.get(this.parsePos) : "no more URLs");
+    logger.log(Level.FINER, "After moving forward. Parse pos {0}, Url: {1}", cls, 
+    this.parsePos, this.parsePos < this.pageLinks.size() ? this.pageLinks.get(this.parsePos) : "no more URLs");
   }
 
   @Override
-  public void remove()
-  {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public final void run()
-  {
-
-    this.startTime = System.currentTimeMillis();
-    logger.entering(cls, "run()", this.startTime);
-    if (!this.started) {
-      this.started = true;
-      this.stopRequested = false;
-      this.stopped = false;
-    }
-    try {
-      doRun();
-    }
-    catch (Exception e) {
-      logger.log(Level.WARNING, "Unexpected exception: {0}", cls, e.toString());
-    }
-    finally {
-      completePendingActions();
-    }
+  public void remove() {
+    throw new UnsupportedOperationException("Not supported!");
   }
   
+  @Override
   protected void doRun() {
     throw new UnsupportedOperationException("Please provide an implementation of this method");
-  }
-  
-  @Override
-  public boolean isStopRequested()
-  {
-    return this.stopRequested;
-  }
-  
-  @Override
-  public boolean isStopped()
-  {
-    return this.stopped;
-  }
-  
-  @Override
-  public void stop()
-  {
-    logger.log(Level.FINER, "Stop Initiated: {0}", cls, this);
-    this.stopRequested = true;
-  }
-  
-  @Override
-  public boolean isCompleted()
-  {
-    return (this.started) && (this.stopped) && (!this.stopRequested);
-  }
-  
-  @Override
-  public boolean isStarted()
-  {
-    return this.started;
   }
   
   protected boolean hasMoreUrls() {
       
     boolean hasMore = this.parsePos < this.pageLinks.size();
     
-    logger.log(Level.FINEST, "Has more urls: {0}", cls, Boolean.valueOf(hasMore));
+    logger.log(Level.FINEST, "Has more urls: {0}", cls, hasMore);
     
     return hasMore;
   }
@@ -328,7 +274,8 @@ public class URLParser
       
     boolean withinLimit = isWithLimit(this.parsePos, this.parseLimit);
     
-    logger.log(Level.FINEST, "Parse pos: {0}, limit: {1}, within parse limit: {2}", cls, Integer.valueOf(this.parsePos), Integer.valueOf(this.parseLimit), Boolean.valueOf(withinLimit));
+    logger.log(Level.FINEST, "Parse pos: {0}, limit: {1}, within parse limit: {2}", 
+            cls, parsePos, parseLimit, withinLimit);
     
     return withinLimit;
   }
@@ -341,13 +288,10 @@ public class URLParser
     return withinLimit;
   }
 
-  public NodeList parse(String url)
-    throws ParserException
-  {
+  public NodeList parse(String url) throws ParserException {
     NodeList list;
     
-    try
-    {
+    try {
         
       UserAgents userAgents = this.connMgr.getUserAgents();
       String userAgent;
@@ -356,34 +300,33 @@ public class URLParser
       }catch(MalformedURLException e) {
           userAgent = userAgents.getAny(false);
       }
+      
       org.htmlparser.http.ConnectionManager.getDefaultRequestProperties().put(
               "User-Agent", userAgent);
 
-      try
-      {
+      try {
+          
         list = doParse(url);
-      }
-      catch (EncodingChangeException ece)
-      {
+        
+      }catch (EncodingChangeException ece) {
+          
         list = applyBugfix991895(ece);
       }
-    }
-    catch (ParserException e) {
+    }catch (ParserException e) {
 
       boolean retry = isRetry(e, url);
       
-      if (retry)
-      {
+      if (retry) {
 
         list = parse(url);
-      }
-      else
-      {
+        
+      } else {
+          
         list = null;
       }
       
-      if (list == null)
-      {
+      if (list == null) {
+          
         throw e;
       }
     }
@@ -397,14 +340,14 @@ public class URLParser
     return list;
   }
 
-  protected NodeList doParse(String url)
-    throws ParserException
-  {
+  protected NodeList doParse(String url)  throws ParserException {
     return doParse_0(url);
   }
   
   protected NodeList doParse_0(String url) throws ParserException {
-    logger.log(Level.FINE, "Pages left: {0}, crawling: {1}", cls, Integer.valueOf(getPageLinks().size() - this.parsePos), url);
+      
+    logger.log(Level.FINE, "Pages left: {0}, crawling: {1}", 
+            cls, getPageLinks().size() - this.parsePos, url);
     
     this.parser.setURL(url);
     
@@ -412,8 +355,8 @@ public class URLParser
     
     NodeIterator e = this.parser.elements();
     
-    while (e.hasNext())
-    {
+    while (e.hasNext()) {
+        
       Node node = e.next();
       
       if (list == null) {
@@ -429,10 +372,11 @@ public class URLParser
   }
   
   protected NodeList doParse_1(String urlString) throws ParserException {
-    logger.log(Level.FINE, "Pages left: {0}, crawling: {1}", cls, Integer.valueOf(getPageLinks().size() - this.parsePos), urlString);
-    
-    try
-    {
+      
+    logger.log(Level.FINE, "Pages left: {0}, crawling: {1}", 
+        cls, getPageLinks().size() - this.parsePos, urlString);
+
+    try {
       
       URL url = new URL(null, urlString, new HttpStreamHandlerForBadStatusLine());
       
@@ -442,9 +386,8 @@ public class URLParser
       
       this.parser.setInputHTML(html.toString());
 
-    }
-    catch (IOException e)
-    {
+    } catch (IOException e) {
+        
       logger.log(Level.WARNING, "{0}", cls, e.toString());
 
       this.parser.setURL(urlString);
@@ -454,21 +397,19 @@ public class URLParser
     
     NodeIterator e = this.parser.elements();
     
-    while (e.hasNext())
-    {
+    while (e.hasNext()) {
+        
       Node node = e.next();
       
       if (list == null) {
         list = new NodeList();
       }
       
-
       list.add(node);
     }
     
     logger.log(Level.FINER, "Found: {0} nodes in page", cls, list == null ? null : Integer.valueOf(list.size()));
     
-
     return list;
   }
   
@@ -634,9 +575,7 @@ public class URLParser
     return this.failed;
   }
   
-
-  public boolean isRemoveParsedUrls()
-  {
+  public boolean isRemoveParsedUrls() {
     return this.removeParsedUrls;
   }
   
@@ -676,12 +615,12 @@ public class URLParser
     this.batchSize = batchSize;
   }
   
-  public RetryConnectionFilter getConnectionMonitor() {
+  public RetryConnectionFilter getReconnectAfterExceptionFilter() {
     return this.reconnectAfterExceptionFilter;
   }
   
-  public void setConnectionMonitor(RetryConnectionFilter connectionMonitor) {
-    this.reconnectAfterExceptionFilter = connectionMonitor;
+  public void setReconnectAfterExceptionFilter(RetryConnectionFilter filter) {
+    this.reconnectAfterExceptionFilter = filter;
   }
   
   public Formatter<String> getFormatter() {
@@ -700,45 +639,22 @@ public class URLParser
     this.cookies = cookies;
   }
   
-
-
-
-  public int getParseLimit()
-  {
+  public int getParseLimit() {
     return this.parseLimit;
   }
   
-
-
-
-  public void setParseLimit(int limit)
-  {
+  public void setParseLimit(int limit) {
     this.parseLimit = limit;
   }
   
-  public long getStartTime() {
-    return this.startTime;
-  }
-  
   @Override
-  public String getTaskName()
-  {
+  public String getTaskName() {
     return getClass().getName();
   }
   
   @Override
-  public String toString()
-  {
-    StringBuilder builder = new StringBuilder();
-    print(builder);
-    return builder.toString();
-  }
-  
   public void print(StringBuilder builder) {
     builder.append(getTaskName());
-    builder.append(", started: ").append(this.started);
-    builder.append(", stopInitiated: ").append(this.stopRequested);
-    builder.append(", stopped: ").append(this.stopped);
     builder.append(", ParsePos: ").append(this.parsePos);
     builder.append(", Urls Left: ").append(this.pageLinks == null ? null : Integer.valueOf(this.pageLinks.size() - this.parsePos));
     builder.append(", Attempted: ").append(this.attempted == null ? null : Integer.valueOf(this.attempted.size()));

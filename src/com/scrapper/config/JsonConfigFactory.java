@@ -29,15 +29,14 @@ import java.util.logging.Level;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.ParseException;
 
-public abstract class JsonConfigFactory
-{
+public abstract class JsonConfigFactory {
+    
   private boolean search;
   private boolean useCache;
   private Map<String, JsonConfig> loadedConfigs;
   private Set<String> remotesites_use_getter_to_access;
   
-  protected JsonConfigFactory()
-  {
+  protected JsonConfigFactory() {
     setUseCache(true);
   }
   
@@ -49,8 +48,7 @@ public abstract class JsonConfigFactory
     return new MyFTPClient();
   }
 
-  public String getSearchNodeName()
-  {
+  public String getSearchNodeName() {
     return "searchresults";
   }
   
@@ -89,22 +87,21 @@ public abstract class JsonConfigFactory
     return getFile(config.getName()).exists();
   }
   
-  public boolean rename(String oldName, String newName) throws IOException
-  {
+  public boolean rename(String oldName, String newName) throws IOException {
+      
     FileInterface from = getFile(oldName);
     FileInterface to = getFile(newName);
     
     boolean success = from.renameTo(to);
     
-    if (success)
-    {
+    if (success) {
       replaceConfig(oldName, newName);
     }
     
     return success;
   }
   
-  public JsonConfig loadValues(String configName) throws IOException, ParseException {
+  public JsonConfig loadValues(String configName, JsonConfig defaultConfig) throws IOException, ParseException {
       
     FileInterface file = getFile(configName);
     
@@ -116,7 +113,7 @@ public abstract class JsonConfigFactory
         
       reader = new InputStreamReader(in);
       
-      return new JsonDataIO().load(reader, this.getContainerFactory());
+      return new JsonDataIO().load(configName, defaultConfig, reader, this.getContainerFactory());
       
     }finally {
       if (reader != null) {
@@ -220,7 +217,7 @@ public abstract class JsonConfigFactory
       postCreate(config);
     }else{
       if(loadData) {
-          config = this.loadValues(configName);
+          config = this.loadValues(configName, defaultConfig);
       }
     }
     
@@ -337,13 +334,10 @@ public abstract class JsonConfigFactory
     return config;
   }
   
-
-
   public JsonConfig getConfig(String sitename) {
     return getConfig(sitename, false);
   }
   
-
   public JsonConfig getConfig(String sitename, boolean refresh) {
     JsonConfig output;
     try {

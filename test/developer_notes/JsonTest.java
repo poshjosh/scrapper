@@ -91,11 +91,12 @@ return;
 if(true)            return;
 
             
-            String fname = "/nigeriacar24.json";
+            final String configName = "nigeriacar24";
+            final String fname = "/"+configName+".json";
             File file = new File(Paths.get(getConfigDir(false)).toFile(), fname);
             JsonConfigIO configIO = new JsonConfigIO();
             FileReader reader = new FileReader(file);
-            JsonConfig config = configIO.load(reader, new DefaultJsonConfig()); 
+            JsonConfig config = configIO.load(configName, reader, new DefaultJsonConfig()); 
             
             String url = config.getString("url", "value");
 System.out.println("URL: "+url);            

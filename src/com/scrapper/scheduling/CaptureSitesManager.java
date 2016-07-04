@@ -16,17 +16,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class CaptureSitesManager
-  implements Filter<JsonConfig>, Serializable
-{
+public class CaptureSitesManager implements Filter<JsonConfig>, Serializable {
+    
   private int batchSize;
   private int batchInterval;
   private int crawlLimit;
   private int parseLimit;
   private int scrappLimit;
   
-  public CaptureSitesManager()
-  {
+  public CaptureSitesManager() {
     this.batchSize = 100;
     this.batchInterval = 60000;
     this.crawlLimit = 5000;
@@ -38,8 +36,8 @@ public class CaptureSitesManager
     return CapturerApp.getInstance().getConfigFactory();
   }
   
-  public Set<String> getSitenames()
-  {
+  public Set<String> getSitenames() {
+      
     ScrapperConfigFactory factory = getConfigFactory();
     
     Set<String> accepted = new HashSet();
