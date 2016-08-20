@@ -1,30 +1,16 @@
 package com.scrapper.scheduling;
 
-import com.bc.json.config.JsonConfig;
 import com.bc.task.AbstractTaskList;
 import com.bc.util.XLogger;
 import com.scrapper.SiteCapturer;
-import com.scrapper.context.CapturerContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
-
-
-
-
-
-
-
-
-
-
-
-public class CaptureSitesTask
-  extends AbstractTaskList<String>
-{
+public class CaptureSitesTask extends AbstractTaskList<String> {
+    
   private boolean loop = true;
   
   private CaptureSitesManager taskManager;
@@ -34,13 +20,13 @@ public class CaptureSitesTask
   private SiteCapturer current;
   private int timeoutHours;
   
-  public CaptureSitesTask()
-  {
+  public CaptureSitesTask() {
+      
     this(new CaptureSitesManager());
   }
   
-  public CaptureSitesTask(CaptureSitesManager taskManager)
-  {
+  public CaptureSitesTask(CaptureSitesManager taskManager) {
+      
     this.timeoutHours = 24;
     
     this.taskManager = taskManager;
@@ -48,16 +34,17 @@ public class CaptureSitesTask
     this.sitenames = new ArrayList(taskManager.getSitenames());
   }
   
-  public void reset()
-  {
+  @Override
+  public void reset(){
+      
     super.reset();
+    
     this.loop = true;
   }
   
-  public void doRun()
-  {
+  public Integer doCall() {
     try {
-      super.doRun();
+      return super.doCall();
     } catch (RuntimeException e) {
       this.loop = false;
       throw e;
@@ -65,13 +52,8 @@ public class CaptureSitesTask
   }
   
 
-
-
-
-
-
-  protected void post()
-  {
+  protected void post() {
+      
     if (!this.loop) {
       return;
     }

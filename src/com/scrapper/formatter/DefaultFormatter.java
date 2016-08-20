@@ -16,7 +16,6 @@ import com.scrapper.context.CapturerContext;
 import com.scrapper.expression.ArithmeticExpressionResolver;
 import com.scrapper.expression.ConditionalExpressionResolver;
 import com.scrapper.expression.ExpressionResolver;
-import static com.scrapper.url.ConfigURLPartList.accept;
 import com.scrapper.util.Translator;
 import com.scrapper.util.Util;
 import java.io.IOException;
@@ -45,26 +44,9 @@ import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 public class DefaultFormatter
-  implements Formatter<Map<String, Object>>, Serializable
-{
+  implements Formatter<Map<String, Object>>, Serializable {
+    
   public static final String APPLY_TEXT = "CLICK HERE TO APPLY";
   private CapturerContext context;
   private DateFormat inputDateformat;
@@ -72,11 +54,10 @@ public class DefaultFormatter
   private List jobRequestFields;
   private Map defaultValues;
   
-  public DefaultFormatter()
-  {
+  public DefaultFormatter() {
+      
     SimpleDateFormat infmt = new SimpleDateFormat();
     
-
     infmt.applyPattern("EEE MMM dd HH:mm:ss G yyyy");
     this.inputDateformat = infmt;
     
@@ -86,16 +67,14 @@ public class DefaultFormatter
     this.outputDateformat = outfmt;
   }
   
-  public DefaultFormatter(CapturerContext context)
-  {
+  public DefaultFormatter(CapturerContext context) {
+      
     this.context = context;
     
     JsonConfig config = context.getConfig();
     
     Object[] arr = config.getArray(new Object[] { Config.Formatter.jobRequestFields });
-    if (arr != null)
-    {
-
+    if (arr != null) {
       this.jobRequestFields = new ArrayList();
       this.jobRequestFields.addAll(Arrays.asList(arr));
     }
@@ -103,13 +82,15 @@ public class DefaultFormatter
     this.defaultValues = config.getMap(new Object[] { Config.Formatter.defaultValues });
     
     Object[] datePatterns = config.getArray(new Object[] { Config.Formatter.datePatterns });
+    
     if ((datePatterns == null) || (datePatterns.length == 0)) {
       this.inputDateformat = new SimpleDateFormat();
     } else {
-      XLogger.getInstance().log(Level.FINER, "Config: {0}, Date patterns: {1}", getClass(), config.getName(), datePatterns == null ? null : Arrays.toString(datePatterns));
+      final String [] datePatternsStrArr = (String[])Arrays.copyOf(datePatterns, datePatterns.length, String[].class); 
+      XLogger.getInstance().log(Level.FINER, "Config: {0}, Date patterns: {1}", 
+              getClass(), config.getName(), Arrays.toString(datePatternsStrArr));
       
-
-      this.inputDateformat = new MyDateFormat((String[])Arrays.copyOf(datePatterns, datePatterns.length, String[].class));
+      this.inputDateformat = new MyDateFormat(datePatternsStrArr);
     }
     
     SimpleDateFormat outfmt = new SimpleDateFormat();
@@ -735,7 +716,7 @@ public class DefaultFormatter
           String dateStr = prepareDateString(temp);
           
           XLogger.getInstance().log(Level.FINER, "Before: {0}, After: {1}", getClass(), temp, dateStr);
-          
+System.out.println(this.getClass().getName()+" = o = o = o = o = o = o = o = o = o: "+key+", before: "+temp+", after: "+dateStr);          
 
           java.util.Date date = this.inputDateformat.parse(dateStr);
           

@@ -61,13 +61,13 @@ System.out.println("========================================Time spent: "+(Syste
         public T newTask(String name) {
             return (T)new StoppableTaskImpl(name);
         }
-        private class StoppableTaskImpl extends AbstractStoppableTask {
+        private class StoppableTaskImpl extends AbstractStoppableTask<String> {
             private String name;
             public StoppableTaskImpl(String name) { 
                 this.name = name;
             }
             @Override
-            protected void doRun() {
+            public String doCall() {
                 for(int i=0; i<5; i++) {
 System.out.println(name+" . . . . . . . . . . "+i);    
                     try{
@@ -77,6 +77,7 @@ System.out.println(name+" . . . . . . . . . . "+i);
                         break;
                     }
                 }
+                return name;
             }
             @Override
             public String getTaskName() {

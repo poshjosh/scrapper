@@ -74,13 +74,14 @@ public abstract class ManagedTasks<T extends StoppableTask>
   }
   
 
-  public void doRun()
+  @Override
+  public Integer doCall()
   {
     checkTimeout();
     
     try
     {
-      super.doRun();
+      return super.doCall();
     }
     finally
     {

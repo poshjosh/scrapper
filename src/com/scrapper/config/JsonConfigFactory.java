@@ -150,9 +150,14 @@ public abstract class JsonConfigFactory {
     }
     
     String path = file.getPath();
-    String tempDirPath = file.getParentFile().getPath();
+    String tempDirPath = file.getParentFile().getPath(); 
     
-    safeSave.save(config.toString(), path, tempDirPath, 3);
+    Map defaults = config.getDefaults() == null ? null : config.getDefaults().getRootContainer();
+    
+XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}", 
+        this.getClass(), config.getName(), defaults, config.getRootContainer());
+    
+    safeSave.save(config.toJsonString(false), path, tempDirPath, 3);
   }
   
   public boolean delete(JsonConfig config) throws IOException
@@ -572,11 +577,6 @@ public abstract class JsonConfigFactory {
     }
     XLogger.getInstance().log(Level.FINER, "Sites dir: {0}", getClass(), sitesDir);
     
-
-
-
-
-
     File[] files = sitesDir.listFiles(new FilenameFilter()
     {
       public boolean accept(File dir, String name) {

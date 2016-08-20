@@ -17,6 +17,10 @@ public class CustomJsonConverter {
     this.jsonFormat = new JsonFormat();
   }
   
+  public CustomJsonConverter(JsonFormat fmt) {
+    this.jsonFormat = fmt;
+  }
+  
   public CustomJsonConverter(Class type) {
     setType(type);
     this.jsonFormat = new JsonFormat();
@@ -179,5 +183,9 @@ public class CustomJsonConverter {
   
   public void setType(String propertyLink) {
     this.type = new JsonType().getType(propertyLink, String.class);
+  }
+
+  public final JsonFormat getJsonFormat() {
+    return jsonFormat;
   }
 }

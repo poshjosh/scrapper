@@ -43,13 +43,13 @@ public abstract class ScrapperConfigFactory extends JsonConfigFactory {
     return factory;
   }
   
-  public CapturerContext getContext(String name)
-  {
+  public CapturerContext getContext(String name) {
+      
     return getContext(getConfig(name));
   }
   
-  public CapturerContext getContext(JsonConfig config)
-  {
+  public CapturerContext getContext(JsonConfig config) {
+      
     if (config == null) {
       throw new NullPointerException();
     }

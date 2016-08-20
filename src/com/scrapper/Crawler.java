@@ -14,7 +14,7 @@ import org.htmlparser.tags.FrameTag;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.ParserException;
 
-public class Crawler extends ResumableUrlParser {
+public class Crawler<E> extends ResumableUrlParser<E> {
     
   private boolean captureQueryLinks;
   

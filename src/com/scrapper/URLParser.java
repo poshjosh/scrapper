@@ -41,7 +41,7 @@ import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-public class URLParser extends AbstractStoppableTask
+public class URLParser<E> extends AbstractStoppableTask<E>
   implements Iterator<PageNodes>, StoppableTask, Serializable {
     
   protected final Serializable pageLock = new Serializable() {};
@@ -198,13 +198,13 @@ public class URLParser extends AbstractStoppableTask
     
     String rawUrl = (String)this.pageLinks.get(this.parsePos);
 
-    try
-    {
+    try {
+        
       preParse(rawUrl);
 
       getAttempted().add(rawUrl);
 
-      int bookmark = this.pageLinks.size();
+      final int bookmark = this.pageLinks.size();
 
       String url = this.formatter == null ? rawUrl.replace("&amp;", "&") : (String)this.formatter.format(rawUrl.replace("&amp;", "&"));
 
@@ -257,7 +257,7 @@ public class URLParser extends AbstractStoppableTask
   }
   
   @Override
-  protected void doRun() {
+  public E doCall() throws Exception {
     throw new UnsupportedOperationException("Please provide an implementation of this method");
   }
   

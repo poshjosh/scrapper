@@ -22,43 +22,29 @@ import org.htmlparser.Tag;
 import org.htmlparser.Text;
 import org.htmlparser.util.NodeList;
 
-
-
-
-
-
-
-
-
-
-
-public final class Util
-{
+public final class Util {
+    
   private static final transient Logger logger = Logger.getLogger(Util.class.getName());
   
-
   private static final Pattern[] datePatterns;
   
-
-  static
-  {
+  static {
+      
     String months = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
     
     Pattern dp1 = Pattern.compile("\\d{1,2}[st|nd|rd|th]*\\s*[of]{0,1}[\\s]*[" + months + "][a-zA-Z]*[\\p{Punct}]?\\s*[\\d]{4}\\.*", 2);
     
     Pattern dp2 = Pattern.compile("[" + months + "][a-zA-Z]*\\s*[\\d]{1,2}[st|nd|rd|th]*[\\p{Punct}]?\\s*[\\d]{4}\\.*", 2);
     
-    datePatterns = new Pattern[] { dp1, dp2 }; }
+    datePatterns = new Pattern[] { dp1, dp2 }; 
+  }
   
   private static final Pattern emailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
   
-
-  public static String getTableValue(Map parameters, String defaultTableName)
-  {
+  public static String getTableValue(Map parameters, String defaultTableName) {
+      
     String[] tableKeys = { "table", "productTable", "producttable", "tableName", "tablename" };
     
-
-
     Object oval = null;
     for (String tableKey : tableKeys) {
       oval = parameters.get(tableKey);
@@ -71,38 +57,18 @@ public final class Util
     return oval != null ? oval.toString() : defaultTableName;
   }
   
-
-
-
-
-
-
-
-  public static Node deepClone(Node node)
-    throws CloneNotSupportedException
-  {
+  public static Node deepClone(Node node) throws CloneNotSupportedException {
     return deepClone(node, true, true);
   }
   
-
-
-
-
-
-
-
-
-
-
-
-
-  public static Node deepClone(Node node, boolean parents, boolean children)
-    throws CloneNotSupportedException
-  {
+  public static Node deepClone(
+          Node node, boolean parents, boolean children) 
+          throws CloneNotSupportedException {
+      
     Node clone = (Node)node.clone();
     
-    if (parents)
-    {
+    if (parents) {
+        
       Node nodeParent = node.getParent();
       
       Node cloneParent;
@@ -114,14 +80,14 @@ public final class Util
       
       clone.setParent(cloneParent);
       
-      if (nodeParent != null)
-      {
+      if (nodeParent != null) {
+          
         NodeList nodeSiblings = nodeParent.getChildren();
         
         NodeList cloneSiblings = new NodeList();
         
-        for (Node nodeSibling : nodeSiblings)
-        {
+        for (Node nodeSibling : nodeSiblings) {
+            
           Node cloneSibling;
           if (nodeSibling.equals(node)) {
             cloneSibling = clone;
@@ -136,21 +102,21 @@ public final class Util
       }
     }
     
-    if (children)
-    {
+    if (children) {
+        
       NodeList nodeChildren = node.getChildren();
       
       NodeList cloneChildren;
-      if (nodeChildren == null)
-      {
+      if (nodeChildren == null) {
+          
         cloneChildren = null;
-      }
-      else
-      {
+        
+      } else {
+          
         cloneChildren = new NodeList();
         
-        for (Node child : nodeChildren)
-        {
+        for (Node child : nodeChildren) {
+            
           Node childClone = deepClone(child, false, true);
           
           childClone.setParent(clone);
@@ -165,12 +131,10 @@ public final class Util
     return clone;
   }
   
-  public static void insertBefore(Node node, Node toInsert, NodeFilter filter)
-  {
+  public static void insertBefore(Node node, Node toInsert, NodeFilter filter) {
+      
     if ((filter != null) && (filter.accept(node))) {
       XLogger.getInstance().log(Level.FINER, "Accepted: {0}", Util.class, node);
-      
-
       insertBefore(node, toInsert);
     }
     else
@@ -405,26 +369,30 @@ public final class Util
   }
   
 
-  public static String getNextNodeName(JsonConfig props, String propertyKey, boolean isValue)
-  {
+  public static String getNextNodeName(JsonConfig props, String propertyKey, boolean isValue) {
+      
     if (propertyKey == null) {
       throw new NullPointerException("propertyKey == null");
     }
     
-
     if ("parentNode".equals(propertyKey)) {
       return "parentNode";
     }
     
-    int max = props.getInt(new Object[] { Config.Extractor.maxFiltersPerKey }).intValue();
+    final int max = props.getInt(Config.Extractor.maxFiltersPerKey);
     
-    for (int i = 0; i < max; i++)
-    {
-      String val = props.getString(new Object[] { propertyKey + i, "value" });
+    for (int i = 0; i < max; i++) {
+        
+      final String key = propertyKey + i;
       
-      if (val == null)
-      {
-        return propertyKey + i + "Value";
+      final Object val = props.getObject(key);
+      
+      if (val == null) {
+        if(!isValue) {  
+          return key;
+        }else{
+          return key + "Value";  
+        }
       }
     }
     return null;

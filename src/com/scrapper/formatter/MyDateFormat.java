@@ -7,14 +7,12 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MyDateFormat
-  extends SimpleDateFormat
-{
+public class MyDateFormat extends SimpleDateFormat {
+    
   private Pattern validationPattern;
   private String[] acceptedPatterns;
   
-  public MyDateFormat()
-  {
+  public MyDateFormat(){
     setLenient(false);
   }
   
@@ -23,27 +21,23 @@ public class MyDateFormat
     setLenient(false);
   }
   
-
-  public Date parse(String text, ParsePosition pos)
-  {
+  @Override
+  public Date parse(String text, ParsePosition pos) {
+      
     Calendar cal = null;
     
-    for (String pattern : this.acceptedPatterns)
-    {
+    for (String pattern : this.acceptedPatterns) {
+        
       applyPattern(pattern);
       
       Date date = super.parse(text, pos);
       
-
-
-      if (date != null)
-      {
-
+      if (date != null) {
 
         pattern = pattern.trim();
         
-        if (!requiresValidation(pattern))
-        {
+        if (!isValidationRequired(pattern)) {
+            
           return date;
         }
         
@@ -51,18 +45,7 @@ public class MyDateFormat
           cal = Calendar.getInstance();
         }
         
-
-
-
-
-
-
-
-
-
-
-        if (isValid(text, pattern, date, cal))
-        {
+        if (isValid(text, pattern, date, cal)) {
           return date;
         }
       }
@@ -70,8 +53,8 @@ public class MyDateFormat
     return null;
   }
   
-  private boolean requiresValidation(String pattern)
-  {
+  private boolean isValidationRequired(String pattern){
+      
     if (!isLenient()) {
       return false;
     }
@@ -87,10 +70,8 @@ public class MyDateFormat
     return (m.find()) && (m.start() == 0);
   }
   
-
-
-  private boolean isValid(String input, String pattern, Date date, Calendar cal)
-  {
+  private boolean isValid(String input, String pattern, Date date, Calendar cal){
+      
     boolean isValid = true;
     
     cal.setTime(date);
@@ -98,25 +79,21 @@ public class MyDateFormat
     boolean a = (pattern.contains("yyyy")) && (matchesYear(input, "yyyy", cal));
     boolean b = (pattern.contains("yy")) && (matchesYear(input, "yy", cal));
     
-
     boolean matchesYear = (a) || (b);
     
-    if (!matchesYear)
-    {
+    if (!matchesYear) {
       isValid = false;
-
-
     }
-    else if (pattern.startsWith("MM"))
-    {
+    else if (pattern.startsWith("MM")) {
+        
       boolean matchesMonth = matchesFirstField(2, input, cal, 2);
       
       if (!matchesMonth)
       {
         isValid = false;
       }
-    } else if (pattern.startsWith("dd"))
-    {
+    } else if (pattern.startsWith("dd")) {
+        
       boolean matchesDate = matchesFirstField(2, input, cal, 5);
       
       if (!matchesDate)
@@ -125,19 +102,15 @@ public class MyDateFormat
       }
     }
     
-
     return isValid;
   }
   
-
-
-  private boolean matchesYear(String input, String patternPart, Calendar cal)
-  {
+  private boolean matchesYear(String input, String patternPart, Calendar cal) {
+      
     int field = cal.get(1);
     
     String sval = Integer.toString(field);
     
-
     if (patternPart.length() < sval.length()) {
       int diff = sval.length() - patternPart.length();
       sval = sval.substring(diff);
@@ -146,31 +119,31 @@ public class MyDateFormat
     StringBuilder buff = new StringBuilder();
     buff.append(' ').append(sval).append(' ');
     boolean contains;
-    if (!input.contains(buff))
-    {
+    if (!input.contains(buff)) {
+        
       contains = false;
-    }
-    else
-    {
+    }else {
+        
       contains = true;
     }
     
     return contains;
   }
   
-  private boolean matchesFirstField(int digitsInField, String input, Calendar cal, int calendarField)
-  {
+  private boolean matchesFirstField(
+      int digitsInField, String input, Calendar cal, int calendarField) {
+      
     String expected = input.trim().substring(0, digitsInField);
     
     int toAdd;
     
     switch (calendarField) {
-    case 2: 
-      toAdd = 1; break;
-    case 5: 
-      toAdd = 0; break;
-    default: 
-      throw new UnsupportedOperationException("Unexpected calendar field: " + calendarField);
+      case 2: 
+        toAdd = 1; break;
+      case 5: 
+        toAdd = 0; break;
+      default: 
+        throw new UnsupportedOperationException("Unexpected calendar field: " + calendarField);
     }
     
     int n = cal.get(calendarField) + toAdd;
@@ -179,8 +152,6 @@ public class MyDateFormat
     
     String found = prefix + n;
     
-
-
     return expected.equals(found);
   }
   

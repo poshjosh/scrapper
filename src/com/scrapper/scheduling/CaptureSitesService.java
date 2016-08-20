@@ -14,20 +14,8 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
-
-
-
-
-
-
-
-
-public class CaptureSitesService
-  extends AbstractStoppableTask
-  implements Resumable
-{
+public class CaptureSitesService extends AbstractStoppableTask<Integer> implements Resumable {
+    
   private boolean resume;
   private boolean resumable;
   private CaptureSitesTask task;
@@ -56,11 +44,12 @@ public class CaptureSitesService
   }
   
 
-  protected void doRun()
-  {
-    if (this.task != null)
-    {
-      this.task.run();
+  public Integer doCall() {
+      
+    if (this.task != null){
+      return this.task.call();
+    }else{
+      return null;
     }
   }
   

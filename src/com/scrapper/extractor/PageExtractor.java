@@ -124,7 +124,7 @@ public class PageExtractor
 
   protected String add(String key, Object val)
   {
-    return add(key, val, getCapturerSettings().isConcatenateMultipleExtracts().booleanValue(), true);
+    return add(key, val, getCapturerSettings().isConcatenateMultipleExtracts(), true);
   }
   
 

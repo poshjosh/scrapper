@@ -1,10 +1,10 @@
 package developer_notes;
 
-import com.bc.json.config.DefaultJsonConfig;
 import com.bc.json.config.DefaultJsonData;
 import com.bc.json.config.JsonConfig;
 import com.bc.json.config.JsonConfigIO;
 import com.bc.json.config.JsonData;
+import com.bc.json.config.SimpleJsonConfig;
 import com.bc.manager.Filter;
 import com.bc.manager.util.PropertiesExt;
 import com.bc.ui.treebuilder.MapTreeBuilder;
@@ -96,7 +96,7 @@ if(true)            return;
             File file = new File(Paths.get(getConfigDir(false)).toFile(), fname);
             JsonConfigIO configIO = new JsonConfigIO();
             FileReader reader = new FileReader(file);
-            JsonConfig config = configIO.load(configName, reader, new DefaultJsonConfig()); 
+            JsonConfig config = configIO.load(configName, reader, new SimpleJsonConfig()); 
             
             String url = config.getString("url", "value");
 System.out.println("URL: "+url);            

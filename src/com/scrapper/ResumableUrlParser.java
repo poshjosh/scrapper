@@ -7,21 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-
-
-
-
-
-
-
-
-
-
-
-public class ResumableUrlParser
-  extends URLParser
-  implements Resumable
-{
+public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
+    
   private String sitename;
   private ResumeHandler resumeHandler;
   
