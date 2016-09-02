@@ -43,9 +43,10 @@ public class Crawler<E> extends ResumableUrlParser<E> {
   private final Class cls = Crawler.class;
   private final XLogger logger = XLogger.getInstance();
   
-  public Crawler(CapturerContext context)
-  {
+  public Crawler(CapturerContext context) {
+      
     super(context.getConfig().getName());
+    
     logger.log(Level.FINER, "Creating", cls);
     
     setContext(context);

@@ -432,7 +432,7 @@ System.err.println(method.getName()+(parameters==null?"null":Arrays.toString(par
 
         if(result != null && type == Map.class) {
             QueryParametersConverter c = new QueryParametersConverter(
-                    true, Integer.MAX_VALUE, ",,,");
+                    true, true, Integer.MAX_VALUE, ",,,");
             String s = result.toString();
             result = c.reverse(s);
         }
@@ -453,7 +453,7 @@ System.err.println(method.getName()+(parameters==null?"null":Arrays.toString(par
 
         if(result instanceof Map) {
             QueryParametersConverter c = new QueryParametersConverter(
-                    true, Integer.MAX_VALUE, ",,,");
+                    true, true, Integer.MAX_VALUE, ",,,");
             result = c.convert((Map)result);
         }
 

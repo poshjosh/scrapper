@@ -40,6 +40,7 @@ import org.htmlparser.util.EncodingChangeException;
 import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import org.htmlparser.util.ParserFeedback;
 
 public class URLParser<E> extends AbstractStoppableTask<E>
   implements Iterator<PageNodes>, StoppableTask, Serializable {
@@ -131,6 +132,22 @@ public class URLParser<E> extends AbstractStoppableTask<E>
     factory.registerTag(new Link());
     
     this.parser.setNodeFactory(factory);
+    
+    this.parser.setFeedback(new ParserFeedback(){
+        @Override
+        public void info(String message) {
+            XLogger.getInstance().log(Level.INFO, message, this.getClass());
+            
+        }
+        @Override
+        public void warning(String message) {
+            XLogger.getInstance().log(Level.WARNING, message, this.getClass());
+        }
+        @Override
+        public void error(String message, ParserException e) {
+            XLogger.getInstance().log(Level.WARNING, message, this.getClass(), e);
+        }
+    });
   }
   
   protected void preParse(String url) {}
@@ -198,6 +215,8 @@ public class URLParser<E> extends AbstractStoppableTask<E>
     
     String rawUrl = (String)this.pageLinks.get(this.parsePos);
 
+    PageNodes page;
+    
     try {
         
       preParse(rawUrl);
@@ -209,22 +228,23 @@ public class URLParser<E> extends AbstractStoppableTask<E>
       String url = this.formatter == null ? rawUrl.replace("&amp;", "&") : (String)this.formatter.format(rawUrl.replace("&amp;", "&"));
 
       logger.log(Level.FINER, "Raw: {0}\nURL: {1}", cls, rawUrl, url);
-      
+
       NodeList list = parse(url);
       
-      PageNodes page = new PageNodesImpl(rawUrl, url, list);
+      page = new PageNodesImpl(rawUrl, url, list);
       
-      if (isNoFollow(page)) {}
+      if (isNoFollow(page)) {
+      
+      }
 
       postParse(page);
       
-      moveForward();
-      
-      return page;
-    }
-    catch (Exception e)
-    {
+    }catch (Exception e){
+        
+      page = null;  
+        
       boolean added = this.failed.add(rawUrl);
+
       if (logger.isLoggable(Level.FINE, cls)) {
         logger.log(Level.WARNING, "Parse failed for: " + rawUrl, cls, e);
       } else {
@@ -232,8 +252,11 @@ public class URLParser<E> extends AbstractStoppableTask<E>
             logger.log(Level.WARNING, "Parse failed for: {0}. Reason: {1}", cls, rawUrl, e.toString());
         }
       }
+    }finally{
+      this.moveForward();
     }
-    return null;
+    
+    return page;
   }
   
   private void moveForward() {
