@@ -1,6 +1,6 @@
 package com.scrapper.util;
 
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 
 public class LocalLinkGen
   implements Formatter<String>

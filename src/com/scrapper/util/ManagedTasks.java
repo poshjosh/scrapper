@@ -35,15 +35,16 @@ public abstract class ManagedTasks<T extends StoppableTask>
   
   private void init() {
     this.timeout = getInt("siteSearch.timeout");
-    XLogger.getInstance().log(Level.FINER, "Setting timeout to: {0} for {1}", getClass(), Integer.valueOf(this.timeout), this);
+    XLogger.getInstance().log(Level.FINER, "Setting timeout to: {0} for {1}", 
+            getClass(), this.timeout, this);
     int maxConcurrent = getInt("siteSearch.maxConcurrentProcesses");
     setMaxConcurrentProcesses(maxConcurrent);
   }
   
   protected abstract T newTask(String paramString);
   
-  public void reset()
-  {
+  @Override
+  public void reset() {
     throw new UnsupportedOperationException("Not supported");
   }
   
@@ -75,16 +76,13 @@ public abstract class ManagedTasks<T extends StoppableTask>
   
 
   @Override
-  public Integer doCall()
-  {
+  protected Integer doCall() {
+      
     checkTimeout();
     
-    try
-    {
+    try {
       return super.doCall();
-    }
-    finally
-    {
+    } finally {
       shutdownAndAwaitTermination(this.timeout, TimeUnit.MILLISECONDS);
     }
   }
@@ -201,7 +199,6 @@ public abstract class ManagedTasks<T extends StoppableTask>
     return getClass().getName();
   }
   
-  @Override
   public long getTimeout() {
     return this.timeout;
   }

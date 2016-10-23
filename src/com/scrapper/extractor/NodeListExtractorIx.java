@@ -1,5 +1,6 @@
 package com.scrapper.extractor;
 
+import com.bc.webdatex.extractor.DataExtractor;
 import com.bc.task.StoppableTask;
 import java.io.Serializable;
 import java.util.Map;
@@ -9,9 +10,9 @@ import org.htmlparser.Text;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-public abstract interface NodeListExtractorIx
-  extends DataExtractor<NodeList>, Serializable, StoppableTask
-{
+public interface NodeListExtractorIx 
+    extends DataExtractor<NodeList>, Serializable, StoppableTask {
+    
   public abstract Map extractData(NodeList paramNodeList)
     throws ParserException;
   

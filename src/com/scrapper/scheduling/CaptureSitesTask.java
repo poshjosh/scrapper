@@ -5,7 +5,6 @@ import com.bc.util.XLogger;
 import com.scrapper.SiteCapturer;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -42,7 +41,7 @@ public class CaptureSitesTask extends AbstractTaskList<String> {
     this.loop = true;
   }
   
-  public Integer doCall() {
+  protected Integer doCall() {
     try {
       return super.doCall();
     } catch (RuntimeException e) {
@@ -88,10 +87,10 @@ public class CaptureSitesTask extends AbstractTaskList<String> {
         if (!currentName.equals(sitename)) {
           createnew = true;
         } else {
-          Date startTime = this.current.getStartTime();
+          final long startTime = this.current.getStartTime();
           Calendar cal = Calendar.getInstance();
           cal.add(11, -this.timeoutHours);
-          if (startTime.before(cal.getTime())) {
+          if (startTime < cal.getTimeInMillis()) {
             createnew = true;
           }
         }

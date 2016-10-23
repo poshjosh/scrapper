@@ -1,7 +1,7 @@
 package com.scrapper.formatter;
 
 import com.bc.util.XLogger;
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 import com.scrapper.util.Util;
 import java.io.Serializable;
 import java.util.logging.Level;

@@ -8,9 +8,8 @@ import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 
-public class DefaultBoundsFilter
-  extends ParentNodeBoundsFilter
-{
+public class DefaultBoundsFilter extends ParentNodeBoundsFilter {
+    
   private boolean withinHtml;
   private boolean withinHead;
   private boolean withinTitle;

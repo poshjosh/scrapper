@@ -39,7 +39,7 @@ public class DefaultAttributesExtractor implements AttributesExtractor, Serializ
         
         for(String name:this.attributesToExtract) {
             
-            Attribute attr = tag.getAttributeEx(name);
+            Attribute attr = tag.getAttribute(name);
             
             if(attr == null) {
                 continue;

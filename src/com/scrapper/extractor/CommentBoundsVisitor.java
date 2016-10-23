@@ -8,7 +8,7 @@ import org.htmlparser.Node;
 import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
-import org.htmlparser.visitors.NodeVisitor;
+import org.htmlparser.visitors.AbstractNodeVisitor;
 
 
 
@@ -23,7 +23,7 @@ import org.htmlparser.visitors.NodeVisitor;
 
 
 public class CommentBoundsVisitor
-  extends NodeVisitor
+  extends AbstractNodeVisitor
   implements HasBounds, Serializable
 {
   private boolean doneAtNextNode;

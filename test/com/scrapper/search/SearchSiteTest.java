@@ -5,13 +5,13 @@ import com.bc.util.XLogger;
 import com.scrapper.CapturerApp;
 import com.scrapper.PageDataConsumer;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import com.bc.webdatex.nodedata.Dom;
 
 /**
  *
@@ -89,7 +89,7 @@ e.printStackTrace();
                 throw new UnsupportedOperationException("Not supported yet.");
             }
             @Override
-            protected boolean doConsume(PageNodes page, Map data) {
+            protected boolean doConsume(Dom page, Map data) {
 System.out.println("= x = x = x = x = x = x Consuming: "+data);
                 return true;
             }

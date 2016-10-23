@@ -1,5 +1,6 @@
 package com.scrapper;
 
+import com.bc.webdatex.URLParser;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
@@ -20,47 +21,49 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
   
   public DefaultSiteCapturer() {}
   
-  public DefaultSiteCapturer(CapturerContext context)
-  {
+  public DefaultSiteCapturer(CapturerContext context) {
+      
     super(context);
     
     init(context, null, false, true);
   }
   
-  public DefaultSiteCapturer(CapturerContext context, List<String> urlList)
-  {
+  public DefaultSiteCapturer(CapturerContext context, List<String> urlList) {
+      
     super(context);
     
     init(context, urlList, false, true);
   }
   
-
-  public DefaultSiteCapturer(CapturerContext context, List<String> urlList, boolean resume, boolean resumable)
-  {
+  public DefaultSiteCapturer(
+          CapturerContext context, List<String> urlList, 
+          boolean resume, boolean resumable) {
+      
     super(context);
     
     init(context, urlList, resume, resumable);
   }
   
-  public DefaultSiteCapturer(String sitename)
-  {
+  public DefaultSiteCapturer(String sitename) {
     this(sitename, null, -1, -1, false, true);
   }
   
-  public DefaultSiteCapturer(String sitename, List<String> urls)
-  {
+  public DefaultSiteCapturer(String sitename, List<String> urls) {
+      
     this(sitename, urls, -1, -1, false, true);
   }
   
-
-  public DefaultSiteCapturer(String sitename, List<String> urls, boolean resume, boolean resumable)
-  {
+  public DefaultSiteCapturer(
+      String sitename, List<String> urls, boolean resume, boolean resumable) {
+      
     this(sitename, urls, -1, -1, resume, resumable);
   }
   
 
-  public DefaultSiteCapturer(String sitename, List<String> urls, int batchSize, int batchInterval, boolean resume, boolean resumable)
-  {
+  public DefaultSiteCapturer(
+      String sitename, List<String> urls, int batchSize, int batchInterval, 
+          boolean resume, boolean resumable) {
+      
     ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
     
     JsonConfig config = factory.getConfig(sitename);
@@ -84,17 +87,15 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     }
   }
   
-
-
-
-
-  private void init(CapturerContext context, List<String> urlList, boolean resume, boolean resumable)
-  {
+  private void init(
+      CapturerContext context, List<String> urlList, 
+      boolean resume, boolean resumable) {
+      
     setLogin(true);
     setContext(context);
     
     URLParser urlParser = createCrawler(context, urlList, resume, resumable);
-    setCrawler(urlParser);
+    setUrlParser(urlParser);
     
     Scrapper scrapper = createScrapper(context, urlList, resume, resumable);
     setScrapper(scrapper);
@@ -105,25 +106,13 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     XLogger.getInstance().log(Level.FINE, "Created:: {0}", getClass(), this);
   }
   
-
-
-  protected URLParser createCrawler(CapturerContext context, List<String> urlList, final boolean resume, final boolean resumable)
-  {
+  protected URLParser createCrawler(
+          CapturerContext context, List<String> urlList, 
+          final boolean resume, final boolean resumable) {
     ResumableUrlParser urlParser;
     
-    if (urlList != null)
-    {
-      urlParser = new ResumableUrlParser(context.getConfig().getName(), urlList)
-      {
-        public boolean isResumable()
-        {
-          return resumable;
-        }
-        
-        public boolean isResume() {
-          return resume;
-        }
-      };
+    if (urlList != null) {
+      urlParser = new ResumableUrlParser(urlList, resumable, resume);
     }
     else {
       JsonConfig config = context.getConfig();
@@ -131,44 +120,17 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
       ConfigURLList urllist = new ConfigURLList();
       
       urllist.update(config, "counter");
-      if (!urllist.isEmpty())
-      {
+      
+      if (!urllist.isEmpty()) {
+          
         ConfigURLPartList serialPart = ConfigURLPartList.getSerialPart(config, "counter");
         if (serialPart == null) {
-          urlParser = new MultipleSourcesCrawler(context, urllist)
-          {
-            public boolean isResumable() {
-              return resumable;
-            }
-            
-            public boolean isResume() {
-              return resume;
-            }
-          };
+          urlParser = new MultipleSourcesCrawler(context, urllist, resumable, resume);
         } else {
-          urlParser = new DirectSourcesParser(context, urllist)
-          {
-            public boolean isResumable() {
-              return resumable;
-            }
-            
-            public boolean isResume() {
-              return resume;
-            }
-          };
+          urlParser = new DirectSourcesParser(context, urllist);
         }
-      }
-      else {
-        urlParser = new Crawler(context)
-        {
-          public boolean isResumable() {
-            return resumable;
-          }
-          
-          public boolean isResume() {
-            return resume;
-          }
-        };
+      } else {
+        urlParser = new Crawler(context, resumable, resume);
       }
     }
     
@@ -179,21 +141,12 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     return urlParser;
   }
   
-
-
-
-  protected Scrapper createScrapper(CapturerContext context, List<String> urlList, final boolean resume, final boolean resumable)
-  {
-    ResumableScrapper scrapper = new ResumableScrapper(context)
-    {
-      public boolean isResumable() {
-        return resumable;
-      }
+  protected Scrapper createScrapper(
+          CapturerContext context, List<String> urlList, 
+          final boolean resume, final boolean toResume){
       
-      public boolean isResume() {
-        return resume;
-      }
-    };
+    ResumableScrapper scrapper = new ResumableScrapper(context, toResume, resume);
+    
     if (this.scrappResumeHandler != null) {
       scrapper.setResumeHandler(this.scrappResumeHandler);
     }
@@ -208,11 +161,10 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     return null;
   }
   
-  private boolean hasUploaderSettings(CapturerContext context)
-  {
+  private boolean hasUploaderSettings(CapturerContext context) {
+      
     URL url;
-    try
-    {
+    try {
       String urlStr = AppProperties.getProperty("insertUrl");
       if ((urlStr == null) || (urlStr.isEmpty())) {
         return false;
@@ -229,8 +181,7 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     return (m != null) && (!m.isEmpty());
   }
   
-  public ResumeHandler getParseResumeHandler()
-  {
+  public ResumeHandler getParseResumeHandler() {
     return this.parseResumeHandler;
   }
   

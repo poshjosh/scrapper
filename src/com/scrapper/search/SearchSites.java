@@ -2,9 +2,9 @@ package com.scrapper.search;
 
 import com.scrapper.PageDataConsumer;
 import com.scrapper.util.ManagedTasks;
-import com.scrapper.util.PageNodes;
 import java.util.List;
 import java.util.Map;
+import com.bc.webdatex.nodedata.Dom;
 
 
 
@@ -51,7 +51,7 @@ public abstract class SearchSites
         SearchSites.this.preTaskUpdateTimeTaken(getName());
       }
       
-      protected void postParse(PageNodes page) {
+      protected void postParse(Dom page) {
         SearchSites.this.postTaskUpdateTimeTaken(getName(), getLastRequestTime(), getLastRequestTimeTaken());
 
       }

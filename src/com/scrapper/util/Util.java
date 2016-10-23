@@ -215,7 +215,7 @@ public final class Util {
             if (!name.equals(expectedChild.toUpperCase())) { 
                 return false;
             }
-            Attribute attr = tag.getAttributeEx(childAttrKey);
+            Attribute attr = tag.getAttribute(childAttrKey);
             
             return (attr != null) && (childAttrVal.equals(attr.getValue())); } }, true);
         
@@ -488,7 +488,7 @@ public final class Util {
   private static StringBuilder doAppendTag(Node node, StringBuilder builder, int maxLength) { Tag tag = null;
     if ((node instanceof Tag)) {
       tag = (Tag)node;
-      for (Object attr : tag.getAttributesEx()) {
+      for (Object attr : tag.getAttributes()) {
         builder.append(toString(attr, maxLength));
       }
     }
@@ -568,7 +568,7 @@ public final class Util {
     if (!(node instanceof Tag)) return false;
     Tag tag = (Tag)node;
     if (!tag.getTagName().equals("IMG")) return false;
-    String src = tag.getAttribute("src");
+    String src = tag.getAttributeValue("src");
     if (src == null) return false;
     return src.endsWith(name);
   }

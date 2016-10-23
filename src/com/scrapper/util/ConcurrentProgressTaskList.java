@@ -5,6 +5,7 @@ import com.bc.task.StoppableTask;
 import com.bc.util.Util;
 import com.bc.util.XLogger;
 import com.bc.util.concurrent.NamedThreadFactory;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +62,7 @@ public abstract class ConcurrentProgressTaskList extends AbstractStoppableTaskLi
                 new NamedThreadFactory(threadFactoryName));
       }
       
-      this.executorService.submit(task);
+      this.executorService.submit((Callable)task);
       
       this.submitted += 1;
 

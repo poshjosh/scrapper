@@ -7,7 +7,7 @@ import com.bc.jpa.fk.Keywords;
 import com.bc.json.config.JsonConfig;
 import com.bc.net.ConnectionManager;
 import com.bc.util.XLogger;
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 import com.scrapper.config.Config;
 import static com.scrapper.config.Config.Formatter.replaceRegex;
 import static com.scrapper.config.Config.Formatter.set;
@@ -79,7 +79,7 @@ public class DefaultFormatter
       this.jobRequestFields.addAll(Arrays.asList(arr));
     }
     
-    this.defaultValues = config.getMap(new Object[] { Config.Formatter.defaultValues });
+    this.defaultValues = context.getSettings().getDefaults();
     
     Object[] datePatterns = config.getArray(new Object[] { Config.Formatter.datePatterns });
     
@@ -103,8 +103,6 @@ public class DefaultFormatter
   {
     String defaultTableName = this.context.getConfig().getList(new Object[] { Config.Site.tables }).get(0).toString();
     
-
-
     return Util.getTableValue(parameters, defaultTableName);
   }
   

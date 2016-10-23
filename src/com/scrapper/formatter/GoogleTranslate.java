@@ -3,7 +3,7 @@ package com.scrapper.formatter;
 import com.bc.io.CharFileIO;
 import com.bc.net.ConnectionManager;
 import com.bc.util.XLogger;
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;

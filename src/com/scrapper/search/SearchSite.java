@@ -11,15 +11,16 @@ import com.scrapper.ResumeHandler;
 import com.scrapper.Scrapper;
 import com.scrapper.config.Config;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import com.bc.webdatex.nodedata.Dom;
+import java.io.IOException;
+import org.htmlparser.util.ParserException;
 
-public class SearchSite
-  extends BaseSiteCapturer
-{
+public class SearchSite extends BaseSiteCapturer {
+    
   private long lastRequestTime;
   private int lastRequestTimeTaken;
   private String productTable;
@@ -30,57 +31,46 @@ public class SearchSite
   
   public SearchSite() {}
   
-  public SearchSite(String sitename)
-  {
+  public SearchSite(String sitename) {
     this(CapturerApp.getInstance().getConfigFactory(true).getContext(sitename));
   }
   
-  public SearchSite(CapturerContext context)
-  {
+  public SearchSite(CapturerContext context) {
+      
     super(context);
     
-    if (!context.isUrlProducing())
-    {
+    if (!context.isUrlProducing()) {
       throw new IllegalArgumentException("Url producer could not be created for: " + context.getConfig().getName());
     }
     
     this.urlProducer = createURLProducer(context);
   }
   
-  protected void handleException(Exception e)
-  {
+  @Override
+  protected void onError(Exception e) {
     stop();
   }
   
-
-
   public void update(String tableName, Map searchParameters, String searchTerm)
-    throws UnsupportedOperationException
-  {
-    XLogger.getInstance().log(Level.FINER, "Category: {0}, search text: {1}, parameters: {2}", getClass(), tableName, searchTerm, searchParameters);
+    throws UnsupportedOperationException {
+      
+    XLogger.getInstance().log(Level.FINER, "Category: {0}, search text: {1}, parameters: {2}", 
+            getClass(), tableName, searchTerm, searchParameters);
     
-
     this.productTable = tableName;
     
     setLogin(false);
     
     CapturerContext context = getContext();
     
-
-
-
-
-
-    boolean resume = false;
+    final boolean toResume = false;
     
-
-
-    boolean resumable = true;
+    final boolean resumable = true;
     
-    MultipleSourcesCrawler crawler = createCrawler(context, false, true);
-    setCrawler(crawler);
+    MultipleSourcesCrawler crawler = createCrawler(context, toResume, resumable);
+    setUrlParser(crawler);
     
-    Scrapper scrapper = createScrapper(context, false, true, searchTerm);
+    Scrapper scrapper = createScrapper(context, toResume, resumable, searchTerm);
     setScrapper(scrapper);
     
     doUpdate(tableName, searchParameters, searchTerm);
@@ -89,16 +79,17 @@ public class SearchSite
 
   protected void preParse(String url) {}
   
-  protected void postParse(PageNodes page) {}
+  protected void postParse(Dom page) {}
   
-  public void run()
-  {
+  @Override
+  public Integer doCall() throws IOException, ParserException {
+      
     if (!isHasSources()) {
       XLogger.getInstance().log(Level.WARNING, "RemoteSearch has no sources for: {0}", getClass(), getTaskName());
-      return;
+      return 0;
     }
     
-    super.run();
+    return super.doCall();
   }
   
   public boolean isHasSources() {
@@ -150,35 +141,32 @@ public class SearchSite
     }
     
 
-    getCrawler().getPageLinks().clear();
+    getUrlParser().getPageLinks().clear();
     
     if (!isHasSources())
     {
       throw new IllegalArgumentException("Search URLs could not be generated for: " + this);
     }
     
-    ((MultipleSourcesCrawler)getCrawler()).setSources(this.urls);
+    ((MultipleSourcesCrawler)getUrlParser()).setSources(this.urls);
   }
   
-
-
-
-  protected MultipleSourcesCrawler createCrawler(CapturerContext context, final boolean resume, final boolean resumable)
-  {
+  protected MultipleSourcesCrawler createCrawler(
+          CapturerContext context, final boolean resume, final boolean resumable) {
+      
     final HasUrlSubs hasUrlSubs = (this.urlProducer instanceof HasUrlSubs) ? (HasUrlSubs)this.urlProducer : null;
     
 
-    MultipleSourcesCrawler multiCrawler = new MultipleSourcesCrawler(context, this.urls)
-    {
+    MultipleSourcesCrawler multiCrawler = new MultipleSourcesCrawler(context, this.urls, resumable, resume) {
+        
       int parsed;
       int numberOfSources = -1;
       
-
-      protected void preParse(String url)
-      {
+      @Override
+      protected void preParse(String url) {
+          
         SearchSite.this.lastRequestTime = System.currentTimeMillis();
         
-
         SearchSite.this.lastRequestTimeTaken = -1;
         
         SearchSite.this.preParse(url);
@@ -186,12 +174,12 @@ public class SearchSite
         super.preParse(url);
       }
       
-
-      protected void postParse(PageNodes page)
-      {
+      @Override
+      protected void postParse(Dom dom) {
+          
         SearchSite.this.lastRequestTimeTaken = ((int)(System.currentTimeMillis() - SearchSite.this.lastRequestTime));
         
-        SearchSite.this.postParse(page);
+        SearchSite.this.postParse(dom);
         
         if (this.numberOfSources == -1) {
           this.numberOfSources = getSources().size();
@@ -201,15 +189,15 @@ public class SearchSite
           setStopCollectingLinks(true);
         }
         
-        super.postParse(page);
+        super.postParse(dom);
       }
       
-
-
+      @Override
       protected void checkListGenerationMode(JsonConfig config) {}
       
-      public boolean isToBeCrawled(String link)
-      {
+      @Override
+      public boolean isToBeCrawled(String link) {
+          
         boolean generated = SearchSite.this.urls.contains(link);
         boolean output;
         if (hasUrlSubs == null) {
@@ -225,21 +213,16 @@ public class SearchSite
           }
           output = (foundSub) || (generated) || (super.isToBeCrawled(link));
         }
-        XLogger.getInstance().log(Level.FINER, "To be crawled: {0}, url: {1}", getClass(), Boolean.valueOf(output), link);
+        
+        XLogger.getInstance().log(Level.FINER, "To be crawled: {0}, url: {1}", 
+                getClass(), output, link);
+        
         return output;
       }
       
-      public String getTaskName()
-      {
+      @Override
+      public String getTaskName() {
         return SearchSite.class.getName() + "$" + MultipleSourcesCrawler.class.getName();
-      }
-      
-      public boolean isResumable() {
-        return resumable;
-      }
-      
-      public boolean isResume() {
-        return resume;
       }
     };
     
@@ -249,46 +232,33 @@ public class SearchSite
     
     multiCrawler.setBatchInterval(0L);
     
-
     multiCrawler.setReconnectAfterExceptionFilter(null);
     
     return multiCrawler;
   }
   
-
-
-
-
-  protected Scrapper createScrapper(CapturerContext context, final boolean resume, final boolean resumable, final String searchTerm)
-  {
+  protected Scrapper createScrapper(
+          CapturerContext context, final boolean resume, final boolean resumable, final String searchTerm) {
+      
     Boolean bval = context.getConfig().getBoolean(new Object[] { Config.Extractor.hasExplicitLinks });
-    final boolean hasExplicitLinks = bval == null ? false : bval.booleanValue();
     
-    ResumableScrapper scrapper = new ResumableScrapper(context)
-    {
+    final boolean hasExplicitLinks = bval == null ? false : bval;
+    
+    ResumableScrapper scrapper = new ResumableScrapper(context, resumable, resume) {
+        
       @Override
       protected boolean isToBeScrapped(String link) {
         boolean output;
-        if (hasExplicitLinks)
-        {
+        if (hasExplicitLinks) {
+            
           boolean match = link.toLowerCase().contains(searchTerm.toLowerCase());
           
           output = (match) && (super.isToBeScrapped(link));
-        }
-        else
-        {
+        } else {
           output = super.isToBeScrapped(link);
         }
         
         return output;
-      }
-      
-      public boolean isResumable() {
-        return resumable;
-      }
-      
-      public boolean isResume() {
-        return resume;
       }
     };
     
@@ -299,18 +269,16 @@ public class SearchSite
     return scrapper;
   }
   
-
-  public void setContext(CapturerContext context)
-    throws UnsupportedOperationException
-  {
+  @Override
+  public void setContext(CapturerContext context) throws UnsupportedOperationException {
+      
     super.setContext(context);
     
     this.urlProducer = createURLProducer(context);
   }
   
   protected URLProducer createURLProducer(CapturerContext context)
-    throws UnsupportedOperationException
-  {
+    throws UnsupportedOperationException {
     if (!context.isUrlProducing())
     {
       throw new IllegalArgumentException("Url producer could not be created for: " + context.getConfig().getName());

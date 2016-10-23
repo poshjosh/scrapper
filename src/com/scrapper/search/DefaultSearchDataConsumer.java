@@ -7,10 +7,10 @@ import com.scrapper.CapturerApp;
 import com.scrapper.ContextDataConsumer;
 import com.scrapper.config.ScrapperConfigFactory;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
+import com.bc.webdatex.nodedata.Dom;
 
 
 
@@ -59,7 +59,7 @@ public abstract class DefaultSearchDataConsumer
 
 
 
-  protected void addTableName(PageNodes page, Map<String, Object> data)
+  protected void addTableName(Dom page, Map<String, Object> data)
   {
     data.put(getTableNameKey(), this.productTable);
     
@@ -67,7 +67,7 @@ public abstract class DefaultSearchDataConsumer
   }
   
 
-  protected boolean doConsume(PageNodes page, Map data)
+  protected boolean doConsume(Dom page, Map data)
   {
     Level level = Level.FINER;
     

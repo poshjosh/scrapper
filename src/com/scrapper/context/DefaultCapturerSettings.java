@@ -6,86 +6,87 @@ import com.scrapper.config.Config;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
-public class DefaultCapturerSettings
-  implements Serializable, CapturerSettings
-{
-  private JsonConfig config;
-  
-  public DefaultCapturerSettings()
-  {
-    this(null);
-  }
+public class DefaultCapturerSettings implements Serializable, CapturerSettings {
+    
+  private final JsonConfig config;
   
   public DefaultCapturerSettings(JsonConfig config) {
     this.config = config;
   }
   
-  public JsonConfig getConfig() {
+  public final JsonConfig getConfig() {
     return this.config;
   }
-  
-  public void setConfig(JsonConfig config) {
-    this.config = config;
+
+  @Override
+  public Map getDefaults() {
+    Map output = config.getMap(Config.Formatter.defaultValues);
+    return output == null ? Collections.EMPTY_MAP : output;  
+  }
+
+  @Override
+  public String[] getDatePatterns(){
+    Object[] arr = this.config.getArray(new Object[] { Config.Formatter.datePatterns });
+    return this.stringCopyOf(arr);
   }
   
+  @Override
+  public String[] getUrlDatePatterns(){
+    Object[] arr = this.config.getArray(new Object[] { Config.Formatter.urlDatePatterns });
+    return this.stringCopyOf(arr);
+  }
+  
+  @Override
   public String[] getTransverse(String id) {
     return getStringArray(id, Config.Extractor.transverse);
   }
   
-  public String[] getTextToDisableOn(String id)
-  {
+  @Override
+  public String[] getTextToDisableOn(String id) {
     return getStringArray(id, Config.Extractor.textToDisableOn);
   }
   
-  public String[] getTextToReject(String id)
-  {
+  @Override
+  public String[] getTextToReject(String id) {
     return getStringArray(id, Config.Extractor.textToReject);
   }
   
-  public Boolean isConcatenateMultipleExtracts()
-  {
-    Boolean b = getConfig().getBoolean(new Object[] { Config.Extractor.append });
-    return b == null ? null : b;
+  @Override
+  public boolean isConcatenateMultipleExtracts(String id, boolean defaultValue) {
+    Boolean b = this.getBoolean(id, Config.Extractor.append, defaultValue);
+    return b;
   }
   
-  public Boolean isConcatenateMultipleExtracts(String id)
-  {
-    Boolean b = getConfig().getBoolean(new Object[] { id, Config.Extractor.append });
-    return b == null ? null : b;
-  }
-  
-  public String getLineSeparator()
-  {
+  @Override
+  public String getLineSeparator() {
     return getConfig().getString(new Object[] { Config.Extractor.lineSeparator });
   }
   
-  public String getPartSeparator()
-  {
+  @Override
+  public String getPartSeparator() {
     return getConfig().getString(new Object[] { Config.Extractor.partSeparator });
   }
   
-  public String getDefaultTitle()
-  {
+  @Override
+  public String getDefaultTitle() {
     return getConfig().getString(new Object[] { Config.Extractor.defaultTitle });
   }
   
-
-  public String[] getColumns(String id)
-  {
+  @Override
+  public String[] getColumns(String id) {
     return getStringArray(id, Config.Extractor.columns);
   }
   
-
-  public String[] getNodesToRetainAttributes(String id)
-  {
+  @Override
+  public String[] getNodesToRetainAttributes(String id) {
+      
     JsonConfig cfg = getConfig();
     
-
-
-
     List defaultNodes = cfg.getList(new Object[] { Config.Extractor.nodesToRetainAttributes });
     List nodes = cfg.getList(new Object[] { id, Config.Extractor.nodesToRetainAttributes });
     
@@ -103,38 +104,19 @@ public class DefaultCapturerSettings
     return nodesToRetainAttributes;
   }
   
-
-
-
-  public boolean isReplaceNonBreakingSpace(String id)
-  {
-    Boolean defaultVal = getConfig().getBoolean(new Object[] { Config.Extractor.replaceNonBreakingSpace });
-    boolean replaceNonBreakingSpace;
-    if (defaultVal == null) {
-      replaceNonBreakingSpace = this.config.getBoolean(new Object[] { id, Config.Extractor.replaceNonBreakingSpace }).booleanValue();
-    }
-    else {
-      replaceNonBreakingSpace = defaultVal.booleanValue();
-    }
-    return replaceNonBreakingSpace;
+  @Override
+  public boolean isReplaceNonBreakingSpace(String id, boolean defaultValue) {
+    return this.getBoolean(id, Config.Extractor.replaceNonBreakingSpace, defaultValue);
   }
   
-
-
-  public String[] getAttributesToAccept(String id)
-  {
+  @Override
+  public String[] getAttributesToAccept(String id) {
     return getStringArray(id, Config.Extractor.attributesToAccept);
   }
   
-
-  public boolean isExtractAttributes(String id)
-  {
-    return getAttributesToExtract(id) != null;
-  }
-  
-
-  public String[] getAttributesToExtract(String id)
-  {
+  @Override
+  public String[] getAttributesToExtract(String id) {
+      
     String[] arr = getStringArray(id, Config.Extractor.attributesToExtract);
     
     XLogger.getInstance().log(Level.FINER, "Attributes to extract: {0}", getClass(), arr == null ? null : Arrays.toString(arr));
@@ -142,33 +124,30 @@ public class DefaultCapturerSettings
     return arr;
   }
   
-
-  public String[] getNodeTypesToAccept(String id)
-  {
+  @Override
+  public String[] getNodeTypesToAccept(String id) {
     return toLowercaseStringArray(getStringArray(id, Config.Extractor.nodeTypesToAccept));
   }
   
-
-  public String[] getNodeTypesToReject(String id)
-  {
+  @Override
+  public String[] getNodeTypesToReject(String id)  {
     return toLowercaseStringArray(getStringArray(id, Config.Extractor.nodeTypesToReject));
   }
   
-
-  public String[] getNodesToAccept(String id)
-  {
+  @Override
+  public String[] getNodesToAccept(String id) {
     return toLowercaseStringArray(getStringArray(id, Config.Extractor.nodesToAccept));
   }
   
-
-
-
-  public String[] getNodeToReject(String id) { return toLowercaseStringArray(getStringArray(id, Config.Extractor.nodesToReject)); }
+  @Override
+  public String[] getNodeToReject(String id) { 
+      return toLowercaseStringArray(getStringArray(id, Config.Extractor.nodesToReject)); 
+  }
   
   private String[] toLowercaseStringArray(Object[] arr) {
     String[] output;
     if (arr == null) {
-      output = null;
+      output = null; //new String[0];
     } else {
       output = new String[arr.length];
       for (int i = 0; i < arr.length; i++) {
@@ -178,23 +157,32 @@ public class DefaultCapturerSettings
     return output;
   }
   
-
-  private String[] getStringArray(String first, Object second)
-  {
-    Object[] src = getConfig().getArray(new Object[] { first, second });
+  private String[] getStringArray(String first, Object second) {
+      
+    Object[] arr = getConfig().getArray(new Object[] { first, second });
     
-    if (src == null)
-    {
-
-      src = getConfig().getArray(new Object[] { second });
+    if (arr == null) {
+      arr = getConfig().getArray(new Object[] { second });
     }
     
+    return this.stringCopyOf(arr);
+  }
+
+  private boolean getBoolean(String first, Object second, boolean defaultValue) {
+    Boolean bool = getConfig().getBoolean(new Object[] { first, second });
+    if (bool == null) {
+      bool = config.getBoolean(new Object[] { second });
+    }
+    return bool==null?defaultValue:bool;
+  }  
+  
+  private String[] stringCopyOf(Object... src)  {
     String[] output;
     if (src != null) {
       output = new String[src.length];
       System.arraycopy(src, 0, output, 0, src.length);
     } else {
-      output = null;
+      output = null; //new String[0];
     }
     
     return output;

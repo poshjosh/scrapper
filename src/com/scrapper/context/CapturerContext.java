@@ -2,10 +2,10 @@ package com.scrapper.context;
 
 import com.bc.jpa.fk.Keywords;
 import com.bc.json.config.JsonConfig;
-import com.bc.webdatex.extractor.AttributesExtractor;
-import com.scrapper.Filter;
-import com.scrapper.Formatter;
-import com.scrapper.extractor.DataExtractor;
+import com.bc.webdatex.extractor.node.AttributesExtractor;
+import com.bc.webdatex.filter.Filter;
+import com.bc.webdatex.formatter.Formatter;
+import com.bc.webdatex.extractor.DataExtractor;
 import com.scrapper.extractor.MultipleNodesExtractorIx;
 import com.scrapper.search.URLProducer;
 import java.util.Map;

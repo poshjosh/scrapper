@@ -6,32 +6,7 @@ import org.htmlparser.filters.HasChildFilter;
 import org.htmlparser.filters.HasParentFilter;
 import org.htmlparser.filters.OrFilter;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public class ParentNodeBoundsFilter
-  extends BoundsFilter
+public class ParentNodeBoundsFilter extends BoundsFilter
 {
   public ParentNodeBoundsFilter(JsonConfig props, boolean parentFilterIsDirectMode)
   {
@@ -52,12 +27,6 @@ public class ParentNodeBoundsFilter
     {
       NodeFilter target = getFilter();
       
-
-
-
-
-
-
       HasChildFilter hasChild = new HasChildFilter();
       hasChild.setChildFilter(target);
       hasChild.setRecursive(true);

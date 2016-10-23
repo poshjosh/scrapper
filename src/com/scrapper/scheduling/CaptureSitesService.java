@@ -20,14 +20,12 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
   private boolean resumable;
   private CaptureSitesTask task;
   
-  public CaptureSitesService()
-    throws IOException, ClassNotFoundException
-  {
+  public CaptureSitesService() throws IOException, ClassNotFoundException {
     this(true, true);
   }
   
-  public CaptureSitesService(boolean resume, boolean resumable) throws IOException, ClassNotFoundException
-  {
+  public CaptureSitesService(boolean resume, boolean resumable) 
+      throws IOException, ClassNotFoundException {
     this.resume = resume;
     this.resumable = resumable;
     if (resume) {
@@ -44,8 +42,8 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
   }
   
 
-  public Integer doCall() {
-      
+  @Override
+  protected Integer doCall() {
     if (this.task != null){
       return this.task.call();
     }else{
@@ -53,13 +51,13 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
     }
   }
   
-
-  public void stop()
-  {
+  @Override
+  public void stop() {
+      
     super.stop();
     
-    if (this.task != null)
-    {
+    if (this.task != null) {
+        
       this.task.stop();
       
       if (isResumable()) {
@@ -72,8 +70,8 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
     return getClass().getName() + ".ser";
   }
   
-  public CaptureSitesTask load() throws IOException, ClassNotFoundException
-  {
+  public CaptureSitesTask load() throws IOException, ClassNotFoundException {
+      
     String filePath = getFilePath();
     
     if (filePath == null) {
@@ -93,13 +91,10 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
       ois = new ObjectInputStream(bis);
       
       return (CaptureSitesTask)ois.readObject();
-    }
-    finally
-    {
+    } finally {
       if (ois != null) try { ois.close(); } catch (IOException e) {}
       if (bis != null) try { bis.close(); } catch (IOException e) {}
-      if (fis != null) try { fis.close();
-        } catch (IOException e) {}
+      if (fis != null) try { fis.close(); } catch (IOException e) {}
     }
   }
   
@@ -115,8 +110,8 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
     BufferedOutputStream bos = null;
     ObjectOutputStream oos = null;
     
-    try
-    {
+    try {
+        
       file = new File(filePath);
       fos = new FileOutputStream(file, false);
       bos = new BufferedOutputStream(fos);
@@ -125,18 +120,13 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
       oos.writeObject(task);
       
       return true;
-    }
-    catch (IOException e)
-    {
+    } catch (IOException e) {
       XLogger.getInstance().log(Level.WARNING, "Failed to save " + task + " to " + filePath, getClass(), e);
-      
-
       if (!file.delete()) {
         file.deleteOnExit();
       }
     }
-    finally
-    {
+    finally  {
       if (oos != null) try { oos.close(); } catch (IOException e) { Logger.getLogger(getClass().getName()).log(Level.WARNING, "", e); }
       if (bos != null) try { bos.close(); } catch (IOException e) { Logger.getLogger(getClass().getName()).log(Level.WARNING, "", e); }
       if (fos != null) try { fos.close(); } catch (IOException e) { Logger.getLogger(getClass().getName()).log(Level.WARNING, "", e);
@@ -145,18 +135,18 @@ public class CaptureSitesService extends AbstractStoppableTask<Integer> implemen
     return false;
   }
   
-  public boolean isResumable()
-  {
+  @Override
+  public boolean isResumable() {
     return this.resumable;
   }
   
-  public boolean isResume()
-  {
+  @Override
+  public boolean isToResume() {
     return this.resume;
   }
   
-  public String getTaskName()
-  {
+  @Override
+  public String getTaskName() {
     return getClass().getName();
   }
 }

@@ -2,8 +2,9 @@ package com.scrapper.extractor;
 
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
-import com.bc.webdatex.extractor.NodeExtractor;
-import com.bc.webdatex.extractor.NodeExtractorIx;
+import com.bc.webdatex.extractor.node.NodeExtractor;
+import com.bc.webdatex.extractor.node.NodeExtractorImpl;
+import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.scrapper.config.Config;
 import com.scrapper.config.ScrapperConfig;
 import com.scrapper.context.CapturerContext;
@@ -18,60 +19,44 @@ import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 
-public class MultipleNodesExtractor
-  extends PageExtractor
-  implements MultipleNodesExtractorIx
-{
+public class MultipleNodesExtractor extends PageExtractor implements MultipleNodesExtractorIx {
+    
   private Map<String, NodeExtractor> nodeVisitors;
-  private Map<String, Object[]> columns;
   private Map<String, MappingsExtractor> mappingsExtractors;
+  private final Map<String, Object[]> columns;
   private final CommentBoundsVisitor withinComments;
   
-  public MultipleNodesExtractor(CapturerContext context)
-  {
+  private final class HashMapNoNulls extends HashMap {
+    public NodeExtractor put(String key, NodeExtractor value) {
+      if ((key == null) || (value == null)) throw new NullPointerException();
+      return (NodeExtractor)super.put(key, value);
+    }
+  }
+  
+  public MultipleNodesExtractor(CapturerContext context){
     super(context);
     
     JsonConfig config = context.getConfig();
     
-
-    this.nodeVisitors = new HashMap()
-    {
-      public NodeExtractor put(String key, NodeExtractor value) {
-        if ((key == null) || (value == null)) throw new NullPointerException();
-        return (NodeExtractor)super.put(key, value);
-      }
-      
-    };
-    this.columns = new HashMap()
-    {
-      public Object[] put(String key, Object[] value) {
-        if ((key == null) || (value == null)) throw new NullPointerException();
-        return (Object[])super.put(key, value);
-
-      }
-      
-
-    };
+    this.nodeVisitors = new HashMapNoNulls();
+    
+    this.columns = new HashMapNoNulls();
     String parentNode = config.getString(new Object[] { "parentNode", "value" });
     if (parentNode != null) {
       addExtractor("parentNode");
     }
     
-    int maxFiltersPerKey = config.getInt(new Object[] { Config.Extractor.maxFiltersPerKey }).intValue();
+    int maxFiltersPerKey = config.getInt(new Object[] { Config.Extractor.maxFiltersPerKey });
     
-
-
-    for (int i = 0; i < maxFiltersPerKey; i++)
-    {
+    for (int i = 0; i < maxFiltersPerKey; i++) {
+        
       String propertyKey = "targetNode" + i;
       
       addExtractor(propertyKey);
       
       MappingsExtractor mappingsExt = MappingsExtractor.getInstance(propertyKey, config);
       
-      if (mappingsExt != null)
-      {
-
+      if (mappingsExt != null){
 
         if (this.mappingsExtractors == null) {
           this.mappingsExtractors = new HashMap();
@@ -82,20 +67,21 @@ public class MultipleNodesExtractor
     this.withinComments = new CommentBoundsVisitor();
   }
   
-
-  public void reset()
-  {
+  @Override
+  public void reset() {
+      
     super.reset();
     
     this.withinComments.reset();
     
-    for (NodeExtractorIx extractor : this.nodeVisitors.values()) {
+    for (NodeExtractor extractor : this.nodeVisitors.values()) {
       extractor.reset();
     }
   }
   
-  public boolean isSuccessfulCompletion()
-  {
+  @Override
+  public boolean isSuccessfulCompletion() {
+      
     Set<String> cols = null;
     try {
       cols = ((ScrapperConfig)getCapturerConfig()).getColumns(); 
@@ -109,40 +95,39 @@ public class MultipleNodesExtractor
     return output;
   }
   
+  @Override
+  public void finishedParsing() {
 
-  public void finishedParsing()
-  {
-    for (String name : this.nodeVisitors.keySet())
-    {
-      NodeExtractorIx extractor = (NodeExtractorIx)this.nodeVisitors.get(name);
+    for (String name : this.nodeVisitors.keySet()) {
+        
+      NodeExtractor extractor = (NodeExtractor)this.nodeVisitors.get(name);
       
-
       extractor.finishedParsing();
       
       Object[] cols = (Object[])this.columns.get(name);
       
       boolean append = extractor.isConcatenateMultipleExtracts();
       
-      if (cols != null)
-      {
-        for (Object column : cols)
-        {
+      if (cols != null) {
+          
+        for (Object column : cols) {
+            
           XLogger.getInstance().log(Level.FINEST, "Extractor: {0}", getClass(), name);
           
           add(column.toString(), extractor.getExtract(), append, false);
         }
       }
     }
-    XLogger.getInstance().log(Level.FINER, "Extractors: {0}, Extracted data: {1}", getClass(), Integer.valueOf(this.nodeVisitors.size()), Integer.valueOf(getExtractedData().size()));
+    XLogger.getInstance().log(Level.FINER, "Extractors: {0}, Extracted data: {1}", 
+            getClass(), this.nodeVisitors.size(), getExtractedData().size());
   }
   
-
-  public Set<String> getFailedNodeExtractors()
-  {
+  @Override
+  public Set<String> getFailedNodeExtractors() {
     HashSet<String> failed = new HashSet();
     Set keys = getExtractedData().keySet();
     for (String key : this.nodeVisitors.keySet()) {
-      NodeExtractorIx extractor = (NodeExtractorIx)this.nodeVisitors.get(key);
+      NodeExtractor extractor = (NodeExtractor)this.nodeVisitors.get(key);
       Object[] cols = (Object[])this.columns.get(key);
       if (cols != null) {
         for (Object col : cols) {
@@ -156,22 +141,24 @@ public class MultipleNodesExtractor
     return failed;
   }
   
-  public Set<String> getSuccessfulNodeExtractors()
-  {
+  @Override
+  public Set<String> getSuccessfulNodeExtractors() {
+      
     Set<String> failed = getFailedNodeExtractors();
     Set<String> all = getNodeExtractorIds();
     all.removeAll(failed);
     return all;
   }
   
-  public Set<String> getNodeExtractorIds()
-  {
+  @Override
+  public Set<String> getNodeExtractorIds() {
+      
     return new HashSet(this.nodeVisitors.keySet());
   }
   
-
-  public void visitTag(Tag tag)
-  {
+  @Override
+  public void visitTag(Tag tag) {
+      
     XLogger.getInstance().log(Level.FINER, "visitTag: {0}", getClass(), tag);
     
     this.withinComments.visitTag(tag);
@@ -183,14 +170,14 @@ public class MultipleNodesExtractor
     
 
     for (String key : this.nodeVisitors.keySet()) {
-      NodeExtractorIx extractor = (NodeExtractorIx)this.nodeVisitors.get(key);
+      NodeExtractor extractor = (NodeExtractor)this.nodeVisitors.get(key);
       extractor.visitTag(tag);
     }
   }
   
-
-  public void visitEndTag(Tag tag)
-  {
+  @Override
+  public void visitEndTag(Tag tag) {
+      
     XLogger.getInstance().log(Level.FINER, "visitEndTag: {0}", getClass(), tag);
     
     this.withinComments.visitEndTag(tag);
@@ -200,14 +187,14 @@ public class MultipleNodesExtractor
     }
     
     for (String key : this.nodeVisitors.keySet()) {
-      NodeExtractorIx extractor = (NodeExtractorIx)this.nodeVisitors.get(key);
+      NodeExtractor extractor = (NodeExtractor)this.nodeVisitors.get(key);
       extractor.visitEndTag(tag);
     }
   }
   
-
-  public void visitStringNode(Text node)
-  {
+  @Override
+  public void visitStringNode(Text node) {
+      
     XLogger.getInstance().log(Level.FINER, "visitStringNode: {0}", getClass(), node);
     
     this.withinComments.visitStringNode(node);
@@ -217,7 +204,7 @@ public class MultipleNodesExtractor
     }
     
     for (String key : this.nodeVisitors.keySet()) {
-      NodeExtractorIx extractor = (NodeExtractorIx)this.nodeVisitors.get(key);
+      NodeExtractor extractor = (NodeExtractor)this.nodeVisitors.get(key);
       extractor.visitStringNode(node);
     }
     
@@ -245,39 +232,43 @@ public class MultipleNodesExtractor
     }
   }
   
-  public void visitRemarkNode(Remark node)
-  {
+  @Override
+  public void visitRemarkNode(Remark node) {
+      
     XLogger.getInstance().log(Level.FINER, "visitRemarkNode: {0}", getClass(), node);
     
     this.withinComments.visitRemarkNode(node);
   }
   
-  public NodeExtractor getExtractor(String id)
-  {
+  @Override
+  public NodeExtractor getExtractor(String id) {
+      
     return (NodeExtractor)this.nodeVisitors.get(id);
   }
   
-
-  public NodeExtractor createExtractor(String id)
-  {
-    NodeExtractor extractor = new NodeExtractor();
+  @Override
+  public NodeExtractor createExtractor(String id) {
+      
+    NodeExtractorImpl extractor = new NodeExtractorImpl();
     
     CapturerSettings ss = getCapturerContext().getSettings();
     
     extractor.setAcceptScripts(false);
     extractor.setAttributesToAccept(ss.getAttributesToAccept(id));
     extractor.setAttributesToExtract(ss.getAttributesToExtract(id));
-    extractor.setConcatenateMultipleExtracts(ss.isConcatenateMultipleExtracts(id).booleanValue());
+    extractor.setConcatenateMultipleExtracts(ss.isConcatenateMultipleExtracts(id, false));
     extractor.setEnabled(true);
-    extractor.setExtractAttributes(ss.isExtractAttributes(id));
+    
     extractor.setId(id);
-    extractor.setNodesToRetainAttributes(ss.getNodesToRetainAttributes(id));
+    extractor.setNodesToRetainAttributes(ss.getNodesToRetainAttributes(id)); 
     extractor.setNodeTypesToAccept(ss.getNodeTypesToAccept(id));
     extractor.setNodeTypesToReject(ss.getNodeTypesToReject(id));
     extractor.setNodesToAccept(ss.getNodesToAccept(id));
     extractor.setNodesToReject(ss.getNodeToReject(id));
-    extractor.setPath(ss.getTransverse(id));
-    extractor.setReplaceNonBreakingSpace(ss.isReplaceNonBreakingSpace(id));
+    
+    extractor.setTagLocator(new TagLocatorImpl(id, ss.getTransverse(id)));
+    
+    extractor.setReplaceNonBreakingSpace(ss.isReplaceNonBreakingSpace(id, false));
     
     extractor.setTextToAccept(null);
     extractor.setTextToDisableOn(ss.getTextToDisableOn(id));
@@ -286,14 +277,14 @@ public class MultipleNodesExtractor
     return extractor;
   }
   
-  private void addExtractor(String id)
-  {
+  private void addExtractor(String id) {
+      
     CapturerSettings cs = getCapturerContext().getSettings();
     
     Object[] cols = cs.getColumns(id);
     
     if (cols == null) {
-      XLogger.getInstance().log(Level.FINE, "{0}.{1} == null", getClass(), id, Config.Extractor.columns);
+      XLogger.getInstance().log(Level.FINER, "{0}.{1} == null", getClass(), id, Config.Extractor.columns);
     } else {
       this.columns.put(id, cols);
       NodeExtractor extractor = createExtractor(id);

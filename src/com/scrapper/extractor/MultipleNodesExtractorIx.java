@@ -1,11 +1,10 @@
 package com.scrapper.extractor;
 
-import com.bc.webdatex.extractor.NodeExtractor;
+import com.bc.webdatex.extractor.node.NodeExtractor;
 import java.util.Set;
 
-public abstract interface MultipleNodesExtractorIx
-  extends PageExtractorIx
-{
+public abstract interface MultipleNodesExtractorIx extends PageExtractorIx {
+    
   public abstract NodeExtractor createExtractor(String paramString);
   
   public abstract NodeExtractor getExtractor(String paramString);

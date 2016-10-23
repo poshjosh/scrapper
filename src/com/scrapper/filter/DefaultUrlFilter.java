@@ -1,7 +1,7 @@
 package com.scrapper.filter;
 
 import com.bc.util.XLogger;
-import com.scrapper.Filter;
+import com.bc.webdatex.filter.Filter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Calendar;

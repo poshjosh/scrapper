@@ -3,9 +3,10 @@ package com.scrapper.util;
 import com.bc.json.config.JsonConfig;
 import com.scrapper.config.Config;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import org.htmlparser.Attribute;
 import org.htmlparser.Tag;
 import org.htmlparser.tags.ImageTag;
@@ -63,7 +64,7 @@ public class AttributesManager
         return (String)super.put(key, value);
       }
     };
-    List attributes = tag.getAttributesEx();
+    List attributes = tag.getAttributes();
     for (Object oval : attributes) {
       Attribute attr = (Attribute)oval;
       if ((attr.getName() != null) && (attr.getValue() != null))
@@ -76,14 +77,18 @@ public class AttributesManager
   
   public boolean updateUniqueAttributes(Map<String, String> map)
   {
-    Iterator<String> iter = map.keySet().iterator();
+    Set<Entry<String, String>> entrySet = map.entrySet();
     
     HashMap<String, String> replaceme = new HashMap();
     
-    while (iter.hasNext()) {
-      String key = (String)iter.next();
-      if (isUnique(key)) {
-        String newVal = ((String)map.get(key)).isEmpty() ? ".*?" : ".+?";
+    for (Entry<String, String> entry : entrySet) {
+      final String key = entry.getKey();
+      final String val = entry.getValue();
+      if(val == null) {
+        continue;
+      }
+      if (isUnique(key, val)) {
+        String newVal = val.isEmpty() ? ".*?" : ".+?";
         replaceme.put(key, newVal);
       }
     }
@@ -96,11 +101,25 @@ public class AttributesManager
   }
   
 
-  public boolean isUnique(String attrKey)
+  public boolean isUnique(String attrKey, String attrValue)
   {
-    attrKey = attrKey.toLowerCase();
+      
+    boolean output;
     
-    return (attrKey.equals("src")) || (attrKey.equals("title")) || (attrKey.equals("alt")) || (attrKey.equals("width")) || (attrKey.equals("height")) || (attrKey.startsWith("on"));
+    final int n = attrValue.indexOf('?');
+    
+    if(n != -1 && attrValue.indexOf('=', n) != -1) {
+        
+      output = true;
+      
+    }else{   
+        
+      attrKey = attrKey.toLowerCase();
+
+      output = (attrKey.equals("src")) || (attrKey.equals("title")) || (attrKey.equals("alt")) || (attrKey.equals("width")) || (attrKey.equals("height")) || (attrKey.startsWith("on"));
+    }
+    
+    return output;
   }
   
 

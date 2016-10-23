@@ -2,10 +2,10 @@ package com.scrapper;
 
 import com.bc.json.config.JsonConfig;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import com.bc.webdatex.nodedata.Dom;
 
 
 
@@ -54,7 +54,7 @@ public class ScrappUploader
   }
   
 
-  public boolean doConsume(PageNodes page, Map data)
+  public boolean doConsume(Dom page, Map data)
   {
     Object productTable = data.get(getTableNameKey());
     

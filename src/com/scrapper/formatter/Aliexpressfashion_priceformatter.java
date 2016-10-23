@@ -1,6 +1,6 @@
 package com.scrapper.formatter;
 
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 import java.io.Serializable;
 import java.util.Map;
 

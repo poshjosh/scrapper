@@ -1,25 +1,11 @@
 package com.scrapper;
 
-import com.scrapper.util.PageNodes;
 import java.net.URL;
 import java.util.Map;
+import com.bc.webdatex.nodedata.Dom;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-public class BasePageDataConsumer
-  extends AbstractPageDataConsumer
-{
+public class BasePageDataConsumer extends AbstractPageDataConsumer {
+    
   private DataUploader uploader;
   
   public BasePageDataConsumer(URL insertURL, final Map uploadParameters)
@@ -41,7 +27,7 @@ public class BasePageDataConsumer
   }
   
 
-  public boolean doConsume(PageNodes page, Map data)
+  public boolean doConsume(Dom page, Map data)
   {
     Object productTable = data.get(getTableNameKey());
     

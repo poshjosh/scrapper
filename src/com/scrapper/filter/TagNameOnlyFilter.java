@@ -46,7 +46,7 @@ public class TagNameOnlyFilter
   public boolean accept(Node node)
   {
     if ((node instanceof Tag)) {
-      Collection attributes = ((Tag)node).getAttributesEx();
+      Collection attributes = ((Tag)node).getAttributes();
       
 
       if ((attributes != null) && (attributes.size() > 1)) return false;

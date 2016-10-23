@@ -564,29 +564,29 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     return this.remotesites_use_getter_to_access;
   }
   
-  protected Set<String> getLocalSitenames()
-  {
+  protected Set<String> getLocalSitenames() {
+      
+    final XLogger xlog = XLogger.getInstance();
+    
     File sitesDir = getConfigsDirFile();
     
-    try
-    {
+    try {
       sitesDir = sitesDir.getCanonicalFile();
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       return null;
     }
-    XLogger.getInstance().log(Level.FINER, "Sites dir: {0}", getClass(), sitesDir);
     
-    File[] files = sitesDir.listFiles(new FilenameFilter()
-    {
+    xlog.log(Level.FINE, "Sites dir: {0}", getClass(), sitesDir);
+    
+    File[] files = sitesDir.listFiles(new FilenameFilter() {
+      @Override
       public boolean accept(File dir, String name) {
-        return name.endsWith(".json");
+        boolean accepted = name.endsWith(".json");
+        xlog.log(Level.FINER, "Accepted: {0}, file: {1}", getClass(), accepted, name);
+        return accepted;
       }
-      
     });
-    XLogger.getInstance().log(Level.FINER, "Files in sites dir: {0}", getClass(), files == null ? null : Arrays.toString(files));
     
-
     String[] confignames = null;
     if (files != null) {
       confignames = new String[files.length];
@@ -600,7 +600,9 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     }
     
     TreeSet<String> output = new TreeSet(Arrays.asList(confignames));
-    XLogger.getInstance().log(Level.FINER, "Available sitenames: {0}", getClass(), output);
+    
+    xlog.log(Level.FINER, "Available sitenames: {0}", getClass(), output);
+    
     return output;
   }
   

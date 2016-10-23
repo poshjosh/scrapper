@@ -1,80 +1,58 @@
 package com.scrapper;
 
+import com.bc.webdatex.URLParser;
+import com.bc.task.AbstractStoppableTask;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.htmlparser.util.ParserException;
+import com.bc.webdatex.nodedata.Dom;
 
-public class BaseSiteCapturer
-  implements SiteCapturer, Serializable
-{
+public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements SiteCapturer, Serializable {
+    
   private boolean login;
-  private boolean started;
-  private boolean stopInitiated;
-  private boolean stopped;
   private int successCount;
   private int scrappLimit;
-  private Date startTime;
   private CapturerContext context;
-  private URLParser crawler;
+  private URLParser urlParser;
   private Scrapper scrapper;
   private PageDataConsumer dataConsumer;
   
   public BaseSiteCapturer() {}
   
-  public BaseSiteCapturer(CapturerContext context)
-  {
+  public BaseSiteCapturer(CapturerContext context) {
     this.login = true;
     this.context = context;
-    
-    XLogger.getInstance().log(Level.FINE, "Created capturer for SiteConfig: {0}", getClass(), context.getConfig().getName());
+    XLogger.getInstance().log(Level.FINE, 
+      "Created capturer for SiteConfig: {0}", 
+      getClass(), context.getConfig().getName());
   }
-  
 
-  protected void handleException(Exception e) {}
-  
-
-  public void run()
-  {
-    try
-    {
+  @Override
+  public Integer doCall() throws IOException, ParserException {
+      
       XLogger.getInstance().log(Level.FINE, "Running: {0}", getClass(), this);
       
-      this.started = true;
-      this.stopInitiated = false;
-      this.stopped = false;
-      
-      this.startTime = new Date();
-      
       if (this.login) {
-        try {
-          login();
-        } catch (IOException e) {
-          XLogger.getInstance().log(Level.WARNING, null, getClass(), e);
-          handleException(e); return;
-        }
+        login();
       }
       
-
-      XLogger.getInstance().log(Level.FINER, "Crawler: {0}\nScrapper: {1}", getClass(), this.crawler, this.scrapper);
+      XLogger.getInstance().log(Level.FINER, "Crawler: {0}\nScrapper: {1}", getClass(), this.urlParser, this.scrapper);
       
-
-      while ((this.crawler.hasNext()) && (isWithinScrappLimit()))
-      {
+      while ((this.urlParser.hasNext()) && (isWithinScrappLimit())) {
+          
         if (isStopRequested()) {
           break;
         }
         
-        PageNodes pageNodes = this.crawler.next();
+        Dom pageNodes = this.urlParser.next();
         
         XLogger.getInstance().log(Level.FINER, "PageNodes: {0}", getClass(), pageNodes);
         
@@ -107,22 +85,8 @@ public class BaseSiteCapturer
           }
         }
       }
-    }
-    catch (ParserException|RuntimeException e)
-    {
-      XLogger.getInstance().log(Level.WARNING, this + "\nProcess terminated prematurely", getClass(), e);
       
-      handleException(e);
-    }
-    finally
-    {
-      try {
-        this.crawler.completePendingActions();
-      }
-      finally {
-        this.stopped = true;
-      }
-    }
+      return this.successCount;
   }
   
   public boolean isWithinScrappLimit() {
@@ -153,7 +117,7 @@ public class BaseSiteCapturer
         throw new NullPointerException("Login cookies == null, for url: " + loginUrl);
       }
       
-      this.crawler.setCookies(cookies);
+      this.urlParser.setCookies(cookies);
     }
   }
   
@@ -169,112 +133,74 @@ public class BaseSiteCapturer
     return this.scrapper == null ? -1 : this.scrapper.getScrappCount();
   }
   
-  public boolean isRunning()
-  {
-    return (isStarted()) && (!isStopped());
+  @Override
+  public boolean isToResume() {
+    return ((this.urlParser instanceof Resumable)) && (((Resumable)this.urlParser).isToResume()) && ((this.scrapper instanceof Resumable)) && (((Resumable)this.scrapper).isToResume());
+  }
+
+  @Override
+  public boolean isResumable() {
+    return ((this.urlParser instanceof Resumable)) && (((Resumable)this.urlParser).isResumable()) && ((this.scrapper instanceof Resumable)) && (((Resumable)this.scrapper).isResumable());
   }
   
-
-
-
-  public boolean isResume()
-  {
-    return ((this.crawler instanceof Resumable)) && (((Resumable)this.crawler).isResume()) && ((this.scrapper instanceof Resumable)) && (((Resumable)this.scrapper).isResume());
-  }
-  
-
-
-
-
-
-
-  public boolean isResumable()
-  {
-    return ((this.crawler instanceof Resumable)) && (((Resumable)this.crawler).isResumable()) && ((this.scrapper instanceof Resumable)) && (((Resumable)this.scrapper).isResumable());
-  }
-  
-
-
-
-  public boolean isCompleted()
-  {
-    boolean isCompleted = (this.started) && (this.stopped) && (!this.stopInitiated);
-    boolean isCrawlerCompleted = (this.crawler != null) && (this.crawler.isCompleted());
+  @Override
+  public boolean isCompleted() {
+    boolean isCompleted = super.isCompleted();
+    boolean isCrawlerCompleted = (this.urlParser != null) && (this.urlParser.isCompleted());
     return (isCompleted) && (isCrawlerCompleted);
   }
   
-  public void stop()
-  {
-    XLogger.getInstance().log(Level.FINE, "Stop Initiated: {0}", getClass(), this);
-    this.stopInitiated = true;
-    if (this.crawler != null) {
-      this.crawler.stop();
+  @Override
+  public void stop() {
+    super.stop();
+    if (this.urlParser != null) {
+      this.urlParser.stop();
     }
   }
   
-  public boolean isStarted()
-  {
-    return this.started;
+  @Override
+  public boolean isStopped() {
+    return (super.isStopped()) && (this.urlParser != null) && (this.urlParser.isStopped());
   }
   
-  public boolean isStopped()
-  {
-    return (this.stopped) && (this.crawler != null) && (this.crawler.isStopped());
-  }
-  
-  public boolean isStopRequested()
-  {
-    return this.stopInitiated;
-  }
-  
-  public boolean isLogin()
-  {
+  @Override
+  public boolean isLogin() {
     return this.login;
   }
   
-  public void setLogin(boolean login)
-  {
+  @Override
+  public void setLogin(boolean login){
     this.login = login;
   }
   
-  public URLParser getCrawler()
-  {
-    return this.crawler;
+  @Override
+  public URLParser getUrlParser() {
+    return this.urlParser;
   }
   
-  public void setCrawler(URLParser crawler)
-  {
-    this.crawler = crawler;
+  @Override
+  public void setUrlParser(URLParser urlParser){
+    this.urlParser = urlParser;
   }
   
-  public Scrapper getScrapper()
-  {
+  @Override
+  public Scrapper getScrapper() {
     return this.scrapper;
   }
   
-  public void setScrapper(Scrapper scrapper)
-  {
+  @Override
+  public void setScrapper(Scrapper scrapper) {
     this.scrapper = scrapper;
   }
   
-  public CapturerContext getContext()
-  {
+  @Override
+  public CapturerContext getContext() {
     return this.context;
   }
   
-  public void setContext(CapturerContext context)
-  {
+  @Override
+  public void setContext(CapturerContext context) {
     this.context = context;
-  }
-  
-  public Date getStartTime()
-  {
-    return this.startTime;
-  }
-  
-  public void setStartTime(Date startTime)
-  {
-    this.startTime = startTime;
   }
   
   public int getScrappLimit() {
@@ -285,55 +211,56 @@ public class BaseSiteCapturer
     this.scrappLimit = scrappLimit;
   }
   
-  public PageDataConsumer getDataConsumer()
-  {
+  @Override
+  public PageDataConsumer getDataConsumer() {
     return this.dataConsumer;
   }
   
-  public void setDataConsumer(PageDataConsumer dataConsumer)
-  {
+  @Override
+  public void setDataConsumer(PageDataConsumer dataConsumer) {
     this.dataConsumer = dataConsumer;
   }
   
   public long getBatchInterval() {
-    return this.crawler.getBatchInterval();
+    return this.urlParser.getBatchInterval();
   }
   
   public void setBatchInterval(long batchInterval) {
-    this.crawler.setBatchInterval(batchInterval);
+    this.urlParser.setBatchInterval(batchInterval);
   }
   
   public int getBatchSize() {
-    return this.crawler.getBatchSize();
+    return this.urlParser.getBatchSize();
   }
   
   public void setBatchSize(int batchSize) {
-    this.crawler.setBatchSize(batchSize);
+    this.urlParser.setBatchSize(batchSize);
   }
   
-  public String getTaskName()
-  {
+  @Override
+  public String getTaskName() {
     return getClass().getName() + "(Site: " + getName() + ")";
   }
   
-  public String toString()
-  {
+  @Override
+  public String toString() {
     StringBuilder builder = new StringBuilder();
     print(builder);
     return builder.toString();
   }
   
+  @Override
   public void print(StringBuilder builder) {
     builder.append(getTaskName());
     if (isStarted()) {
-      builder.append(". Started:").append(this.startTime);
+      builder.append(". Started:").append(this.getStartTime());
       if (isStopped()) {
         builder.append(". Stopped");
       }
-      if (this.crawler != null) {
-        builder.append(". Crawl:: attempted:").append(this.crawler.getAttempted() == null ? 0 : this.crawler.getAttempted().size());
-        builder.append(" failed:").append(this.crawler.getFailed() == null ? null : Integer.valueOf(this.crawler.getFailed().size()));
-        builder.append(" left:").append(this.crawler.getPageLinks() == null ? null : Integer.valueOf(this.crawler.getPageLinks().size()));
+      if (this.urlParser != null) {
+        builder.append(". Crawl:: attempted:").append(this.urlParser.getAttempted() == null ? 0 : this.urlParser.getAttempted().size());
+        builder.append(" failed:").append(this.urlParser.getFailed() == null ? null : Integer.valueOf(this.urlParser.getFailed().size()));
+        builder.append(" left:").append(this.urlParser.getPageLinks() == null ? null : Integer.valueOf(this.urlParser.getPageLinks().size()));
       }
       if (this.scrapper != null)
       {

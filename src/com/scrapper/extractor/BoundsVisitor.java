@@ -11,10 +11,10 @@ import org.htmlparser.NodeFilter;
 import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
-import org.htmlparser.visitors.NodeVisitor;
+import org.htmlparser.visitors.AbstractNodeVisitor;
 
 public class BoundsVisitor
-  extends NodeVisitor
+  extends AbstractNodeVisitor
   implements HasBounds, Serializable
 {
   private boolean strict;

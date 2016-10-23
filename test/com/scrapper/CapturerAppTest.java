@@ -1,8 +1,8 @@
 package com.scrapper;
 
-import com.bc.webdatex.locator.TagLocator;
+import com.bc.webdatex.URLParser;
+import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.extractor.MultipleNodesExtractor;
 import com.scrapper.extractor.MultipleNodesExtractorIx;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -74,8 +74,8 @@ public class CapturerAppTest {
         
         MultipleNodesExtractorIx pageExtractor = getPageExtractor(app, site);
 
-        com.bc.webdatex.extractor.NodeExtractor nodeExtractor = 
-                ((MultipleNodesExtractor)pageExtractor).getExtractor(key);
+        com.bc.webdatex.extractor.node.NodeExtractor nodeExtractor = 
+                ((MultipleNodesExtractorIx)pageExtractor).getExtractor(key);
 
         NodeList nodes = CapturerAppTest.this.parse(site);
 
@@ -204,10 +204,10 @@ System.out.println(this.getClass().getName()+". EXTRACT:\n"+nodeExtractor.getExt
     }
     
     private NodeList parse(
-            NodeList nodes, com.bc.webdatex.extractor.NodeExtractor nodeExtractor, String key) 
+            NodeList nodes, com.bc.webdatex.extractor.node.NodeExtractor nodeExtractor, String key) 
             throws ParserException {
 
-        TagLocator locator = (TagLocator)nodeExtractor.getFilter().getTagLocator();
+        TagLocatorImpl locator = (TagLocatorImpl)nodeExtractor.getFilter().getTagLocator();
 
         List<String> [] transverse = locator.getTransverse();
         

@@ -1,11 +1,12 @@
 package com.scrapper.extractor;
 
+import com.bc.webdatex.extractor.DataExtractor;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import org.htmlparser.Tag;
 import org.htmlparser.util.ParserException;
-import org.htmlparser.visitors.NodeVisitor;
+import org.htmlparser.visitors.AbstractNodeVisitor;
 
 
 
@@ -19,7 +20,7 @@ import org.htmlparser.visitors.NodeVisitor;
 
 
 public class NodeExtractorOld
-  extends NodeVisitor
+  extends AbstractNodeVisitor
   implements DataExtractor<Tag>, Serializable
 {
   private Map extractedData;

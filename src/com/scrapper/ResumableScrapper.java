@@ -1,42 +1,39 @@
 package com.scrapper;
 
-import com.bc.json.config.JsonConfig;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.util.Map;
 import org.htmlparser.util.ParserException;
+import com.bc.webdatex.nodedata.Dom;
 
-
-
-
-
-
-
-
-
-
-
-
-public class ResumableScrapper
-  extends Scrapper
-  implements Resumable
-{
+public class ResumableScrapper extends Scrapper implements Resumable {
+  
+  private final boolean toResume;
+  
+  private final boolean resumable;
+  
   private ResumeHandler resumeHandler;
   
-  public ResumableScrapper() {}
-  
-  public ResumableScrapper(CapturerContext context)
-  {
-    super(context);
+  public ResumableScrapper() {
+    this(null, true, false);    
   }
   
-  public Map extractData(PageNodes page)
-    throws ParserException
-  {
+  public ResumableScrapper(CapturerContext context) {
+    this(context, true, false);
+  }
+
+  public ResumableScrapper(CapturerContext context, boolean resumable, boolean toResume) {
+    super(context);
+    this.resumable = resumable;
+    this.toResume = toResume;
+  }
+  
+  @Override
+  public Map extractData(Dom page) throws ParserException {
+      
     Map extractedData = super.extractData(page);
     
-    if ((extractedData != null) && (!extractedData.isEmpty()) && (isResumable()))
-    {
+    if ((extractedData != null) && (!extractedData.isEmpty()) && (isResumable())) {
+        
       if (this.resumeHandler != null) {
         this.resumeHandler.updateStatus(page);
       }
@@ -45,10 +42,10 @@ public class ResumableScrapper
     return extractedData;
   }
   
-
-  protected boolean isAttempted(String link)
-  {
-    return (super.isAttempted(link)) || ((isResume()) && (isInDatabase(link)));
+  @Override
+  protected boolean isAttempted(String link) {
+      
+    return (super.isAttempted(link)) || ((isToResume()) && (isInDatabase(link)));
   }
   
   protected boolean isInDatabase(String link)
@@ -64,26 +61,26 @@ public class ResumableScrapper
     return getContext().getConfig().getName();
   }
   
-  public boolean isResumable()
-  {
-    return true;
+  @Override
+  public final boolean isResumable() {
+    return resumable;
   }
   
-  public boolean isResume()
-  {
-    return false;
+  @Override
+  public final boolean isToResume() {
+    return toResume;
   }
   
-  public String getTaskName()
-  {
+  @Override
+  public String getTaskName() {
     return ResumableScrapper.class.getName() + "(Scrapper for site: " + getSitename() + ")";
   }
   
-  public void print(StringBuilder builder)
-  {
+  @Override
+  public void print(StringBuilder builder) {
     super.print(builder);
     builder.append(", site: ").append(getSitename());
-    builder.append(", resume: ").append(isResume());
+    builder.append(", resume: ").append(isToResume());
     builder.append(", resumable: ").append(isResumable());
   }
   

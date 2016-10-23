@@ -11,52 +11,36 @@ import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public class PageExtractor
-  extends NodeListExtractor
-  implements PageExtractorIx
-{
+public class PageExtractor extends NodeListExtractor implements PageExtractorIx {
+    
   private boolean done;
   private String pageTitle;
   private Tag titleTag;
   private boolean titleExtracted;
   private final CapturerContext context;
   
-  public PageExtractor(CapturerContext context)
-  {
+  public PageExtractor(CapturerContext context) {
+      
     this.context = context;
-    
-    XLogger.getInstance().log(Level.FINE, "Site name: {0}", getClass(), context.getConfig().getName());
   }
   
 
-  public void reset()
-  {
+  @Override
+  public void reset() {
+      
     super.reset();
+    
     this.done = false;
     this.pageTitle = null;
     this.titleTag = null;
     this.titleExtracted = false;
   }
   
-
-  public void visitTag(Tag tag)
-  {
-    if (this.done) { return;
+  @Override
+  public void visitTag(Tag tag) {
+      
+    if (this.done) { 
+      return;
     }
     XLogger.getInstance().log(Level.FINER, "visitTag: {0}", getClass(), tag);
     
@@ -67,10 +51,11 @@ public class PageExtractor
     }
   }
   
-
-  public void visitEndTag(Tag tag)
-  {
-    if (this.done) { return;
+  @Override
+  public void visitEndTag(Tag tag) {
+      
+    if (this.done) { 
+      return;
     }
     XLogger.getInstance().log(Level.FINER, "visitEndTag: {0}", getClass(), tag);
     
@@ -82,9 +67,11 @@ public class PageExtractor
   }
   
 
-  public void visitStringNode(Text node)
-  {
-    if (this.done) { return;
+  @Override
+  public void visitStringNode(Text node) {
+      
+    if (this.done) { 
+      return;
     }
     XLogger.getInstance().log(Level.FINER, "#visitStringNode: {0}", getClass(), node);
     
@@ -93,19 +80,18 @@ public class PageExtractor
     extractTitle(node);
   }
   
-  public void visitRemarkNode(Remark remark)
-  {
-    if (this.done) return;
+  @Override
+  public void visitRemarkNode(Remark remark) {
+      
+    if (this.done) {
+      return;
+    }
     super.visitRemarkNode(remark);
   }
   
-
-
-  private boolean extractTitle(Text node)
-  {
-    if ((!this.titleExtracted) && (withinTitleTag()))
-    {
-
+  private boolean extractTitle(Text node) {
+      
+    if (!this.titleExtracted && withinTitleTag()) {
 
       this.titleExtracted = true;
       
@@ -119,31 +105,21 @@ public class PageExtractor
     return false;
   }
   
-
-
-
-  protected String add(String key, Object val)
-  {
-    return add(key, val, getCapturerSettings().isConcatenateMultipleExtracts(), true);
-  }
-  
-
-
-
-
-  protected String add(String key, Object val, boolean append, boolean guessColumnNameFromKey)
-  {
-    XLogger.getInstance().log(Level.FINER, "#add. Append: {0}, Key: {1}, Val: {2}", getClass(), Boolean.valueOf(append), key, val);
+  protected String add(String key, Object val, boolean append, boolean guessColumnNameFromKey) {
+      
+    XLogger.getInstance().log(Level.FINER, "#add. Append: {0}, Key: {1}, Val: {2}", 
+            getClass(), append, key, val);
     
-
-    if ((key == null) || (val == null)) { return null;
+    if ((key == null) || (val == null)) { 
+      return null;
     }
-    if ((key.trim().isEmpty()) || (val.toString().trim().isEmpty())) { return null;
+    if ((key.trim().isEmpty()) || (val.toString().trim().isEmpty())) { 
+      return null;
     }
     String col = key;
     
-    if (guessColumnNameFromKey)
-    {
+    if (guessColumnNameFromKey) {
+        
       Map keys = getCapturerConfig().getMap(new Object[] { "keys" });
       
       col = Util.findValueWithMatchingKey(keys, key);
@@ -151,7 +127,6 @@ public class PageExtractor
       XLogger.getInstance().log(Level.FINER, "#add. Key: {0}, Matching col: {1}", getClass(), key, col);
     }
     
-
     if (col == null) {
       return null;
     }
@@ -161,25 +136,20 @@ public class PageExtractor
     return col;
   }
   
-  private String doAdd(String col, Object val, boolean append)
-  {
+  private String doAdd(String col, Object val, boolean append) {
+      
     Object oldVal = getExtractedData().get(col);
     
-    if (oldVal == null)
-    {
-
+    if (oldVal == null) {
 
       getExtractedData().put(col, val);
       
       XLogger.getInstance().log(Level.FINE, "#doAdd. Added: [{0}={1}]", getClass(), col, val);
-
-
-
-    }
-    else if (append)
-    {
-      if (!oldVal.equals(val))
-      {
+      
+    } else if (append) {
+        
+      if (!oldVal.equals(val)) {
+          
         String lineSep = getCapturerSettings().getLineSeparator();
         String partSep = getCapturerSettings().getPartSeparator();
         if (lineSep != null) {
@@ -190,15 +160,12 @@ public class PageExtractor
         
         String newVal = oldVal + s + val;
         
-
-
         getExtractedData().put(col, newVal);
         
         XLogger.getInstance().log(Level.FINE, "#doAdd. Appended: [{0}={1}]", getClass(), col, val);
       }
     }
     
-
     return col;
   }
   
@@ -206,8 +173,8 @@ public class PageExtractor
     return this.titleTag != null;
   }
   
-  protected void doExtractTitle(Text node)
-  {
+  protected void doExtractTitle(Text node) {
+      
     String title = getTitle(node);
     
     setPageTitle(title);
@@ -215,61 +182,63 @@ public class PageExtractor
     node.setText(title);
   }
   
-  protected String getTitle(Text node)
-  {
+  protected String getTitle(Text node) {
+      
     String val = node.getText();
     
     String defaultTitle = getCapturerSettings().getDefaultTitle();
     
-    if ((val == null) || (val.isEmpty())) { return defaultTitle;
+    if ((val == null) || (val.isEmpty())) { 
+      return defaultTitle;
     }
-    if ((defaultTitle == null) || (defaultTitle.isEmpty())) { return val;
+    if ((defaultTitle == null) || (defaultTitle.isEmpty())) { 
+      return val;
     }
     return defaultTitle + " | " + val;
   }
   
-  public boolean isDone()
-  {
+  @Override
+  public boolean isDone() {
     return this.done;
   }
   
-  public boolean isTitleExtracted()
-  {
+  @Override
+  public boolean isTitleExtracted() {
     return this.titleExtracted;
   }
   
-  public Tag getTitleTag()
-  {
+  @Override
+  public Tag getTitleTag() {
     return this.titleTag;
   }
   
-  public CapturerContext getCapturerContext()
-  {
+  @Override
+  public CapturerContext getCapturerContext() {
     return this.context;
   }
   
-  public CapturerSettings getCapturerSettings()
-  {
+  @Override
+  public CapturerSettings getCapturerSettings() {
     return this.context.getSettings();
   }
   
-  public JsonConfig getCapturerConfig()
-  {
+  @Override
+  public JsonConfig getCapturerConfig() {
     return this.context.getConfig();
   }
   
-  public void setPageTitle(String pageTitle)
-  {
+  @Override
+  public void setPageTitle(String pageTitle) {
     this.pageTitle = pageTitle;
   }
   
-  public String getPageTitle()
-  {
+  @Override
+  public String getPageTitle() {
     return this.pageTitle;
   }
   
-  public String getTaskName()
-  {
+  @Override
+  public String getTaskName() {
     return getClass().getName();
   }
 }

@@ -27,7 +27,7 @@ public class HasAttributesRegexFilter
   {
     if (!(node instanceof Tag)) { return false;
     }
-    Attribute attribute = ((Tag)node).getAttributeEx(this.mAttribute);
+    Attribute attribute = ((Tag)node).getAttribute(this.mAttribute);
     
     boolean accept = false;
     

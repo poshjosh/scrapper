@@ -2,7 +2,6 @@ package com.scrapper;
 
 import com.scrapper.config.ScrapperConfigFactory;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.util.PageNodes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
@@ -19,6 +18,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import com.bc.webdatex.nodedata.Dom;
 
 /**
  * @author Josh
@@ -102,7 +102,7 @@ public class DefaultSiteCapturerTest {
         PageDataConsumer dataConsumer = new ContextDataConsumer(
                 factory.getContext(sitename)){
             @Override
-            public boolean doConsume(PageNodes page, Map data) {
+            public boolean doConsume(Dom page, Map data) {
                 
                 Object productTable = data.get(this.getTableNameKey());
                 

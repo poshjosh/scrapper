@@ -1,7 +1,7 @@
 package com.scrapper.util;
 
 import com.bc.util.XLogger;
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;

@@ -41,7 +41,7 @@ public class KarimuAttributesExtractor extends DefaultAttributesExtractor {
         
         for(String name:this.getAttributesToExtract()) {
             
-            Attribute attr = tag.getAttributeEx(name);
+            Attribute attr = tag.getAttribute(name);
             
             if(attr == null) {
                 continue;
@@ -55,7 +55,7 @@ public class KarimuAttributesExtractor extends DefaultAttributesExtractor {
 
             if(isImageTag && name.equals("src")) {
                 
-                Attribute data_large = tag.getAttributeEx("data-large");
+                Attribute data_large = tag.getAttribute("data-large");
                 
                 if(data_large != null) {
                     

@@ -2,7 +2,6 @@ package com.scrapper.filter;
 
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
-import com.bc.webdatex.filter.NodeVisitingFilterIx;
 import com.scrapper.CapturerApp;
 import com.scrapper.config.Config;
 import com.scrapper.filter.FilterFactory.FilterType;
@@ -22,6 +21,7 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.NotFilter;
 import org.htmlparser.filters.OrFilter;
 import org.htmlparser.filters.TagNameFilter;
+import com.bc.webdatex.nodefilter.NodeVisitingFilter;
 
 public class FilterFactory
 {
@@ -556,7 +556,7 @@ public class FilterFactory
   }
   
 
-  public static NodeFilter newOffsetFilter(final NodeVisitingFilterIx filter, JsonConfig props, final String propertyKey)
+  public static NodeFilter newOffsetFilter(final NodeVisitingFilter filter, JsonConfig props, final String propertyKey)
   {
     final Integer offset = props.getInt(new Object[] { propertyKey, Config.Extractor.offset });
     if (offset == null) {
@@ -584,7 +584,7 @@ public class FilterFactory
   }
   
 
-  public static NodeFilter newLengthFilter(final NodeVisitingFilterIx filter, JsonConfig props, final String propertyKey)
+  public static NodeFilter newLengthFilter(final NodeVisitingFilter filter, JsonConfig props, final String propertyKey)
   {
     final Integer offset = props.getInt(new Object[] { propertyKey, Config.Extractor.offset });
     

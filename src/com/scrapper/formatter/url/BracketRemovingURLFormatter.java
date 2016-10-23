@@ -1,6 +1,6 @@
 package com.scrapper.formatter.url;
 
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 
 
 

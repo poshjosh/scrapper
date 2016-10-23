@@ -1,38 +1,42 @@
 package com.scrapper;
 
+import com.bc.webdatex.URLParser;
 import com.bc.util.XLogger;
-import com.scrapper.util.PageNodes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import com.bc.webdatex.nodedata.Dom;
 
 public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
-    
-  private String sitename;
+
+  private final boolean resumable;
+  
+  private final boolean toResume;
+  
   private ResumeHandler resumeHandler;
   
-  public ResumableUrlParser()
-  {
-    this(null, new ArrayList());
+  public ResumableUrlParser() {
+    this(new ArrayList(), true, false);
+  }
+
+  public ResumableUrlParser(List<String> urls) {
+    this(urls, true, false);
   }
   
-  public ResumableUrlParser(String sitename)
-  {
-    this(sitename, new ArrayList());
-  }
-  
-  public ResumableUrlParser(String sitename, List<String> urls)
-  {
+  public ResumableUrlParser(List<String> urls, boolean resumable, boolean toResume) {
+      
     super(urls);
+    
     XLogger.getInstance().log(Level.FINER, "Creating", getClass());
     
-    this.sitename = sitename;
+    this.resumable = resumable;
     
-    if (isResume())
-    {
-      if (this.resumeHandler != null)
-      {
+    this.toResume = toResume;
+    
+    if (toResume) {
+        
+      if (this.resumeHandler != null) {
 
         List<String> inclusive = this.resumeHandler.getAllPendingUrls(urls);
         
@@ -41,13 +45,9 @@ public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
     }
   }
   
-
-  protected void preParse(String url)
-  {
-    if (this.sitename == null) {
-      throw new NullPointerException("sitename == null");
-    }
-    
+  @Override
+  protected void preParse(String url) {
+      
     if (!isResumable()) {
       return;
     }
@@ -59,31 +59,25 @@ public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
     }
   }
   
-
-  protected void postParse(PageNodes page)
-  {
+  @Override
+  protected void postParse(Dom dom) {
     if (!isResumable()) {
       return;
     }
     
     if (this.resumeHandler != null) {
-      this.resumeHandler.updateStatus(page);
+      this.resumeHandler.updateStatus(dom);
     }
   }
   
-
-  protected boolean isAttempted(String link)
-  {
-    return (super.isAttempted(link)) || ((isResume()) && (isInDatabase(link)));
+  @Override
+  protected boolean isAttempted(String link) {
+      
+    return (super.isAttempted(link)) || ((isToResume()) && (isInDatabase(link)));
   }
   
-
-  protected boolean isInDatabase(String link)
-  {
-    if (this.sitename == null) {
-      throw new NullPointerException("sitename == null");
-    }
-    
+  protected boolean isInDatabase(String link) {
+      
     boolean found = false;
     if (this.resumeHandler != null) {
       found = this.resumeHandler.isInDatabase(link);
@@ -92,30 +86,14 @@ public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
     return found;
   }
   
-
-
-
-
-  public boolean isResume()
-  {
-    return false;
+  @Override
+  public final boolean isToResume() {
+    return toResume;
   }
   
-
-
-
-
-  public boolean isResumable()
-  {
-    return true;
-  }
-  
-  public String getSitename() {
-    return this.sitename;
-  }
-  
-  public void setSitename(String sitename) {
-    this.sitename = sitename;
+  @Override
+  public final boolean isResumable() {
+    return resumable;
   }
   
   public ResumeHandler getResumeHandler() {

@@ -1,47 +1,30 @@
 package com.scrapper;
 
 import com.bc.util.XLogger;
-import com.bc.webdatex.extractor.NodeExtractor;
-import com.bc.webdatex.extractor.NodeExtractorIx;
-import com.bc.webdatex.filter.NodeVisitingFilterIx;
-import com.bc.webdatex.locator.TagLocatorIx;
-import com.bc.webdatex.locator.TransverseBuilder;
+import com.bc.webdatex.filter.Filter;
 import com.scrapper.config.ScrapperConfig;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.extractor.DataExtractor;
+import com.bc.webdatex.extractor.DataExtractor;
 import com.scrapper.extractor.MultipleNodesExtractorIx;
-import com.scrapper.util.PageNodes;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import com.bc.webdatex.nodedata.Dom;
+import com.bc.webdatex.locator.TagLocator;
+import com.bc.webdatex.nodefilter.NodeVisitingFilter;
+import com.bc.webdatex.extractor.node.NodeExtractor;
+import com.bc.webdatex.locator.impl.TagLocatorImpl;
+import com.bc.webdatex.locator.impl.TransverseNodeMatcherImpl;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public class Scrapper
-  implements DataExtractor<PageNodes>, Serializable
-{
-  private PageNodes source;
+public class Scrapper implements DataExtractor<Dom>, Serializable {
+    
+  private Dom source;
   private float lastSuccessfulTolerance;
   private float maxTolerance = 0.3F;
   
@@ -61,13 +44,11 @@ public class Scrapper
   
   private transient DataExtractor<String> urlDataExtractor;
   
-  public Scrapper()
-  {
+  public Scrapper() {
     this(null);
   }
   
-  public Scrapper(CapturerContext context)
-  {
+  public Scrapper(CapturerContext context) {
     this.context = context;
     
     this.attempted = new HashSet();
@@ -75,11 +56,11 @@ public class Scrapper
     this.failed = new HashSet();
   }
   
-  public Map extractData(PageNodes page)
-    throws ParserException
-  {
-    try
-    {
+  @Override
+  public Map extractData(Dom page) throws ParserException {
+      
+    try {
+        
       String url = page.getURL();
       
 
@@ -157,14 +138,9 @@ public class Scrapper
         
         if (!success)
         {
-          retryExtractWithGenericAttributes(page, extractedData);
+          retryExtractsWithIncreasedTolerance(page, extractedData, tolerance);
           
           success = isSuccessfulCompletion(extractedData, this.extractor);
-          
-          if (!success)
-          {
-            retryExtractsWithIncreasedTolerance(page, extractedData, tolerance);
-          }
         }
       }
       
@@ -198,75 +174,7 @@ public class Scrapper
     }
   }
   
-  protected void retryExtractWithGenericAttributes(PageNodes page, Map extractedData)
-    throws ParserException
-  {
-    Set<String> failedIds = this.extractor.getFailedNodeExtractors();
-    
-    if ((failedIds == null) || (failedIds.isEmpty()))
-    {
-      return;
-    }
-    
-    TransverseBuilder tb = new TransverseBuilder();
-    
-    Set<String> allIds = this.extractor.getNodeExtractorIds();
-    
-    Iterator<String> iter = allIds.iterator();
-    
-    boolean[] states = new boolean[allIds.size()];
-    
-    List<String>[][] transverses = new List[allIds.size()][];
-    
-    try
-    {
-      for (int i = 0; iter.hasNext(); i++)
-      {
-        String id = (String)iter.next();
-        
-        NodeExtractor nodeExt = this.extractor.getExtractor(id);
-        
-        states[i] = nodeExt.isEnabled();
-        transverses[i] = nodeExt.getTransverse();
-        
-        if ((failedIds.contains(id)) && (transverses[i] != null))
-        {
-          List<String>[] updatedTransverse = tb.format(transverses[i], TransverseBuilder.TransverseFormat.GENERIC_ATTRIBUTES);
-          
-
-          nodeExt.setTransverse(updatedTransverse);
-          
-          Map moreData = this.extractor.extractData(page.getNodeList());
-          
-          XLogger.getInstance().log(Level.FINE, "Extracted: {0}", getClass(), moreData == null ? null : moreData.keySet());
-          
-          if (moreData != null)
-          {
-            extractedData.putAll(moreData);
-          }
-          
-          nodeExt.setEnabled(true);
-        }
-        else {
-          nodeExt.setEnabled(false);
-        }
-      } } finally { 
-      iter = allIds.iterator();
-      
-      for (int i = 0; iter.hasNext(); i++)
-      {
-        String id = (String)iter.next();
-        
-        NodeExtractor nodeExt = this.extractor.getExtractor(id);
-        
-        nodeExt.setEnabled(states[i]);
-        
-        nodeExt.setTransverse(transverses[i]);
-      }
-    }
-  }
-  
-  protected void retryExtractsWithIncreasedTolerance(PageNodes page, Map extractedData, float tolerance)
+  protected void retryExtractsWithIncreasedTolerance(Dom page, Map extractedData, float tolerance)
     throws ParserException
   {
     do
@@ -349,11 +257,6 @@ public class Scrapper
     }
   }
   
-
-
-
-
-
   private float updateTolerance(MultipleNodesExtractorIx pageExt, Set<String> ids, float tolerance)
     throws ParserException
   {
@@ -365,18 +268,22 @@ public class Scrapper
     
     for (String id : ids)
     {
-      NodeExtractorIx nodeExt = pageExt.getExtractor(id);
-      NodeVisitingFilterIx visitingFilter = nodeExt.getFilter();
-      TagLocatorIx tagLocator = visitingFilter.getTagLocator();
+      NodeExtractor nodeExt = pageExt.getExtractor(id);
+      NodeVisitingFilter visitingFilter = nodeExt.getFilter();
+      TagLocator tagLocator = visitingFilter.getTagLocator();
       if (tagLocator != null) {
-        oldTolerance = tagLocator.getTolerance();
-        tagLocator.setTolerance(tolerance);
+        tagLocator = new TagLocatorImpl(
+                tagLocator.getId(), 
+                tagLocator.getTransverse(), 
+                new TransverseNodeMatcherImpl(tolerance));
+        visitingFilter.setTagLocator(tagLocator);
       }
     }
     
-    XLogger.getInstance().log(Level.FINER, "Updated tolerance from {0} to {1}", getClass(), Float.valueOf(oldTolerance), Float.valueOf(tolerance));
-    
-
+    if(XLogger.getInstance().isLoggable(Level.FINER, this.getClass())) {
+      XLogger.getInstance().log(Level.FINER, "Updated tolerance from {0} to {1}", 
+      getClass(), oldTolerance, tolerance);
+    }
 
     return oldTolerance;
   }
@@ -521,11 +428,11 @@ public class Scrapper
     this.context = context;
   }
   
-  public PageNodes getSource() {
+  public Dom getSource() {
     return this.source;
   }
   
-  public void setSource(PageNodes source) {
+  public void setSource(Dom source) {
     this.source = source;
   }
   

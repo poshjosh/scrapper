@@ -9,29 +9,22 @@ import org.htmlparser.Tag;
 import org.htmlparser.Text;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import org.htmlparser.visitors.NodeVisitor;
+import org.htmlparser.visitors.AbstractNodeVisitor;
 
-
-
-
-
-
-
-public class NodeListExtractor
-  extends NodeVisitor
-  implements NodeListExtractorIx
-{
+public class NodeListExtractor extends AbstractNodeVisitor implements NodeListExtractorIx {
+    
   private boolean started;
   private boolean stopInitiated;
   private boolean stopped;
+  private long startTime;
   private NodeList source;
   private Map extractedData;
   
-  public NodeListExtractor()
-  {
+  public NodeListExtractor() {
     this.extractedData = new HashMap();
   }
   
+  @Override
   public void reset()
   {
     this.started = false;
@@ -50,12 +43,14 @@ public class NodeListExtractor
 
 
     this.started = true;
+    this.startTime = System.currentTimeMillis();
     this.stopInitiated = false;
     this.stopped = false;
     
     try
     {
       reset();
+      
       nodeList.visitAllNodesWith(this);
     }
     finally
@@ -70,7 +65,14 @@ public class NodeListExtractor
     return this.extractedData;
   }
   
+  @Override
+  public Object call() {
+    this.run();
+    return this.extractedData;
+  }
+  
 
+  @Override
   public void run()
   {
     try
@@ -79,6 +81,11 @@ public class NodeListExtractor
     } catch (ParserException|RuntimeException e) {
       XLogger.getInstance().log(Level.WARNING, null, getClass(), e);
     }
+  }
+
+  @Override
+  public long getStartTime() {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
   
   public boolean isStopRequested()

@@ -7,7 +7,6 @@ import com.bc.util.concurrent.NamedThreadFactory;
 import com.scrapper.config.Config;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.url.ConfigURLPartList;
-import com.scrapper.util.PageNodes;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import com.bc.webdatex.nodedata.Dom;
 
 public class DirectSourcesParser extends ResumableUrlParser {
     
@@ -27,9 +27,19 @@ public class DirectSourcesParser extends ResumableUrlParser {
   
   private final Serializable counterIncrementLock = new Serializable() {};
   
-  public DirectSourcesParser(CapturerContext context, List<String> urls){
+  private final String siteName;
+
+  public DirectSourcesParser(
+          CapturerContext context, List<String> urls){
+    this(context, urls, true, false);
+  }
+  
+  public DirectSourcesParser(
+          CapturerContext context, List<String> urls, boolean resumable, boolean toResume){
       
-    super(context.getConfig().getName(), urls);
+    super(urls, resumable, toResume);
+    
+    siteName = context.getConfig().getName();
     
     initUrlCounterUpdate(context.getConfig());
   }
@@ -40,14 +50,14 @@ public class DirectSourcesParser extends ResumableUrlParser {
   
   private void readObject(ObjectInputStream o) throws IOException, ClassNotFoundException {
     o.defaultReadObject();
-    JsonConfig config = CapturerApp.getInstance().getConfigFactory().getConfig(getSitename());
+    JsonConfig config = CapturerApp.getInstance().getConfigFactory().getConfig(siteName);
     initUrlCounterUpdate(config);
   }
   
   @Override
-  public PageNodes next()  {
+  public Dom next()  {
       
-    PageNodes page = super.next();
+    Dom page = super.next();
     
     synchronized (this.counterIncrementLock) {
       this.urlCounterIncrement += 1;
@@ -58,9 +68,10 @@ public class DirectSourcesParser extends ResumableUrlParser {
   }
   
   @Override
-  public void completePendingActions() {
+  protected void post() {
+    super.post();
     if (this.urlCounterUpdateService != null) {
-      XLogger.getInstance().log(Level.FINE, "Shutting down counter update service for: {0}", getClass(), getSitename());
+      XLogger.getInstance().log(Level.FINE, "Shutting down counter update service for: {0}", getClass(), siteName);
       Util.shutdownAndAwaitTermination(this.urlCounterUpdateService, 3L, TimeUnit.SECONDS);
     }
   }

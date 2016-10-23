@@ -5,9 +5,9 @@ import com.bc.util.XLogger;
 import com.scrapper.CapturerApp;
 import com.scrapper.Crawler;
 import com.scrapper.DefaultSiteCapturer;
-import com.scrapper.Filter;
+import com.bc.webdatex.filter.Filter;
 import com.scrapper.SiteCapturer;
-import com.scrapper.URLParser;
+import com.bc.webdatex.URLParser;
 import com.scrapper.config.Config;
 import com.scrapper.config.ScrapperConfigFactory;
 import com.scrapper.context.CapturerContext;
@@ -82,7 +82,7 @@ public class CaptureSitesManager implements Filter<JsonConfig>, Serializable {
     
     DefaultSiteCapturer capturer = new DefaultSiteCapturer(context, null, true, true);
     
-    URLParser crawler = capturer.getCrawler();
+    URLParser crawler = capturer.getUrlParser();
     
     if ((crawler instanceof Crawler)) {
       ((Crawler)crawler).setCrawlLimit(this.crawlLimit);

@@ -2,7 +2,7 @@ package com.scrapper.util;
 
 import com.bc.json.config.JsonConfig;
 import com.scrapper.CapturerApp;
-import com.scrapper.Filter;
+import com.bc.webdatex.filter.Filter;
 import com.scrapper.config.Config;
 import com.scrapper.config.ScrapperConfigFactory;
 import java.util.Collection;

@@ -2,7 +2,7 @@ package com.aaa_upload;
 
 import com.bc.util.XLogger;
 import com.scrapper.BasePageDataConsumer;
-import com.scrapper.Formatter;
+import com.bc.webdatex.formatter.Formatter;
 import com.scrapper.formatter.DefaultFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;

@@ -1,65 +1,43 @@
 package com.scrapper;
 
+import com.bc.webdatex.formatter.Formatter;
 import com.bc.util.XLogger;
-import com.scrapper.util.PageNodes;
 import com.scrapper.util.Util;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Level;
+import com.bc.webdatex.nodedata.Dom;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public abstract class AbstractPageDataConsumer
-  implements PageDataConsumer, Serializable
-{
+public abstract class AbstractPageDataConsumer implements PageDataConsumer, Serializable {
+    
   private int minimumParameters;
   private String defaultTableName;
   private Formatter<Map<String, Object>> formatter;
   
-  protected abstract boolean doConsume(PageNodes paramPageNodes, Map paramMap);
+  protected abstract boolean doConsume(Dom pageDom, Map paramMap);
   
-  public boolean consume(PageNodes page, Map data)
+  @Override
+  public boolean consume(Dom pageDom, Map data)
   {
-    XLogger.getInstance().log(Level.FINEST, " URL: {0}\nData: {1}", getClass(), page == null ? null : page.getURL(), data);
+    XLogger.getInstance().log(Level.FINEST, " URL: {0}\nData: {1}", getClass(), pageDom == null ? null : pageDom.getURL(), data);
     
 
 
 
 
-    if (!accept(page, data)) {
+    if (!accept(pageDom, data)) {
       return false;
     }
     
-    data = format(page, data);
+    data = format(pageDom, data);
     
     XLogger.getInstance().log(Level.FINEST, "After all formats, parameters: {0}", getClass(), data);
     
 
-    return doConsume(page, data);
+    return doConsume(pageDom, data);
   }
   
-  public boolean accept(PageNodes page, Map data)
+  public boolean accept(Dom page, Map data)
   {
     if (data == null) {
       throw new NullPointerException();
@@ -75,7 +53,7 @@ public abstract class AbstractPageDataConsumer
     return accept;
   }
   
-  public Map format(PageNodes page, Map data)
+  public Map format(Dom page, Map data)
   {
     addTableName(page, data);
     
@@ -88,7 +66,7 @@ public abstract class AbstractPageDataConsumer
     return data;
   }
   
-  protected void addTableName(PageNodes page, Map<String, Object> data)
+  protected void addTableName(Dom page, Map<String, Object> data)
   {
     String tablenameKey = getTableNameKey();
     
@@ -101,7 +79,7 @@ public abstract class AbstractPageDataConsumer
     data.put(tablenameKey, tablenameVal);
   }
   
-  protected void addExtraDetails(PageNodes page, Map<String, Object> data)
+  protected void addExtraDetails(Dom page, Map<String, Object> data)
   {
     if (page == null) {
       return;

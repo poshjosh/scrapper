@@ -1,5 +1,6 @@
 package com.scrapper.extractor;
 
+import com.bc.webdatex.extractor.DataExtractor;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;

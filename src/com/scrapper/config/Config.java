@@ -47,7 +47,7 @@ public abstract interface Config
   
   public static enum Formatter
   {
-    defaultValues(Map.class),  datePatterns(String[].class),  language, 
+    defaultValues(Map.class),  datePatterns(String[].class),  urlDatePatterns(String[].class), language, 
     exression,  jobRequestFields(String[].class),  formatter(String.class), 
     update,  accept,  replace,  replaceRegex, 
     set,  maxExpressions(Number.class);

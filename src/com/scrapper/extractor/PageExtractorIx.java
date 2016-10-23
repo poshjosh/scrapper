@@ -7,9 +7,8 @@ import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 
-public abstract interface PageExtractorIx
-  extends NodeListExtractorIx
-{
+public abstract interface PageExtractorIx extends NodeListExtractorIx {
+    
   public abstract JsonConfig getCapturerConfig();
   
   public abstract CapturerContext getCapturerContext();

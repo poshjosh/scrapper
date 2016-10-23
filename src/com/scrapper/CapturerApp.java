@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
-public class CapturerApp
-{
+public class CapturerApp {
+    
   private boolean remote;
   private boolean initialized;
   private List<String> targetNodesToTrack;
@@ -22,8 +22,7 @@ public class CapturerApp
   private static ScrapperConfigFactory configFactory;
   private static ScrapperConfigFactory searchConfigFactory;
   
-  public static CapturerApp getInstance()
-  {
+  public static CapturerApp getInstance() {
     return getInstance(true);
   }
   
@@ -41,17 +40,13 @@ public class CapturerApp
     instance = app;
   }
   
-
-
   public void init()
-    throws IllegalAccessException, InterruptedException, InvocationTargetException
-  {
+    throws IllegalAccessException, InterruptedException, InvocationTargetException {
     init(false);
   }
   
   public void init(boolean remote)
-    throws IllegalAccessException, InterruptedException, InvocationTargetException
-  {
+    throws IllegalAccessException, InterruptedException, InvocationTargetException {
     this.remote = remote;
     
     LoggerManager lMgr = createLoggerManager();
@@ -68,18 +63,17 @@ public class CapturerApp
     
     XLogger.getInstance().log(Level.FINER, "Adding shut down hook for saving app properties updates", getClass());
     
-    Runtime.getRuntime().addShutdownHook(new Thread()
-    {
-      public void run()
-      {
+    final String threadName = "shutdownHook#Thread@"+this.getClass().getName();
+    Runtime.getRuntime().addShutdownHook(new Thread(threadName){
+      @Override
+      public void run(){
         try {
           XLogger.getInstance().log(Level.FINER, "Running shutdown hook", getClass());
           AppProperties.store();
-
+        } catch (IOException|RuntimeException e) {
+          XLogger.getInstance().log(Level.WARNING, "Exception in shutdownHook: "+this.getName(), this.getClass(), e);
         }
-        catch (IOException|RuntimeException e) {}
       }
-      
     });
     XLogger.getInstance().log(Level.FINER, "Creating capturer config factory", getClass());
     

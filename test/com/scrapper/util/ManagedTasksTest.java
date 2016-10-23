@@ -67,7 +67,7 @@ System.out.println("========================================Time spent: "+(Syste
                 this.name = name;
             }
             @Override
-            public String doCall() {
+            protected String doCall() {
                 for(int i=0; i<5; i++) {
 System.out.println(name+" . . . . . . . . . . "+i);    
                     try{

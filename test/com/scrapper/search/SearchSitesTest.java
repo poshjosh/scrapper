@@ -5,7 +5,6 @@ import com.bc.util.XLogger;
 import com.scrapper.CapturerApp;
 import com.scrapper.PageDataConsumer;
 import com.scrapper.search.url.SampleSearchURL;
-import com.scrapper.util.PageNodes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import java.util.logging.Level;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import com.bc.webdatex.nodedata.Dom;
 
 /**
  *
@@ -178,7 +178,7 @@ System.out.println("Finally: "+ss);
                     throw new UnsupportedOperationException("Not supported yet.");
                 }
                 @Override
-                protected boolean doConsume(PageNodes page, Map data) {
+                protected boolean doConsume(Dom page, Map data) {
 System.out.println("= x = x = x = x = x = x Consuming: "+data);
                     return true;
                 }

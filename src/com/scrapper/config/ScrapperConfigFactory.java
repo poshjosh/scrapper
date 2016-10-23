@@ -56,7 +56,7 @@ public abstract class ScrapperConfigFactory extends JsonConfigFactory {
     
     String className = getClassName(config.getName());
     
-    XLogger.getInstance().log(Level.FINE, "Class name: {0}", getClass(), className);
+    XLogger.getInstance().log(Level.FINER, "Class name: {0}", getClass(), className);
     
     CapturerContext output = null;
     try

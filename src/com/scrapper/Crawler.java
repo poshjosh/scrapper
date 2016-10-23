@@ -2,12 +2,14 @@ package com.scrapper;
 
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
+import com.bc.webdatex.filter.Filter;
 import com.scrapper.config.Config;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.util.HtmlContentFilter;
 import com.scrapper.util.HtmlLinkFilter;
 import com.scrapper.util.Util;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import org.htmlparser.PrototypicalNodeFactory;
 import org.htmlparser.tags.FrameTag;
@@ -16,7 +18,7 @@ import org.htmlparser.util.ParserException;
 
 public class Crawler<E> extends ResumableUrlParser<E> {
     
-  private boolean captureQueryLinks;
+  private final boolean captureQueryLinks = true;
   
   private boolean startCollectingLinks = true;
 
@@ -38,20 +40,45 @@ public class Crawler<E> extends ResumableUrlParser<E> {
   
   private Filter<String> htmlContentFilter;
   
-  private CapturerContext context;
+  private final CapturerContext context;
   
   private final Class cls = Crawler.class;
   private final XLogger logger = XLogger.getInstance();
-  
+
   public Crawler(CapturerContext context) {
+    this(context, true, false);
+  }
+  
+  public Crawler(CapturerContext context, boolean resumable, boolean toResume) {
       
-    super(context.getConfig().getName());
-    
+    super(new ArrayList(), resumable, toResume);
+      
     logger.log(Level.FINER, "Creating", cls);
     
-    setContext(context);
+    this.context = context;
     
-    setCaptureQueryLinks(true);
+    JsonConfig config = context.getConfig();
+    
+    String url_start = config.getString(new Object[] { "url", Config.Site.start });
+    if ((url_start == null) || (url_start.isEmpty())) {
+      this.baseUrl = config.getString(new Object[] { "url", "value" });
+      if ((this.baseUrl == null) || (this.baseUrl.isEmpty())) {
+        throw new NullPointerException("Both url.start and url.value cannot be null in config: " + config.getName());
+      }
+      this.baseUrl = this.baseUrl.trim();
+      setStartUrl(this.baseUrl);
+    } else {
+      setStartUrl(url_start);
+    }
+    
+    setUrlFilter(context.getCaptureUrlFilter());
+    
+    setFormatter(context.getUrlFormatter());
+
+    int limit = config.getInt(new Object[] { Config.Extractor.parseLimit });
+    
+    setParseLimit(limit);
+    
     PrototypicalNodeFactory factory = (PrototypicalNodeFactory)getParser().getNodeFactory();
     factory.registerTag(new LinkCollectingLinkTag());
     factory.registerTag(new LinkCollectingFrameTag());
@@ -66,32 +93,28 @@ public class Crawler<E> extends ResumableUrlParser<E> {
   }
 
   @Override
-  public boolean isToBeCrawled(String link)
-  {
+  public boolean isToBeCrawled(String link) {
+      
     logger.log(Level.FINEST, "#isToBeCrawled. Link: {0}", cls, link);
     
     boolean toBeCrawled;
-    if (link.equals(this.startUrl))
-    {
+    if (link.equals(this.startUrl)) {
+        
       toBeCrawled = true;
-    }
-    else
-    {
+      
+    } else {
+        
       toBeCrawled = super.isToBeCrawled(link);
 
-      if (toBeCrawled)
-      {
+      if (toBeCrawled) {
 
         if (this.baseUrl.isEmpty()) { // base URL already trimmed
           toBeCrawled = true;
         } else if (link.trim().isEmpty()) {
           toBeCrawled = false;
-        }
-        else
-        {
+        } else {
 
-          try
-          {
+          try {
            
             if(baseUrl_wwwFormat == null)  {
                 baseUrl_wwwFormat = Util.toWWWFormat(this.baseUrl);
@@ -113,24 +136,24 @@ public class Crawler<E> extends ResumableUrlParser<E> {
         toBeCrawled = -1 == link.indexOf("?") || (isCaptureQueryLinks());
       }
       
-      if ((toBeCrawled) && (getUrlFilter() != null))
-      {
+      if ((toBeCrawled) && (getUrlFilter() != null)) {
+          
         logger.log(Level.FINER, "#isToBeCrawled. Filtering with: {0}", cls, getUrlFilter().getClass());
 
         toBeCrawled = getUrlFilter().accept(link);
         
-        logger.log(Level.FINE, "Accepted by URL Filter: {0}, Link: {1}", cls, Boolean.valueOf(toBeCrawled), link);
+        logger.log(Level.FINER, "Accepted by URL Filter: {0}, Link: {1}", cls, toBeCrawled, link);
       }
     }
     
     Level level = toBeCrawled ? Level.FINE : Level.FINER;
-    logger.log(level, "To be captured: {0}, Link: {1}", cls, Boolean.valueOf(toBeCrawled), link);
+    logger.log(level, "To be crawled: {0}, Link: {1}", cls, toBeCrawled, link);
     
     return toBeCrawled;
   }
 
-  protected boolean isHtml(String link)
-  {
+  protected boolean isHtml(String link) {
+      
     if (this.htmlLinkFilter == null) {
       this.htmlLinkFilter = new HtmlLinkFilter();
     }
@@ -146,8 +169,8 @@ public class Crawler<E> extends ResumableUrlParser<E> {
     return this.htmlContentFilter.accept(link);
   }
   
-  class LinkCollectingLinkTag extends LinkTag
-  {
+  class LinkCollectingLinkTag extends LinkTag {
+      
     LinkCollectingLinkTag() {}
     
     @Override
@@ -168,7 +191,8 @@ public class Crawler<E> extends ResumableUrlParser<E> {
             boolean html = Crawler.this.isHtml(link);
             
             if (html) {
-              logger.log(Level.FINER, "Adding: {0}", cls, link);
+                
+              logger.log(Level.FINER, "Crawled: {0}, adding: {1}", cls, crawled, link);
               
               Crawler.this.getPageLinks().add(link);
               
@@ -191,19 +215,20 @@ public class Crawler<E> extends ResumableUrlParser<E> {
 
       String link = getFrameLocation();
 
-      if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link)))
-      {
-        synchronized (Crawler.this.pageLock)
-        {
-          if (!Crawler.this.getPageLinks().contains(link))
-          {
+      if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link))) {
+          
+        synchronized (Crawler.this.pageLock) {
+            
+          if (!Crawler.this.getPageLinks().contains(link)) {
 
             boolean html = Crawler.this.isHtml(link);
             
-            if (html)
-            {
+            if (html) {
+                
+              logger.log(Level.FINER, "Crawled: {0}, adding: {1}", cls, crawled, link);  
+
               Crawler.this.getPageLinks().add(link);
-              
+
               ++crawled;
             }
           }
@@ -245,53 +270,16 @@ public class Crawler<E> extends ResumableUrlParser<E> {
     }
   }
   
-  public CapturerContext getContext() {
-    return this.context;
-  }
-  
-  public void setContext(CapturerContext context) {
-    logger.log(Level.FINER, "Updating context for: {0}", cls, this);
-    
-    this.context = context;
-    
-    JsonConfig config = context.getConfig();
-    
-    setSitename(config.getName());
-    
-    String url_start = config.getString(new Object[] { "url", Config.Site.start });
-    if ((url_start == null) || (url_start.isEmpty())) {
-      this.baseUrl = config.getString(new Object[] { "url", "value" });
-      if ((this.baseUrl == null) || (this.baseUrl.isEmpty())) {
-        throw new NullPointerException("Both url.start and url.value cannot be null in config: " + config.getName());
-      }
-      this.baseUrl = this.baseUrl.trim();
-      setStartUrl(this.baseUrl);
-    } else {
-      setStartUrl(url_start);
-    }
-    
-    setUrlFilter(context.getCaptureUrlFilter());
-    
-    setFormatter(context.getUrlFormatter());
-    
-    int limit = config.getInt(new Object[] { Config.Extractor.parseLimit }).intValue();
-    
-    setParseLimit(limit);
-    logger.log(Level.FINER, "Updated context for: {0}", cls, this);
-  }
-  
-  public int getCrawled() {
+  public final int getCrawled() {
     return this.crawled;
   }
   
-
-  public boolean isCaptureQueryLinks()
-  {
-    return this.captureQueryLinks;
+  public final CapturerContext getContext() {
+    return this.context;
   }
-  
-  public void setCaptureQueryLinks(boolean captureQueryLinks) {
-    this.captureQueryLinks = captureQueryLinks;
+
+  public final boolean isCaptureQueryLinks() {
+    return this.captureQueryLinks;
   }
   
   public Filter<String> getUrlFilter() {
@@ -327,8 +315,7 @@ public class Crawler<E> extends ResumableUrlParser<E> {
   }
   
   @Override
-  public void print(StringBuilder builder)
-  {
+  public void print(StringBuilder builder) {
     super.print(builder);
     builder.append(", startCollectingLinks: ").append(this.startCollectingLinks);
     builder.append(", stopCollectingLinks: ").append(this.stopCollectingLinks);
