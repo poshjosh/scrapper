@@ -4,65 +4,45 @@ import com.scrapper.PageDataConsumer;
 import com.scrapper.util.ManagedTasks;
 import java.util.List;
 import java.util.Map;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public abstract class SearchSites
-  extends ManagedTasks<SearchSite>
-{
+public abstract class SearchSites extends ManagedTasks<SearchSite> {
+    
   private String searchText;
   private Map parameters;
   
   public SearchSites() {}
   
-  public SearchSites(List<String> sitenames, String productTable, Map parameters, String searchText)
-  {
+  public SearchSites(
+          List<String> sitenames, String productTable, Map parameters, String searchText) {
+      
     this.searchText = searchText;
     
     this.parameters = parameters;
     
-
-
     loadTasks(productTable, sitenames);
   }
-  
 
   protected abstract PageDataConsumer newDataConsumer(SearchSite paramSearchSite);
   
-  protected SearchSite newTask(String site)
-  {
-    SearchSite searchSite = new SearchSite(site)
-    {
+  @Override
+  protected SearchSite newTask(String site) {
+      
+    SearchSite searchSite = new SearchSite(site) {
+        
+      @Override
       protected void preParse(String url) {
         SearchSites.this.preTaskUpdateTimeTaken(getName());
       }
       
-      protected void postParse(Dom page) {
+      @Override
+      protected void postParse(HtmlPageDom page) {
         SearchSites.this.postTaskUpdateTimeTaken(getName(), getLastRequestTime(), getLastRequestTimeTaken());
-
       }
-      
-
-
     };
+    
     searchSite.update(getProductTable(), getParameters(), getSearchText());
     
-
-
     PageDataConsumer consumer = newDataConsumer(searchSite);
     
     searchSite.setDataConsumer(consumer);

@@ -14,10 +14,9 @@ import java.util.logging.Level;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 /**
- *
  * @author Josh
  */
 public class SearchSitesTest {
@@ -62,7 +61,8 @@ public class SearchSitesTest {
     private void testLocal(String text) {
         try{
             
-            List<String> names = new ArrayList<String>();
+            List<String> names = new ArrayList<>();
+            
             names.add("sample"); 
             
             this.testMain("quanda", text, names, null, new SampleSearchURL());
@@ -75,7 +75,7 @@ public class SearchSitesTest {
     private void testFashion(String text) {
         try{
             
-            List<String> names = new ArrayList<String>();
+            List<String> names = new ArrayList<>();
             names.add("kiramu"); 
             names.add("second"); 
             names.add("Adibba");            
@@ -101,7 +101,7 @@ public class SearchSitesTest {
     private void testHousehold(String text) {
         try{
             
-            List<String> names = new ArrayList<String>();
+            List<String> names = new ArrayList<>();
             names.add("kaymu"); names.add("kara"); names.add("fouani");            
             names.add("jumia_ng");
             names.add("second");
@@ -178,7 +178,7 @@ System.out.println("Finally: "+ss);
                     throw new UnsupportedOperationException("Not supported yet.");
                 }
                 @Override
-                protected boolean doConsume(Dom page, Map data) {
+                protected boolean doConsume(HtmlPageDom page, Map data) {
 System.out.println("= x = x = x = x = x = x Consuming: "+data);
                     return true;
                 }

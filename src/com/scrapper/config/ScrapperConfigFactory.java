@@ -8,8 +8,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.logging.Level;
 
-public abstract class ScrapperConfigFactory extends JsonConfigFactory {
-    
+public class ScrapperConfigFactory extends JsonConfigFactory {
+
+  public ScrapperConfigFactory(URI configDir, String defaultConfigName) {
+    super(configDir, defaultConfigName);
+  }
+
+  public ScrapperConfigFactory(URI configDir, String defaultConfigName, String searchNodeName, boolean useCache, boolean remote) {
+    super(configDir, defaultConfigName, searchNodeName, useCache, remote);
+  }
+
   protected JsonConfig createNew() {
     JsonConfig config = new ScrapperConfig();
     return config;
@@ -18,28 +26,9 @@ public abstract class ScrapperConfigFactory extends JsonConfigFactory {
 
   @Override
   public JsonConfigFactory newSyncFactory() {
-      
-    final boolean isRemote = !isRemote();
-    
-    JsonConfigFactory factory = new ScrapperConfigFactory() {
-        
-      @Override
-      public boolean isRemote() {
-        return isRemote;
-      }
-      
-      @Override
-      protected URI getConfigDir() {
-        return ScrapperConfigFactory.this.getConfigDir();
-      }
-      
-      @Override
-      protected String getDefaultConfigName() {
-        return ScrapperConfigFactory.this.getDefaultConfigName();
-      }
-    };
-    factory.setSearch(isSearch());
-    factory.setUseCache(isUseCache());
+    JsonConfigFactory factory = new ScrapperConfigFactory(
+            this.getConfigDir(), this.getDefaultConfigName(), this.getSearchNodeName(), 
+            this.isUseCache(), !this.isRemote());
     return factory;
   }
   
@@ -81,10 +70,7 @@ public abstract class ScrapperConfigFactory extends JsonConfigFactory {
     return new DefaultCapturerContext(config);
   }
   
-
-
-  private String getClassName(String sitename)
-  {
+  private String getClassName(String sitename){
     String packageName = DefaultCapturerContext.class.getPackage().getName();
     StringBuilder builder = new StringBuilder(packageName);
     builder.append('.').append(toTitleCase(sitename)).append("Context");

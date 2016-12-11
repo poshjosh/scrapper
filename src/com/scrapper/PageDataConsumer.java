@@ -1,9 +1,9 @@
 package com.scrapper;
 
 import java.util.Map;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 public interface PageDataConsumer {
     
-  boolean consume(Dom pageDom, Map paramMap);
+  boolean consume(HtmlPageDom pageDom, Map paramMap);
 }

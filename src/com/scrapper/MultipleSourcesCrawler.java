@@ -6,7 +6,7 @@ import com.scrapper.context.CapturerContext;
 import com.scrapper.url.ConfigURLPartList;
 import java.util.List;
 import java.util.logging.Level;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 public class MultipleSourcesCrawler extends Crawler {
     
@@ -73,7 +73,7 @@ public class MultipleSourcesCrawler extends Crawler {
   }
   
   @Override
-  public Dom next() {
+  public HtmlPageDom next() {
       
     updateBaseUrl(this.sources);
     
@@ -84,7 +84,7 @@ public class MultipleSourcesCrawler extends Crawler {
       addedSrc = null;
     }
     
-    Dom page = super.next();
+    HtmlPageDom page = super.next();
     
     if (addedSrc == null) {
       return page;

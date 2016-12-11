@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.htmlparser.util.ParserException;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements SiteCapturer, Serializable {
     
@@ -52,7 +52,7 @@ public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements 
           break;
         }
         
-        Dom pageNodes = this.urlParser.next();
+        HtmlPageDom pageNodes = this.urlParser.next();
         
         XLogger.getInstance().log(Level.FINER, "PageNodes: {0}", getClass(), pageNodes);
         
@@ -65,13 +65,16 @@ public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements 
           
           if (extractedData != null)
           {
-            XLogger.getInstance().log(Level.FINER, "Extracted: {0} from: {1}", getClass(), extractedData.keySet(), pageNodes.getFormattedURL());
+            XLogger.getInstance().log(Level.FINER, "Extracted: {0} from: {1}", 
+                    getClass(), extractedData.keySet(), pageNodes.getURL());
             
 
 
             if (this.dataConsumer == null)
             {
-              XLogger.getInstance().log(Level.INFO, "{0} not specified. URL: {1}\nExtracted columns: {2}", getClass(), PageDataConsumer.class.getName(), pageNodes.getFormattedURL(), extractedData.keySet());
+              XLogger.getInstance().log(Level.INFO, 
+                      "{0} not specified. URL: {1}\nExtracted columns: {2}", 
+                      getClass(), PageDataConsumer.class.getName(), pageNodes.getURL(), extractedData.keySet());
               
 
               XLogger.getInstance().log(Level.FINER, "Extract:\n{0}", getClass(), extractedData);

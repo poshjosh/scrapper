@@ -4,18 +4,16 @@ import com.bc.json.config.JsonConfig;
 import com.scrapper.config.Config;
 import com.scrapper.context.CapturerContext;
 
-public abstract class ContextDataConsumer
-  extends AbstractPageDataConsumer
-{
+public abstract class ContextDataConsumer extends AbstractPageDataConsumer {
+    
   private CapturerContext context;
   
-  public ContextDataConsumer(String sitename)
-  {
+  public ContextDataConsumer(String sitename){
     this(CapturerApp.getInstance().getConfigFactory().getContext(sitename));
   }
   
-  public ContextDataConsumer(CapturerContext context)
-  {
+  public ContextDataConsumer(CapturerContext context) {
+      
     this.context = context;
     
     JsonConfig config = context.getConfig();

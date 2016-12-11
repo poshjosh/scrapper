@@ -15,16 +15,16 @@ import java.util.logging.Level;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import com.bc.webdatex.nodedata.Dom;
 import com.bc.webdatex.locator.TagLocator;
 import com.bc.webdatex.nodefilter.NodeVisitingFilter;
 import com.bc.webdatex.extractor.node.NodeExtractor;
 import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.bc.webdatex.locator.impl.TransverseNodeMatcherImpl;
+import com.bc.dom.HtmlPageDom;
 
-public class Scrapper implements DataExtractor<Dom>, Serializable {
+public class Scrapper implements DataExtractor<HtmlPageDom>, Serializable {
     
-  private Dom source;
+  private HtmlPageDom source;
   private float lastSuccessfulTolerance;
   private float maxTolerance = 0.3F;
   
@@ -57,7 +57,7 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
   }
   
   @Override
-  public Map extractData(Dom page) throws ParserException {
+  public Map extractData(HtmlPageDom page) throws ParserException {
       
     try {
         
@@ -86,12 +86,12 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
       
 
       if (this.filter != null) {
-        XLogger.getInstance().log(Level.FINEST, "BEFORE filter. Nodes: {0}", getClass(), page.getNodeList() == null ? null : Integer.valueOf(page.getNodeList().size()));
+        XLogger.getInstance().log(Level.FINEST, "BEFORE filter. Nodes: {0}", getClass(), page.getElements() == null ? null : Integer.valueOf(page.getElements().size()));
         
 
-        page.getNodeList().keepAllNodesThatMatch(this.filter, true);
+        page.getElements().keepAllNodesThatMatch(this.filter, true);
         
-        XLogger.getInstance().log(Level.FINER, "AFTER filter. Nodes: {0}", getClass(), page.getNodeList() == null ? null : Integer.valueOf(page.getNodeList().size()));
+        XLogger.getInstance().log(Level.FINER, "AFTER filter. Nodes: {0}", getClass(), page.getElements() == null ? null : Integer.valueOf(page.getElements().size()));
       }
       
 
@@ -103,7 +103,7 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
 
 
 
-      if (page.getNodeList().size() == 0) {
+      if (page.getElements().size() == 0) {
         XLogger.getInstance().log(Level.WARNING, "After filter, found 0 Nodes in page: {0}.", getClass(), page.getURL());
         return null;
       }
@@ -115,14 +115,15 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
       }
       
 
-      XLogger.getInstance().log(Level.FINE, "Scrapped: {0}, scrapping: {1}", getClass(), Integer.valueOf(this.scrappCount), page.getFormattedURL());
+      XLogger.getInstance().log(Level.FINE, "Scrapped: {0}, scrapping: {1}", 
+              getClass(), this.scrappCount, page.getURL());
       
 
 
 
       updateTolerance(this.extractor, this.extractor.getNodeExtractorIds(), this.lastSuccessfulTolerance);
       
-      Map extractedData = this.extractor.extractData(page.getNodeList());
+      Map extractedData = this.extractor.extractData(page.getElements());
       
       float tolerance = this.lastSuccessfulTolerance;
       
@@ -174,7 +175,7 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
     }
   }
   
-  protected void retryExtractsWithIncreasedTolerance(Dom page, Map extractedData, float tolerance)
+  protected void retryExtractsWithIncreasedTolerance(HtmlPageDom page, Map extractedData, float tolerance)
     throws ParserException
   {
     do
@@ -185,7 +186,7 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
       
       tolerance += 0.1F;
       
-      Map moreData = retryExtract(page.getNodeList(), this.extractor, tolerance);
+      Map moreData = retryExtract(page.getElements(), this.extractor, tolerance);
       
 
       if (moreData != null)
@@ -428,11 +429,11 @@ public class Scrapper implements DataExtractor<Dom>, Serializable {
     this.context = context;
   }
   
-  public Dom getSource() {
+  public HtmlPageDom getSource() {
     return this.source;
   }
   
-  public void setSource(Dom source) {
+  public void setSource(HtmlPageDom source) {
     this.source = source;
   }
   

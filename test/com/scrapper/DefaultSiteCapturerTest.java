@@ -18,7 +18,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 /**
  * @author Josh
@@ -102,7 +102,7 @@ public class DefaultSiteCapturerTest {
         PageDataConsumer dataConsumer = new ContextDataConsumer(
                 factory.getContext(sitename)){
             @Override
-            public boolean doConsume(Dom page, Map data) {
+            public boolean doConsume(HtmlPageDom page, Map data) {
                 
                 Object productTable = data.get(this.getTableNameKey());
                 

@@ -5,26 +5,14 @@ import com.scrapper.context.CapturerContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
-
-
-
-
-
-
-
-
-
-
-
-public class ScrappUploader
-  extends ContextDataConsumer
-{
+public class ScrappUploader extends ContextDataConsumer {
+    
   private DataUploader uploader;
   
-  public ScrappUploader(CapturerContext context)
-  {
+  public ScrappUploader(CapturerContext context) {
+      
     super(context);
     
     URL insertURL = null;
@@ -45,8 +33,8 @@ public class ScrappUploader
       throw new NullPointerException();
     }
     
-    this.uploader = new DataUploader(insertURL)
-    {
+    this.uploader = new DataUploader(insertURL){
+      @Override
       public Map getUploadParameters() {
         return m;
       }
@@ -54,8 +42,9 @@ public class ScrappUploader
   }
   
 
-  public boolean doConsume(Dom page, Map data)
-  {
+  @Override
+  public boolean doConsume(HtmlPageDom page, Map data){
+      
     Object productTable = data.get(getTableNameKey());
     
     this.uploader.getUploadParameters().put(getTableNameKey(), productTable);

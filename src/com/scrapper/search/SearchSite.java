@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import com.bc.webdatex.nodedata.Dom;
 import java.io.IOException;
 import org.htmlparser.util.ParserException;
+import com.bc.dom.HtmlPageDom;
 
 public class SearchSite extends BaseSiteCapturer {
     
@@ -79,7 +79,7 @@ public class SearchSite extends BaseSiteCapturer {
 
   protected void preParse(String url) {}
   
-  protected void postParse(Dom page) {}
+  protected void postParse(HtmlPageDom page) {}
   
   @Override
   public Integer doCall() throws IOException, ParserException {
@@ -175,7 +175,7 @@ public class SearchSite extends BaseSiteCapturer {
       }
       
       @Override
-      protected void postParse(Dom dom) {
+      protected void postParse(HtmlPageDom dom) {
           
         SearchSite.this.lastRequestTimeTaken = ((int)(System.currentTimeMillis() - SearchSite.this.lastRequestTime));
         

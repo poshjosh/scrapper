@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 public class DirectSourcesParser extends ResumableUrlParser {
     
@@ -55,9 +55,9 @@ public class DirectSourcesParser extends ResumableUrlParser {
   }
   
   @Override
-  public Dom next()  {
+  public HtmlPageDom next()  {
       
-    Dom page = super.next();
+    HtmlPageDom page = super.next();
     
     synchronized (this.counterIncrementLock) {
       this.urlCounterIncrement += 1;

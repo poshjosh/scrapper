@@ -77,10 +77,8 @@ public class CapturerApp {
     });
     XLogger.getInstance().log(Level.FINER, "Creating capturer config factory", getClass());
     
-    configFactory = createConfigFactory(remote, getConfigDir(), getDefaultConfigname());
-    configFactory.setSearch(false);
-    searchConfigFactory = createConfigFactory(remote, getConfigDir(), getDefaultConfigname());
-    searchConfigFactory.setSearch(true);
+    configFactory = createConfigFactory(remote, getConfigDir(), getDefaultConfigname(), null);
+    searchConfigFactory = createConfigFactory(remote, getConfigDir(), getDefaultConfigname(), "searchresults");
     
     this.initialized = true;
     XLogger.getInstance().log(Level.INFO, "Initialization complete.", getClass());
@@ -109,12 +107,7 @@ XLogger.getInstance().log(Level.INFO, "{0} = {1}", this.getClass(), propName, ur
     return uri;
   }
   
-
-
-
-
-  public String getDefaultConfigname()
-  {
+  public String getDefaultConfigname() {
     return getProperty("defaultConfigName").trim();
   }
   
@@ -143,29 +136,15 @@ XLogger.getInstance().log(Level.INFO, "{0} = {1}", this.getClass(), propName, ur
     return factory;
   }
   
-
-
-
-  protected ScrapperConfigFactory createConfigFactory(final boolean remote, final URI dir, final String defaultConfigName)
-  {
-    XLogger.getInstance().log(Level.INFO, "Creating config factory:: Remote: {0}, configs dir: {1}, defaultFilename: {2}", getClass(), Boolean.valueOf(remote), dir, defaultConfigName);
+  protected ScrapperConfigFactory createConfigFactory(
+          final boolean remote, final URI dir, final String defaultConfigName, String searchNodeName) {
+      
+    XLogger.getInstance().log(Level.INFO, 
+            "Creating config factory:: Remote: {0}, configs dir: {1}, defaultFilename: {2}", 
+            getClass(), remote, dir, defaultConfigName);
     
-
-    ScrapperConfigFactory factory = new ScrapperConfigFactory()
-    {
-      public boolean isRemote()
-      {
-        return remote;
-      }
-      
-      protected URI getConfigDir() {
-        return dir;
-      }
-      
-      protected String getDefaultConfigName() {
-        return defaultConfigName;
-      }
-    };
+    ScrapperConfigFactory factory = new ScrapperConfigFactory(dir, defaultConfigName, searchNodeName, true, remote);
+    
     return factory;
   }
   

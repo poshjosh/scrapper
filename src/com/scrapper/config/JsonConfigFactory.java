@@ -29,33 +29,45 @@ import java.util.logging.Level;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.ParseException;
 
-public abstract class JsonConfigFactory {
+public class JsonConfigFactory {
     
-  private boolean search;
-  private boolean useCache;
+  public static interface JsonConfigFilter {
+    public boolean accept(JsonConfig paramJsonConfig);
+  }
+    
+  private final boolean useCache;
+  private final boolean remote;
+  private final String defaultConfigName;
+  private final String searchNodeName;
+  private final URI configDir;
   private Map<String, JsonConfig> loadedConfigs;
   private Set<String> remotesites_use_getter_to_access;
-  
-  protected JsonConfigFactory() {
-    setUseCache(true);
+
+  public JsonConfigFactory(URI configDir, String defaultConfigName) {
+    this(configDir, defaultConfigName, null, true, false);    
   }
   
-  protected abstract URI getConfigDir();
+  public JsonConfigFactory(URI configDir, String defaultConfigName, 
+          String searchNodeName, boolean useCache, boolean remote) {
+    this.remote = remote;
+    this.useCache = useCache;
+    this.searchNodeName = searchNodeName;
+    this.defaultConfigName = defaultConfigName;
+    this.configDir = configDir;
+  }
   
-  protected abstract String getDefaultConfigName();
+  public URI getConfigDir() {
+    return this.configDir;
+  }
+  
+  public String getDefaultConfigName() {
+    return this.defaultConfigName;
+  }
   
   protected DefaultFTPClient getFtpClient() {
     return new MyFTPClient();
   }
 
-  public String getSearchNodeName() {
-    return "searchresults";
-  }
-  
-  public boolean isRemote() {
-    return false;
-  }
-  
   public File getConfigsDirFile() {
     URI uri = getConfigDir();
     File file = Paths.get(uri).toFile();
@@ -226,9 +238,9 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
       }
     }
     
-    if (this.search) {
+    if (this.searchNodeName != null) {
         
-      if (config.getObject(getSearchNodeName()) != null) {
+      if (config.getObject(searchNodeName) != null) {
 
 //        JsonConfig searchConfig = new ConfigSubset(config.getName(), config, config, getSearchNodeName());
         JsonConfig searchConfig = new ConfigSubset(config.getName(), null, config, getSearchNodeName());
@@ -301,7 +313,8 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     
     tgt.update(src);
     
-    XLogger.getInstance().log(Level.FINER, "After update Src size: {0}, tgt size: {1}", getClass(), Integer.valueOf(src.getRootContainer().size()), Integer.valueOf(tgt.getRootContainer().size()));
+    XLogger.getInstance().log(Level.FINER, "After update Src size: {0}, tgt size: {1}", 
+            getClass(), src.getRootContainer().size(), tgt.getRootContainer().size());
     
     FileInterface srcFile = getFile(src.getName(), isRemote());
     FileInterface tgtFile = getFile(tgt.getName(), !isRemote());
@@ -477,36 +490,16 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     return config;
   }
   
-  public JsonConfigFactory newSyncFactory()
-  {
-    final boolean isRemote = !isRemote();
+  public JsonConfigFactory newSyncFactory() {
+      
+    JsonConfigFactory factory = new JsonConfigFactory(
+            configDir, defaultConfigName, searchNodeName, useCache, !remote);
     
-    JsonConfigFactory factory = new JsonConfigFactory()
-    {
-      public boolean isRemote() {
-        return isRemote;
-      }
-      
-      protected URI getConfigDir() {
-        return JsonConfigFactory.this.getConfigDir();
-      }
-      
-      protected String getDefaultConfigName() {
-        return JsonConfigFactory.this.getDefaultConfigName();
-      }
-      
-      protected DefaultFTPClient getFtpClient()
-      {
-        return JsonConfigFactory.this.getFtpClient();
-      }
-    };
-    factory.setSearch(isSearch());
-    factory.setUseCache(isUseCache());
     return factory;
   }
   
-  public Set<String> getSyncSitenames()
-  {
+  public Set<String> getSyncSitenames() {
+      
     JsonConfigFactory reverse = newSyncFactory();
     
     return reverse.getSitenames();
@@ -519,12 +512,12 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     return getLocalSitenames();
   }
   
-
-  protected Set<String> getRemoteSitenames()
-  {
+  protected Set<String> getRemoteSitenames() {
+      
     if (this.remotesites_use_getter_to_access != null) {
       return this.remotesites_use_getter_to_access;
     }
+    
     this.remotesites_use_getter_to_access = new TreeSet();
     
 
@@ -532,32 +525,30 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     
     DefaultFTPClient ftp = getFtpClient();
     
-    try
-    {
+    try {
+        
       sites = ftp.listNames(getConfigsDirFile().getPath(), 0, true);
-    }
-    catch (SocketException e) {
+      
+    } catch (SocketException e) {
       XLogger.getInstance().log(Level.WARNING, "FTP Connection failed", getClass(), e);
     } catch (IOException e) {
       XLogger.getInstance().log(Level.WARNING, "FTP operation failed", getClass(), e);
     }
     
-    XLogger.getInstance().log(Level.FINER, "Files in sites dir: {0}", getClass(), sites == null ? null : Arrays.toString(sites));
+    XLogger.getInstance().log(Level.FINER, "Files in sites dir: {0}", 
+            getClass(), sites == null ? null : Arrays.toString(sites));
     
-
     if (sites == null) {
       throw new NullPointerException();
     }
     
-    for (String site : sites)
-    {
-      if ((!site.equals(".")) && (!site.equals("..")))
-      {
+    for (String site : sites) {
+        
+      if ((!site.equals(".")) && (!site.equals(".."))) {
 
-        if (site.endsWith(".json"))
-        {
-
-          this.remotesites_use_getter_to_access.add(site.replace(".json", "")); }
+        if (site.endsWith(".json")) {
+          this.remotesites_use_getter_to_access.add(site.replace(".json", "")); 
+        }
       }
     }
     XLogger.getInstance().log(Level.FINER, "Available sitenames: {0}", getClass(), this.remotesites_use_getter_to_access);
@@ -606,29 +597,24 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     return output;
   }
   
-  public boolean isUseCache() {
+  public final boolean isUseCache() {
     return this.useCache;
   }
   
-  public void setUseCache(boolean useCache) {
-    this.useCache = useCache;
+  public final boolean isSearch() {
+    return this.searchNodeName != null;
   }
   
-  public boolean isSearch() {
-    return this.search;
+  public final String getSearchNodeName() {
+    return searchNodeName;
   }
   
-  public void setSearch(boolean search) {
-    this.search = search;
+  public final boolean isRemote() {
+    return remote;
   }
   
-  public String toString()
-  {
+  @Override
+  public String toString() {
     return super.toString() + ". Site names: " + getSitenames();
-  }
-  
-  public static abstract interface JsonConfigFilter
-  {
-    public abstract boolean accept(JsonConfig paramJsonConfig);
   }
 }

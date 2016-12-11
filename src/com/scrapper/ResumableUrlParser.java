@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
 
@@ -60,7 +60,7 @@ public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
   }
   
   @Override
-  protected void postParse(Dom dom) {
+  protected void postParse(HtmlPageDom dom) {
     if (!isResumable()) {
       return;
     }

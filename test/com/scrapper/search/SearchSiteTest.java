@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import com.bc.webdatex.nodedata.Dom;
+import com.bc.dom.HtmlPageDom;
 
 /**
  *
@@ -20,14 +20,6 @@ import com.bc.webdatex.nodedata.Dom;
 public class SearchSiteTest {
     
     public SearchSiteTest() { }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
 
     /**
      * Test of main method, of class SearchSite.
@@ -89,7 +81,7 @@ e.printStackTrace();
                 throw new UnsupportedOperationException("Not supported yet.");
             }
             @Override
-            protected boolean doConsume(Dom page, Map data) {
+            protected boolean doConsume(HtmlPageDom page, Map data) {
 System.out.println("= x = x = x = x = x = x Consuming: "+data);
                 return true;
             }
