@@ -4,6 +4,7 @@ import com.bc.webdatex.URLParser;
 import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.extractor.MultipleNodesExtractorIx;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.file.Paths;
@@ -66,7 +67,8 @@ public class CapturerAppTest {
                 
                 extract(app, siteName, "targetNode0", true);
             }
-        }catch(IllegalAccessException | InterruptedException | InvocationTargetException | ParserException e) {
+        }catch(IOException | IllegalAccessException | InterruptedException | 
+                InvocationTargetException | ParserException e) {
             log(e);
         }
     }

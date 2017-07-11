@@ -4,30 +4,17 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
-
-
-
-
-
-
-
-
-
-
-
-public abstract class AbstractLogHandler
-  extends Handler
-{
+public abstract class AbstractLogHandler extends Handler {
+    
   private boolean closed;
   
-  public AbstractLogHandler()
-  {
+  public AbstractLogHandler() {
     setFormatter(new SimpleFormatter());
   }
   
-
-  public synchronized void publish(LogRecord record)
-  {
+  @Override
+  public synchronized void publish(LogRecord record) {
+      
     if ((this.closed) || (!isLoggable(record))) {
       return;
     }
@@ -49,10 +36,11 @@ public abstract class AbstractLogHandler
   protected abstract void doPublish(LogRecord paramLogRecord)
     throws Exception;
   
+  @Override
   public void flush() {}
   
-  public void close()
-  {
+  @Override
+  public void close() {
     this.closed = true;
     flush();
   }

@@ -7,12 +7,10 @@ import com.scrapper.AppProperties;
 import java.util.Properties;
 import java.util.logging.Level;
 
-public class MyFTPClient
-  extends DefaultFTPClient
-{
-  public MyFTPClient()
-  {
-    this(AppProperties.instance());
+public class MyFTPClient extends DefaultFTPClient {
+    
+  public MyFTPClient() {
+    this(com.scrapper.CapturerApp.getInstance().getProperties());
   }
 
   public MyFTPClient(Properties props)

@@ -1,6 +1,6 @@
 package com.scrapper.config;
 
-import com.bc.json.config.JsonDataIO;
+import com.bc.json.config.JsonDataIOHandler;
 import com.bc.json.config.ConfigSubset;
 import com.bc.json.config.JsonConfig;
 import com.bc.json.config.SimpleJsonConfig;
@@ -125,7 +125,7 @@ public class JsonConfigFactory {
         
       reader = new InputStreamReader(in);
       
-      return new JsonDataIO().load(configName, defaultConfig, reader, this.getContainerFactory());
+      return new JsonDataIOHandler().load(configName, defaultConfig, reader, this.getContainerFactory());
       
     }finally {
       if (reader != null) {

@@ -37,8 +37,8 @@ public class DefaultSiteCapturerTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        AppProperties.load(System.getProperty("user.home")+"/Documents/NetBeansProjects/scrapper/src/META-INF/properties/app.properties");
-        CapturerApp.getInstance().init(false);
+        final String propertiesPath = System.getProperty("user.home")+"/Documents/NetBeansProjects/scrapper/src/META-INF/properties/app.properties";
+        CapturerApp.getInstance().init(false, propertiesPath);
     }
 
     @AfterClass

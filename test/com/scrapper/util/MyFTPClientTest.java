@@ -28,7 +28,7 @@ public class MyFTPClientTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        CapturerApp.getInstance().init();
+        CapturerApp.getInstance().init(false);
     }
 
     @AfterClass

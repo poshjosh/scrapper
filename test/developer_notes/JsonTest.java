@@ -2,7 +2,7 @@ package developer_notes;
 
 import com.bc.json.config.DefaultJsonData;
 import com.bc.json.config.JsonConfig;
-import com.bc.json.config.JsonConfigIO;
+import com.bc.json.config.JsonConfigIOHandler;
 import com.bc.json.config.JsonData;
 import com.bc.json.config.SimpleJsonConfig;
 import com.bc.manager.Filter;
@@ -58,7 +58,7 @@ public class JsonTest {
     private Set<String> nodeTypes;
     
     public JsonTest() {
-        nodeTypes = new HashSet<String>(Arrays.asList(FilterFactory.NODE_TYPES));
+        nodeTypes = new HashSet<>(Arrays.asList(FilterFactory.NODE_TYPES));
     }
     
     private static URI getConfigDir(boolean remote) {
@@ -68,7 +68,7 @@ public class JsonTest {
         
         // We trim the output, because we have encountered properties 
         // with leading or trailings paces
-        String configsDir = AppProperties.getProperty(propName).trim();
+        String configsDir = com.scrapper.CapturerApp.getInstance().getProperty(propName).trim();
         try{
             return new URI(configsDir);
         }catch(URISyntaxException e) {
@@ -94,7 +94,8 @@ if(true)            return;
             final String configName = "nigeriacar24";
             final String fname = "/"+configName+".json";
             File file = new File(Paths.get(getConfigDir(false)).toFile(), fname);
-            JsonConfigIO configIO = new JsonConfigIO();
+            JsonConfigIOHandler configIO = new JsonConfigIOHandler();
+            
             FileReader reader = new FileReader(file);
             JsonConfig config = configIO.load(configName, reader, new SimpleJsonConfig()); 
             
@@ -103,7 +104,7 @@ System.out.println("URL: "+url);
             
             FileWriter writer = new FileWriter(file);
             try{
-                configIO.store(config, writer);
+                configIO.store(config, writer, true, true); 
             }finally{
                 writer.close();
             }

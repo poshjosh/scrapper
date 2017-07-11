@@ -88,18 +88,6 @@ if(true) {
 //    return;
 //}
 
-            AppProperties.load();
-            String [] names = {AppProperties.ABOUT, AppProperties.CONFIGS_DIR,
-            AppProperties.DEFAULT_CONFIG_NAME, AppProperties.LOG_LEVEL,
-            AppProperties.TARGETNODES_TO_TRACK, AppProperties.TABLENAME_KEY,
-            AppProperties.FTP_DIR, AppProperties.LOG_FORMATTER, AppProperties.FTP_HOST};
-            for(String name:names) {
-System.out.println(name + " = " + AppProperties.getProperty(name));
-                Thread.sleep(100);
-            }
-if(true) {
-    return;
-}
             DefaultUrlFilter duf = new DefaultUrlFilter();
             duf.setRequiredPattern(Pattern.compile("/\\d{4}/\\d{1,2}/\\d{1,2}/"));
 System.out.println(duf.accept("/2016/01/21/we-will-make-nigeria-work-again-buhari-promises/"));
@@ -132,7 +120,7 @@ if(true) {
     return;
 }            
      
-            CapturerApp.getInstance().init(false); 
+            CapturerApp.getInstance().init(false, null); 
             
             Tools tools = new Tools();
         

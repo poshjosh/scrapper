@@ -121,7 +121,7 @@ public class TableRequestTimes
   }
   
   private boolean getBoolean(String name) {
-    String value = AppProperties.getProperty(name);
+    String value = com.scrapper.CapturerApp.getInstance().getProperty(name);
     return Boolean.parseBoolean(value);
   }
   

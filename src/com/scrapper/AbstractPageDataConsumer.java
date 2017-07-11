@@ -102,7 +102,7 @@ public abstract class AbstractPageDataConsumer implements PageDataConsumer, Seri
   }
   
   public String getTableNameKey() {
-    return AppProperties.getProperty("tablenameKey");
+    return com.scrapper.CapturerApp.getInstance().getProperty("tablenameKey");
   }
   
   public int getMinimumParameters() {

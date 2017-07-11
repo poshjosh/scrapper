@@ -1,5 +1,8 @@
 package com.scrapper;
 
+import com.bc.config.CompositeConfig;
+import com.bc.config.ConfigService;
+import com.bc.config.SimpleConfigService;
 import com.bc.util.XLogger;
 import com.scrapper.config.ScrapperConfigFactory;
 import java.io.IOException;
@@ -10,6 +13,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 public class CapturerApp {
@@ -17,6 +21,8 @@ public class CapturerApp {
   private boolean remote;
   private boolean initialized;
   private List<String> targetNodesToTrack;
+  private ConfigService propertiesService;
+  private com.bc.config.Config mergedProperties;
   private LoggerManager loggerManager;
   private static CapturerApp instance;
   private static ScrapperConfigFactory configFactory;
@@ -39,14 +45,36 @@ public class CapturerApp {
     }
     instance = app;
   }
-  
-  public void init()
-    throws IllegalAccessException, InterruptedException, InvocationTargetException {
-    init(false);
+
+  public void init(boolean remote)
+    throws IOException, IllegalAccessException, InterruptedException, InvocationTargetException {
+      
+    this.init(remote, "META-INF/properties/app.properties");  
   }
   
-  public void init(boolean remote)
-    throws IllegalAccessException, InterruptedException, InvocationTargetException {
+  public void init(boolean remote, String propertiesPath)
+    throws IOException, IllegalAccessException, InterruptedException, InvocationTargetException {
+  
+    this.init(remote, "META-INF/properties/default.properties", propertiesPath);
+  }
+  
+  public void init(boolean remote, String defaultPropertiesPath, String propertiesPath)
+    throws IOException, IllegalAccessException, InterruptedException, InvocationTargetException {
+      
+    if(this.initialized) {
+      throw new IllegalStateException();    
+    }
+      
+    if(propertiesPath != null) {  
+        
+XLogger.getInstance().log(Level.INFO, "Default properties path: {0}\nProperties path: {1}", 
+        getClass(), defaultPropertiesPath, propertiesPath);
+        
+      this.propertiesService = new SimpleConfigService(defaultPropertiesPath, propertiesPath);
+    
+      this.mergedProperties = new CompositeConfig(this.propertiesService);
+    }
+      
     this.remote = remote;
     
     LoggerManager lMgr = createLoggerManager();
@@ -61,20 +89,24 @@ public class CapturerApp {
     }
     XLogger.getInstance().log(Level.FINER, "TargetNodesToTrack: {0}", getClass(), this.targetNodesToTrack);
     
-    XLogger.getInstance().log(Level.FINER, "Adding shut down hook for saving app properties updates", getClass());
+    if(this.propertiesService != null) {
+        
+        XLogger.getInstance().log(Level.FINER, "Adding shut down hook for saving app properties updates", getClass());
+
+        final String threadName = "shutdownHook#Thread@"+this.getClass().getName();
+        Runtime.getRuntime().addShutdownHook(new Thread(threadName){
+          @Override
+          public void run(){
+            try {
+              XLogger.getInstance().log(Level.FINER, "Running shutdown hook", getClass());
+              propertiesService.store();
+            } catch (IOException|RuntimeException e) {
+              XLogger.getInstance().log(Level.WARNING, "Exception in shutdownHook: "+this.getName(), this.getClass(), e);
+            }
+          }
+        });
+    }
     
-    final String threadName = "shutdownHook#Thread@"+this.getClass().getName();
-    Runtime.getRuntime().addShutdownHook(new Thread(threadName){
-      @Override
-      public void run(){
-        try {
-          XLogger.getInstance().log(Level.FINER, "Running shutdown hook", getClass());
-          AppProperties.store();
-        } catch (IOException|RuntimeException e) {
-          XLogger.getInstance().log(Level.WARNING, "Exception in shutdownHook: "+this.getName(), this.getClass(), e);
-        }
-      }
-    });
     XLogger.getInstance().log(Level.FINER, "Creating capturer config factory", getClass());
     
     configFactory = createConfigFactory(remote, getConfigDir(), getDefaultConfigname(), null);
@@ -82,6 +114,31 @@ public class CapturerApp {
     
     this.initialized = true;
     XLogger.getInstance().log(Level.INFO, "Initialization complete.", getClass());
+  }
+  
+  public Properties getProperties() {
+    return this.getConfiguration().getProperties();
+  }
+
+  public com.bc.config.Config getConfiguration() {
+    return this.mergedProperties;
+  }
+  
+  public String getProperty(String key) {
+    return this.mergedProperties.getProperty(key);
+  }
+  
+  public void setProperty(String key, Object value) {
+    this.mergedProperties.setProperty(key, String.valueOf(value));
+  }
+  
+  public void saveProperty(String key, Object value) throws IOException {
+    this.setProperty(key, value);
+    this.saveProperties();
+  }
+  
+  public void saveProperties() throws IOException {
+    this.propertiesService.store();  
   }
   
   protected LoggerManager createLoggerManager() {
@@ -103,16 +160,12 @@ public class CapturerApp {
     } catch (URISyntaxException e) {
       throw new RuntimeException("Failed to load: " + configsDir, e);
     }
-XLogger.getInstance().log(Level.INFO, "{0} = {1}", this.getClass(), propName, uri);
+XLogger.getInstance().log(Level.FINE, "{0} = {1}", this.getClass(), propName, uri);
     return uri;
   }
   
   public String getDefaultConfigname() {
     return getProperty("defaultConfigName").trim();
-  }
-  
-  protected String getProperty(String name) {
-    return AppProperties.getProperty(name);
   }
   
   public void setConfigFactory(ScrapperConfigFactory factory) {

@@ -12,8 +12,8 @@ public class DefaultLoggerManager
   
   public Level getLogLevel()
   {
-    String levelString = AppProperties.getProperty("logLevel");
-    
+    String levelString = com.scrapper.CapturerApp.getInstance().getProperty("logLevel");
+
     Level level;
     if ((levelString != null) && (!levelString.isEmpty())) {
       level = Level.parse(levelString);
@@ -26,14 +26,14 @@ public class DefaultLoggerManager
   
   public String getLogFilePattern()
   {
-    return AppProperties.getProperty("logFilePattern");
+    return com.scrapper.CapturerApp.getInstance().getProperty("logFilePattern");
   }
   
 
   public Formatter getFormatter()
   {
     if (this.formatter == null) {
-      String formatterClassname = AppProperties.getProperty("logFormatter");
+      String formatterClassname = com.scrapper.CapturerApp.getInstance().getProperty("logFormatter");
       try {
         Class aClass = Class.forName(formatterClassname);
         this.formatter = ((Formatter)aClass.getConstructor(new Class[0]).newInstance(new Object[0]));

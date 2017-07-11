@@ -170,7 +170,7 @@ public abstract class ManagedTasks<T extends StoppableTask>
   }
   
   private int getInt(String name) {
-    String value = AppProperties.getProperty(name);
+    String value = com.scrapper.CapturerApp.getInstance().getProperty(name);
     return Integer.parseInt(value);
   }
   

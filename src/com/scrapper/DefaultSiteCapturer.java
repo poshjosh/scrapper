@@ -165,11 +165,11 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
       
     URL url;
     try {
-      String urlStr = AppProperties.getProperty("insertUrl");
+      String urlStr = com.scrapper.CapturerApp.getInstance().getProperty("insertUrl");
       if ((urlStr == null) || (urlStr.isEmpty())) {
         return false;
       }
-      url = new URL(AppProperties.getProperty("insertUrl"));
+      url = new URL(com.scrapper.CapturerApp.getInstance().getProperty("insertUrl"));
     } catch (MalformedURLException e) { 
       return false;
     }

@@ -17,7 +17,7 @@ public class ScrappUploader extends ContextDataConsumer {
     
     URL insertURL = null;
     try {
-      insertURL = new URL(AppProperties.getProperty("insertUrl"));
+      insertURL = new URL(com.scrapper.CapturerApp.getInstance().getProperty("insertUrl"));
       if (insertURL == null) {
         throw new NullPointerException("Insert URL == null");
       }
