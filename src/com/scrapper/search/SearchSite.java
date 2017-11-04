@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.io.IOException;
 import org.htmlparser.util.ParserException;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public class SearchSite extends BaseSiteCapturer {
     
@@ -79,7 +79,7 @@ public class SearchSite extends BaseSiteCapturer {
 
   protected void preParse(String url) {}
   
-  protected void postParse(HtmlPageDom page) {}
+  protected void postParse(HtmlDocument page) {}
   
   @Override
   public Integer doCall() throws IOException, ParserException {
@@ -175,7 +175,7 @@ public class SearchSite extends BaseSiteCapturer {
       }
       
       @Override
-      protected void postParse(HtmlPageDom dom) {
+      protected void postParse(HtmlDocument dom) {
           
         SearchSite.this.lastRequestTimeTaken = ((int)(System.currentTimeMillis() - SearchSite.this.lastRequestTime));
         

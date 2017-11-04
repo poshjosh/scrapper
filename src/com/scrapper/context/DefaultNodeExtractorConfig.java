@@ -1,5 +1,6 @@
 package com.scrapper.context;
 
+import com.bc.webdatex.extractor.node.NodeExtractorConfig;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
@@ -11,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class DefaultCapturerSettings implements Serializable, CapturerSettings {
+public class DefaultNodeExtractorConfig implements Serializable, NodeExtractorConfig {
     
   private final JsonConfig config;
   
-  public DefaultCapturerSettings(JsonConfig config) {
+  public DefaultNodeExtractorConfig(JsonConfig config) {
     this.config = config;
   }
   

@@ -6,6 +6,7 @@ import com.bc.currencyrateservice.YahooCurrencyrateService;
 import com.bc.jpa.fk.Keywords;
 import com.bc.json.config.JsonConfig;
 import com.bc.net.ConnectionManager;
+import com.bc.net.UrlUtil;
 import com.bc.util.XLogger;
 import com.bc.webdatex.formatter.Formatter;
 import com.scrapper.config.Config;
@@ -79,7 +80,7 @@ public class DefaultFormatter
       this.jobRequestFields.addAll(Arrays.asList(arr));
     }
     
-    this.defaultValues = context.getSettings().getDefaults();
+    this.defaultValues = context.getNodeExtractorConfig().getDefaults();
     
     Object[] datePatterns = config.getArray(new Object[] { Config.Formatter.datePatterns });
     
@@ -119,7 +120,7 @@ public class DefaultFormatter
   }
   
 
-  public Map<String, Object> format(Map<String, Object> parameters)
+  public Map<String, Object> apply(Map<String, Object> parameters)
   {
     XLogger.getInstance().log(Level.FINER, "BEFORE Params: {0}", getClass(), parameters);
     
@@ -587,7 +588,7 @@ public class DefaultFormatter
       return link;
     }
     
-    return Util.createURL(baseUrl, link);
+    return UrlUtil.createURL(baseUrl, link);
   }
   
   protected String getMyHowToApply(Map parameters)
@@ -632,9 +633,9 @@ public class DefaultFormatter
     }
     
 
-    String fmtUrl = Util.prepareLink(url.toLowerCase());
+    String fmtUrl = UrlUtil.prepareLink(url.toLowerCase());
     
-    List<String> urls = Util.getBaseURLs(this.context.getConfig().getString(new Object[] { Config.Site.url, "value" }));
+    List<String> urls = UrlUtil.getBaseURLs(this.context.getConfig().getString(new Object[] { Config.Site.url, "value" }));
     
     for (String base : urls)
     {

@@ -1,11 +1,8 @@
 package com.scrapper.util;
 
-import com.bc.util.XLogger;
 import com.ftpmanager.DefaultFTPClient;
-import com.ftpmanager.Formatter;
-import com.scrapper.AppProperties;
+import com.ftpmanager.DefaultPathFormatter;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public class MyFTPClient extends DefaultFTPClient {
     
@@ -38,37 +35,9 @@ public class MyFTPClient extends DefaultFTPClient {
     String password = props.getProperty("ftpPass");
     setPassword(password);
     
-
-    String ftpDir = normalize(props.getProperty("ftpDir"));
+    final String ftpDir = props.getProperty("ftpDir").replace('\\', '/');
     setFtpDir(ftpDir);
     
-    Formatter<String> formatter = new Formatter<String>()
-    {
-
-      public String format(String path)
-      {
-
-        path = MyFTPClient.this.normalize(path);
-        
-        int len = MyFTPClient.this.getFtpDir().length();
-        
-        int offset = path.indexOf(MyFTPClient.this.getFtpDir());
-        
-        if (offset != -1) {
-          path = path.substring(offset + len);
-        }
-        
-        if (path.startsWith("/")) {
-          path = path.substring(1);
-        }
-        XLogger.getInstance().log(Level.FINER, "FTP Path: {0}", getClass(), path);
-        return path;
-      }
-    };
-    setFormatter(formatter);
-  }
-  
-  private String normalize(String s) {
-    return s.replace('\\', '/');
+    setFormatter(new DefaultPathFormatter(ftpDir));
   }
 }

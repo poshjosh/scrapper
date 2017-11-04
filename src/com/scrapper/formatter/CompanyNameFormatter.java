@@ -35,7 +35,7 @@ public class CompanyNameFormatter
   }
   
 
-  public String format(String s)
+  public String apply(String s)
   {
     String companyName = null;
     
@@ -58,7 +58,7 @@ public class CompanyNameFormatter
     }
     
     if (companyName != null) {
-      companyName = new ToTitleCase().format(companyName);
+      companyName = new ToTitleCase().apply(companyName);
     }
     
     return companyName;

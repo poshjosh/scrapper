@@ -14,9 +14,9 @@ package com.scrapper.formatter;
 public class JobTitleFormatter
   extends CompanyNameFormatter
 {
-  public String format(String s)
+  public String apply(String s)
   {
-    super.format(s);
+    super.apply(s);
     return getJobTitle();
   }
 }

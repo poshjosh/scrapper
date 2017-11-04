@@ -4,11 +4,9 @@ import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.bc.webdatex.extractor.node.NodeExtractor;
 import com.bc.webdatex.extractor.node.NodeExtractorImpl;
-import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.scrapper.config.Config;
 import com.scrapper.config.ScrapperConfig;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.context.CapturerSettings;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,6 +16,7 @@ import org.htmlparser.Node;
 import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
+import com.bc.webdatex.extractor.node.NodeExtractorConfig;
 
 public class MultipleNodesExtractor extends PageExtractor implements MultipleNodesExtractorIx {
     
@@ -249,37 +248,15 @@ public class MultipleNodesExtractor extends PageExtractor implements MultipleNod
   @Override
   public NodeExtractor createExtractor(String id) {
       
-    NodeExtractorImpl extractor = new NodeExtractorImpl();
-    
-    CapturerSettings ss = getCapturerContext().getSettings();
-    
-    extractor.setAcceptScripts(false);
-    extractor.setAttributesToAccept(ss.getAttributesToAccept(id));
-    extractor.setAttributesToExtract(ss.getAttributesToExtract(id));
-    extractor.setConcatenateMultipleExtracts(ss.isConcatenateMultipleExtracts(id, false));
-    extractor.setEnabled(true);
-    
-    extractor.setId(id);
-    extractor.setNodesToRetainAttributes(ss.getNodesToRetainAttributes(id)); 
-    extractor.setNodeTypesToAccept(ss.getNodeTypesToAccept(id));
-    extractor.setNodeTypesToReject(ss.getNodeTypesToReject(id));
-    extractor.setNodesToAccept(ss.getNodesToAccept(id));
-    extractor.setNodesToReject(ss.getNodeToReject(id));
-    
-    extractor.setTagLocator(new TagLocatorImpl(id, ss.getTransverse(id)));
-    
-    extractor.setReplaceNonBreakingSpace(ss.isReplaceNonBreakingSpace(id, false));
-    
-    extractor.setTextToAccept(null);
-    extractor.setTextToDisableOn(ss.getTextToDisableOn(id));
-    extractor.setTextToReject(ss.getTextToReject(id));
+    final NodeExtractorConfig config = getCapturerContext().getNodeExtractorConfig();
+    final NodeExtractorImpl extractor = new NodeExtractorImpl(config, id);
     
     return extractor;
   }
   
   private void addExtractor(String id) {
       
-    CapturerSettings cs = getCapturerContext().getSettings();
+    NodeExtractorConfig cs = getCapturerContext().getNodeExtractorConfig();
     
     Object[] cols = cs.getColumns(id);
     

@@ -123,7 +123,7 @@ XLogger.getInstance().log(Level.INFO, "After removing clone children, Tag: {0}, 
         
         ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
         
-        Set<String> names = factory.getSitenames();
+        Set<String> names = factory.getConfigNames();
     
         for(String name:names) {
             

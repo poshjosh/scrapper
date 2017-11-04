@@ -8,8 +8,8 @@ import java.net.URLConnection;
 public class HtmlContentFilter implements Filter<String> {
     
   @Override
-  public boolean accept(String link) {
-//long mb4 = Runtime.getRuntime().freeMemory();
+  public boolean test(String link) {
+//long mb4 = com.bc.util.Util.availableMemory();
 //long tb4 = System.currentTimeMillis();
     boolean ret = false;
     try {
@@ -23,7 +23,7 @@ public class HtmlContentFilter implements Filter<String> {
 //        ret = type.startsWith("text/html");
       }
     } catch (IOException e) {}
-//System.out.println("Is HTML content: "+ret+". Consumed:: memory: "+(mb4-Runtime.getRuntime().freeMemory())+", time: "+(System.currentTimeMillis()-tb4)+", link: "+link);    
+//System.out.println("Is HTML content: "+ret+". Consumed:: memory: "+(mb4-com.bc.util.Util.usedMemory(mb4))+", time: "+(System.currentTimeMillis()-tb4)+", link: "+link);    
     return ret;
   }
 }

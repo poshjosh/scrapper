@@ -27,7 +27,7 @@ package com.scrapper.formatter.url;
 public class DivinefortuneURLFormatter
   extends BracketRemovingURLFormatter
 {
-  public String format(String e)
+  public String apply(String e)
   {
     int off = e.indexOf("&amp;zendid");
     
@@ -41,7 +41,7 @@ public class DivinefortuneURLFormatter
       e = e.substring(0, off);
     }
     
-    e = super.format(e);
+    e = super.apply(e);
     
     return e.trim();
   }

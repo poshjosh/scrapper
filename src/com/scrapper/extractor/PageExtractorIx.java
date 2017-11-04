@@ -2,10 +2,10 @@ package com.scrapper.extractor;
 
 import com.bc.json.config.JsonConfig;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.context.CapturerSettings;
 import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
+import com.bc.webdatex.extractor.node.NodeExtractorConfig;
 
 public abstract interface PageExtractorIx extends NodeListExtractorIx {
     
@@ -13,7 +13,7 @@ public abstract interface PageExtractorIx extends NodeListExtractorIx {
   
   public abstract CapturerContext getCapturerContext();
   
-  public abstract CapturerSettings getCapturerSettings();
+  public abstract NodeExtractorConfig getCapturerSettings();
   
   public abstract String getPageTitle();
   

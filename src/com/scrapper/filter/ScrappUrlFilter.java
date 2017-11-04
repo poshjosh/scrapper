@@ -26,18 +26,18 @@ public class ScrappUrlFilter
       setUnwanted((String[])Arrays.copyOf(arr, arr.length, String[].class));
     }
     
-    XLogger.getInstance().log(Level.FINE, "Text::\nRequired: {0}\nUnwanted: {1}", getClass(), getRequired() == null ? null : Arrays.toString(getRequired()), getUnwanted() == null ? null : Arrays.toString(getUnwanted()));
+    XLogger.getInstance().log(Level.FINER, "Text::\nRequired: {0}\nUnwanted: {1}", getClass(), getRequired() == null ? null : Arrays.toString(getRequired()), getUnwanted() == null ? null : Arrays.toString(getUnwanted()));
     
     String regex = config.getString(new Object[] { Config.Extractor.scrappUrlFilter_requiredRegex });
     
     if ((regex != null) && (!regex.trim().isEmpty())) {
-      setRequiredPattern(Pattern.compile(regex, 2));
+      setRequiredPattern(Pattern.compile(regex, 2));;
     }
     
     regex = config.getString(new Object[] { Config.Extractor.scrappUrlFilter_unwantedRegex });
     if ((regex != null) && (!regex.trim().isEmpty())) {
       setUnwantedPattern(Pattern.compile(regex, 2));
     }
-    XLogger.getInstance().log(Level.FINE, "Regex::\nRequired: {0}\nUnwanted: {1}", getClass(), getRequiredPattern(), getUnwantedPattern());
+    XLogger.getInstance().log(Level.FINER, "Regex::\nRequired: {0}\nUnwanted: {1}", getClass(), getRequiredPattern(), getUnwantedPattern());
   }
 }

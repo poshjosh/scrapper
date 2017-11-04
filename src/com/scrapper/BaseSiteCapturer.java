@@ -1,6 +1,6 @@
 package com.scrapper;
 
-import com.bc.webdatex.URLParser;
+import com.bc.webdatex.BaseCrawler;
 import com.bc.task.AbstractStoppableTask;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.htmlparser.util.ParserException;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements SiteCapturer, Serializable {
     
@@ -21,7 +21,7 @@ public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements 
   private int successCount;
   private int scrappLimit;
   private CapturerContext context;
-  private URLParser urlParser;
+  private BaseCrawler urlParser;
   private Scrapper scrapper;
   private PageDataConsumer dataConsumer;
   
@@ -52,7 +52,7 @@ public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements 
           break;
         }
         
-        HtmlPageDom pageNodes = this.urlParser.next();
+        HtmlDocument pageNodes = this.urlParser.next();
         
         XLogger.getInstance().log(Level.FINER, "PageNodes: {0}", getClass(), pageNodes);
         
@@ -120,7 +120,7 @@ public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements 
         throw new NullPointerException("Login cookies == null, for url: " + loginUrl);
       }
       
-      this.urlParser.setCookies(cookies);
+      this.urlParser.addCookies(cookies);
     }
   }
   
@@ -177,12 +177,12 @@ public class BaseSiteCapturer extends AbstractStoppableTask<Integer> implements 
   }
   
   @Override
-  public URLParser getUrlParser() {
+  public BaseCrawler getUrlParser() {
     return this.urlParser;
   }
   
   @Override
-  public void setUrlParser(URLParser urlParser){
+  public void setUrlParser(BaseCrawler urlParser){
     this.urlParser = urlParser;
   }
   

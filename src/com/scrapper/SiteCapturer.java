@@ -1,6 +1,6 @@
 package com.scrapper;
 
-import com.bc.webdatex.URLParser;
+import com.bc.webdatex.BaseCrawler;
 import com.bc.task.StoppableTask;
 import com.scrapper.context.CapturerContext;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 
 public abstract interface SiteCapturer extends StoppableTask<Integer>, Resumable{
     
-  public abstract URLParser getUrlParser();
+  public abstract BaseCrawler getUrlParser();
   
   public abstract PageDataConsumer getDataConsumer();
   
@@ -23,7 +23,7 @@ public abstract interface SiteCapturer extends StoppableTask<Integer>, Resumable
   public abstract void login()
     throws MalformedURLException, IOException;
   
-  public abstract void setUrlParser(URLParser paramURLParser);
+  public abstract void setUrlParser(BaseCrawler paramURLParser);
   
   public abstract void setDataConsumer(PageDataConsumer paramPageDataConsumer);
   

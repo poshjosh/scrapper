@@ -1,6 +1,6 @@
 package com.scrapper.search;
 
-import com.bc.jpa.EntityController;
+import com.bc.jpa.controller.EntityController;
 import com.bc.util.XLogger;
 import com.scrapper.CapturerApp;
 import com.scrapper.ContextDataConsumer;
@@ -8,7 +8,7 @@ import com.scrapper.context.CapturerContext;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public abstract class DefaultSearchDataConsumer extends ContextDataConsumer {
     
@@ -46,7 +46,7 @@ public abstract class DefaultSearchDataConsumer extends ContextDataConsumer {
 
 
 
-  protected void addTableName(HtmlPageDom page, Map<String, Object> data)
+  protected void addTableName(HtmlDocument page, Map<String, Object> data)
   {
     data.put(getTableNameKey(), this.productTable);
     
@@ -54,7 +54,7 @@ public abstract class DefaultSearchDataConsumer extends ContextDataConsumer {
   }
   
 
-  protected boolean doConsume(HtmlPageDom page, Map data)
+  protected boolean doConsume(HtmlDocument page, Map data)
   {
     Level level = Level.FINER;
     

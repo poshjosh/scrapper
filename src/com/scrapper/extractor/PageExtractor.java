@@ -3,13 +3,13 @@ package com.scrapper.extractor;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.context.CapturerContext;
-import com.scrapper.context.CapturerSettings;
 import com.scrapper.util.Util;
 import java.util.Map;
 import java.util.logging.Level;
 import org.htmlparser.Remark;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
+import com.bc.webdatex.extractor.node.NodeExtractorConfig;
 
 public class PageExtractor extends NodeListExtractor implements PageExtractorIx {
     
@@ -218,8 +218,8 @@ public class PageExtractor extends NodeListExtractor implements PageExtractorIx 
   }
   
   @Override
-  public CapturerSettings getCapturerSettings() {
-    return this.context.getSettings();
+  public NodeExtractorConfig getCapturerSettings() {
+    return this.context.getNodeExtractorConfig();
   }
   
   @Override

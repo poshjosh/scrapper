@@ -5,7 +5,7 @@ import com.bc.webdatex.filter.Filter;
 public class HtmlLinkFilter implements Filter<String> {
     
   @Override
-  public boolean accept(String link) {
+  public boolean test(String link) {
       
     String lowercaseLink = link.toLowerCase();
     

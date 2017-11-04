@@ -14,7 +14,7 @@ public class LocalLinkGen
     this.rootPageAlias = "index.html";
   }
   
-  public String format(String link)
+  public String apply(String link)
   {
 
     String ret;

@@ -3,11 +3,11 @@ package com.scrapper.scheduling;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.CapturerApp;
-import com.scrapper.Crawler;
+import com.scrapper.WebCrawler;
 import com.scrapper.DefaultSiteCapturer;
 import com.bc.webdatex.filter.Filter;
 import com.scrapper.SiteCapturer;
-import com.bc.webdatex.URLParser;
+import com.bc.webdatex.BaseCrawler;
 import com.scrapper.config.Config;
 import com.scrapper.config.ScrapperConfigFactory;
 import com.scrapper.context.CapturerContext;
@@ -42,13 +42,13 @@ public class CaptureSitesManager implements Filter<JsonConfig>, Serializable {
     
     Set<String> accepted = new HashSet();
     
-    Set<String> sitenames = factory.getSitenames();
+    Set<String> sitenames = factory.getConfigNames();
     
     for (String sitename : sitenames)
     {
       JsonConfig config = factory.getConfig(sitename);
       
-      if (accept(config)) {
+      if (test(config)) {
         accepted.add(sitename);
       }
     }
@@ -58,7 +58,7 @@ public class CaptureSitesManager implements Filter<JsonConfig>, Serializable {
     return accepted;
   }
   
-  public boolean accept(JsonConfig config)
+  public boolean test(JsonConfig config)
   {
     Boolean disabled = config.getBoolean(new Object[] { Config.Extractor.disabled });
     
@@ -82,10 +82,10 @@ public class CaptureSitesManager implements Filter<JsonConfig>, Serializable {
     
     DefaultSiteCapturer capturer = new DefaultSiteCapturer(context, null, true, true);
     
-    URLParser crawler = capturer.getUrlParser();
+    BaseCrawler crawler = capturer.getUrlParser();
     
-    if ((crawler instanceof Crawler)) {
-      ((Crawler)crawler).setCrawlLimit(this.crawlLimit);
+    if ((crawler instanceof WebCrawler)) {
+      ((WebCrawler)crawler).setCrawlLimit(this.crawlLimit);
     }
     crawler.setParseLimit(this.parseLimit);
     capturer.setScrappLimit(this.scrappLimit);

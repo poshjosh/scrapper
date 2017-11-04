@@ -6,9 +6,9 @@ import com.scrapper.context.CapturerContext;
 import com.scrapper.url.ConfigURLPartList;
 import java.util.List;
 import java.util.logging.Level;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
-public class MultipleSourcesCrawler extends Crawler {
+public class MultipleSourcesCrawler extends WebCrawler {
     
   boolean addedIndirectSource;
   private int sourcesIndex;
@@ -73,7 +73,7 @@ public class MultipleSourcesCrawler extends Crawler {
   }
   
   @Override
-  public HtmlPageDom next() {
+  public HtmlDocument next() {
       
     updateBaseUrl(this.sources);
     
@@ -84,7 +84,7 @@ public class MultipleSourcesCrawler extends Crawler {
       addedSrc = null;
     }
     
-    HtmlPageDom page = super.next();
+    HtmlDocument page = super.next();
     
     if (addedSrc == null) {
       return page;

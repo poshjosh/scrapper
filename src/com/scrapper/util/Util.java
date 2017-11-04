@@ -4,13 +4,8 @@ import com.bc.json.config.JsonConfig;
 import com.bc.util.QueryParametersConverter;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -226,126 +221,6 @@ public final class Util {
     }
     
     return -1;
-  }
-  
-
-
-
-  public static String toWWWFormat(String url)
-    throws MalformedURLException
-  {
-    String x = "//";
-    int n = url.indexOf(x);
-    String b;
-    String a;
-    if (n == -1) {
-      a = "";
-      b = url;
-    } else {
-      n += x.length();
-      a = url.substring(0, n);
-      b = url.substring(n);
-    }
-    
-    String[] parts = b.split("\\.");
-    
-    if (parts.length == 1) {
-      throw new MalformedURLException("Not a URL: " + url);
-    }
-    
-    StringBuilder builder = new StringBuilder(a);
-    
-    if (parts.length == 2) {
-      builder.append("www.").append(parts[0]).append('.').append(parts[1]);
-    } else {
-      for (int i = 0; i < parts.length; i++) {
-        String part = i == 0 ? "www" : parts[i];
-        builder.append(part);
-        if (i < parts.length - 1) {
-          builder.append('.');
-        }
-      }
-    }
-    
-    return builder.toString();
-  }
-  
-  public static String createURL(String parent, String child)
-  {
-    child = prepareLink(child);
-    
-
-    if (child.startsWith("//")) {
-      try
-      {
-        String s = "http:" + child;
-        URL url = new URL(s);
-        return s;
-      } catch (MalformedURLException e) {
-        String base = com.bc.util.Util.getBaseURL(parent);
-        if (base == null) {
-          base = parent;
-        }
-        return base + child;
-      }
-    }
-    String base = com.bc.util.Util.getBaseURL(parent);
-    if (base == null) {
-      base = parent;
-    }
-    return base + child;
-  }
-  
-
-
-
-
-
-  public static String prepareLink(String link)
-  {
-    link = link.toLowerCase();
-    if ((link.startsWith("http://")) || (link.startsWith("file://"))) { return link;
-    }
-    while (link.startsWith(".")) {
-      link = link.substring(1);
-    }
-    
-    if (!link.startsWith("/")) {
-      link = "/" + link;
-    }
-    return link;
-  }
-  
-
-
-
-
-
-
-
-
-
-  public static List<String> getBaseURLs(String urlString)
-  {
-    String baseURL = com.bc.util.Util.getBaseURL(urlString);
-    logger.log(Level.FINER, "{0}. Base url: {1}", new Object[] { logger.getName(), baseURL });
-    LinkedList<String> urls = new LinkedList();
-    urls.add(baseURL);
-    if (baseURL.equals(urlString)) return urls;
-    String s = urlString.substring(baseURL.length());
-    logger.log(Level.FINER, "{0}. URL file: {1}", new Object[] { logger.getName(), s });
-    
-    if (s.startsWith("/")) { s = s.substring(1);
-    }
-    String[] parts = s.split("/");
-    logger.log(Level.FINER, "{0}. URL file parts: {1}", new Object[] { logger.getName(), Arrays.toString(parts) });
-    StringBuilder builder = new StringBuilder();
-    for (String part : parts) {
-      builder.setLength(0);
-      baseURL = baseURL + '/' + part;
-      urls.add(baseURL);
-    }
-    return urls;
   }
   
   public static String getPropertyKeyForAttributes(JsonConfig props, Map<String, String> attributes, boolean isValue)

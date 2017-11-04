@@ -33,7 +33,7 @@ public class RemoteSitesMap
     String name;
     ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
     
-    Set<String> names = factory.getSitenames();
+    Set<String> names = factory.getConfigNames();
     
     for (Iterator i$ = names.iterator(); i$.hasNext();) { name = (String)i$.next();
 
@@ -42,7 +42,7 @@ public class RemoteSitesMap
       if (config != null)
       {
 
-        if (!accept(config))
+        if (!test(config))
         {
 
           factory.removeConfig(name);
@@ -69,7 +69,7 @@ public class RemoteSitesMap
     }
   }
   
-  public boolean accept(JsonConfig config) {
+  public boolean test(JsonConfig config) {
     return true;
   }
   

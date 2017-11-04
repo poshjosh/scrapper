@@ -29,7 +29,7 @@ import com.bc.webdatex.formatter.Formatter;
 public class BracketRemovingURLFormatter
   implements Formatter<String>
 {
-  public String format(String e)
+  public String apply(String e)
   {
     int off = e.indexOf('(');
     

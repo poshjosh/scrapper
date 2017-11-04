@@ -119,7 +119,7 @@ if(true) return;
     
     private void createJsonConfigs() throws Exception {
         
-        Set<String> sitenames = CapturerApp.getInstance().getConfigFactory().getSitenames();
+        Set<String> sitenames = CapturerApp.getInstance().getConfigFactory().getConfigNames();
 
         for(String site:sitenames) {
 

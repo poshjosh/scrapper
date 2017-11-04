@@ -37,7 +37,7 @@ public class UpdateFormatters {
         
         ScrapperConfigFactory configFactory = CapturerApp.getInstance().getConfigFactory();
         
-        Set<String> sitenames = configFactory.getSitenames();
+        Set<String> sitenames = configFactory.getConfigNames();
         
         StringBuilder messages = new StringBuilder();
         

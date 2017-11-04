@@ -1,5 +1,6 @@
 package com.scrapper.context;
 
+import com.bc.webdatex.extractor.node.NodeExtractorConfig;
 import com.bc.jpa.fk.Keywords;
 import com.bc.json.config.JsonConfig;
 import com.bc.webdatex.extractor.node.AttributesExtractor;
@@ -13,7 +14,7 @@ import org.htmlparser.NodeFilter;
 
 public abstract interface CapturerContext
 {
-  public abstract CapturerSettings getSettings();
+  public abstract NodeExtractorConfig getNodeExtractorConfig();
   
   public abstract Keywords getKeywords();
   

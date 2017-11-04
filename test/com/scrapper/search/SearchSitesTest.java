@@ -1,6 +1,6 @@
 package com.scrapper.search;
 
-import com.bc.jpa.EntityController;
+import com.bc.jpa.controller.EntityController;
 import com.bc.util.XLogger;
 import com.scrapper.CapturerApp;
 import com.scrapper.PageDataConsumer;
@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 /**
  * @author Josh
@@ -178,7 +178,7 @@ System.out.println("Finally: "+ss);
                     throw new UnsupportedOperationException("Not supported yet.");
                 }
                 @Override
-                protected boolean doConsume(HtmlPageDom page, Map data) {
+                protected boolean doConsume(HtmlDocument page, Map data) {
 System.out.println("= x = x = x = x = x = x Consuming: "+data);
                     return true;
                 }

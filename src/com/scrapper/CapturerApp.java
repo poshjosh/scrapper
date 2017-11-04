@@ -210,7 +210,7 @@ XLogger.getInstance().log(Level.FINE, "{0} = {1}", this.getClass(), propName, ur
   }
   
   public String[] getSiteNames() {
-    return (String[])getConfigFactory().getSitenames().toArray(new String[0]);
+    return (String[])getConfigFactory().getConfigNames().toArray(new String[0]);
   }
   
   public void setLoggerManager(LoggerManager logFileMgr) {

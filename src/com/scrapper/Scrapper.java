@@ -20,11 +20,11 @@ import com.bc.webdatex.nodefilter.NodeVisitingFilter;
 import com.bc.webdatex.extractor.node.NodeExtractor;
 import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.bc.webdatex.locator.impl.TransverseNodeMatcherImpl;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
-public class Scrapper implements DataExtractor<HtmlPageDom>, Serializable {
+public class Scrapper implements DataExtractor<HtmlDocument>, Serializable {
     
-  private HtmlPageDom source;
+  private HtmlDocument source;
   private float lastSuccessfulTolerance;
   private float maxTolerance = 0.3F;
   
@@ -57,7 +57,7 @@ public class Scrapper implements DataExtractor<HtmlPageDom>, Serializable {
   }
   
   @Override
-  public Map extractData(HtmlPageDom page) throws ParserException {
+  public Map extractData(HtmlDocument page) throws ParserException {
       
     try {
         
@@ -175,7 +175,7 @@ public class Scrapper implements DataExtractor<HtmlPageDom>, Serializable {
     }
   }
   
-  protected void retryExtractsWithIncreasedTolerance(HtmlPageDom page, Map extractedData, float tolerance)
+  protected void retryExtractsWithIncreasedTolerance(HtmlDocument page, Map extractedData, float tolerance)
     throws ParserException
   {
     do
@@ -302,7 +302,7 @@ public class Scrapper implements DataExtractor<HtmlPageDom>, Serializable {
     
     if (this.urlFilter != null)
     {
-      toBeScrapped = this.urlFilter.accept(link);
+      toBeScrapped = this.urlFilter.test(link);
       
       XLogger.getInstance().log(Level.FINER, "URLFilter accepted: {0}, URL: {1}", getClass(), Boolean.valueOf(toBeScrapped), link);
     }
@@ -429,11 +429,11 @@ public class Scrapper implements DataExtractor<HtmlPageDom>, Serializable {
     this.context = context;
   }
   
-  public HtmlPageDom getSource() {
+  public HtmlDocument getSource() {
     return this.source;
   }
   
-  public void setSource(HtmlPageDom source) {
+  public void setSource(HtmlDocument source) {
     this.source = source;
   }
   

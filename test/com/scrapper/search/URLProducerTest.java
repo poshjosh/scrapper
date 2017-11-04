@@ -37,7 +37,7 @@ public class URLProducerTest {
             //
             ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory(true);
             
-            Set<String> sites = factory.getSitenames();
+            Set<String> sites = factory.getConfigNames();
             
             for(String site:sites) {
                 

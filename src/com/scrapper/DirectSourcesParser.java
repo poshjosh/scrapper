@@ -17,9 +17,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
-public class DirectSourcesParser extends ResumableUrlParser {
+public class DirectSourcesParser extends ResumableCrawler {
     
   private int urlCounterIncrement;
   private boolean urlCounterIncremented;
@@ -55,9 +55,9 @@ public class DirectSourcesParser extends ResumableUrlParser {
   }
   
   @Override
-  public HtmlPageDom next()  {
+  public HtmlDocument next()  {
       
-    HtmlPageDom page = super.next();
+    HtmlDocument page = super.next();
     
     synchronized (this.counterIncrementLock) {
       this.urlCounterIncrement += 1;

@@ -1,5 +1,6 @@
 package com.scrapper.context;
 
+import com.bc.webdatex.extractor.node.NodeExtractorConfig;
 import com.bc.jpa.fk.Keywords;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
@@ -38,7 +39,7 @@ public class DefaultCapturerContext
   implements CapturerContext, Serializable
 {
   private JsonConfig config;
-  private CapturerSettings _settings;
+  private NodeExtractorConfig _settings;
   
   public DefaultCapturerContext()
   {
@@ -50,10 +51,10 @@ public class DefaultCapturerContext
   }
   
 
-  public CapturerSettings getSettings()
+  public NodeExtractorConfig getNodeExtractorConfig()
   {
     if (this._settings == null) {
-      this._settings = new DefaultCapturerSettings(getConfig());
+      this._settings = new DefaultNodeExtractorConfig(getConfig());
     }
     return this._settings;
   }
@@ -107,10 +108,7 @@ public class DefaultCapturerContext
 
     if (attributesExtractor == null)
     {
-      AttributesExtractorImpl ae = new AttributesExtractorImpl();
-      ae.setId(propertyKey);
-      ae.setAttributesToExtract(getSettings().getAttributesToExtract(propertyKey));
-      attributesExtractor = ae;
+      attributesExtractor = new AttributesExtractorImpl(propertyKey);
     }
     
     return attributesExtractor;
@@ -245,7 +243,9 @@ public class DefaultCapturerContext
   
   public Formatter<String> getUrlFormatter(JsonConfig config) {
     Formatter<String> urlFormatter = (Formatter)loadInstance(config, "urlFormatter");
-    
+    if(urlFormatter == null) {
+        urlFormatter = (url) -> url;
+    }
 
     return urlFormatter;
   }

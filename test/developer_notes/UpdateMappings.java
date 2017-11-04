@@ -80,7 +80,7 @@ public class UpdateMappings {
         
         Object [] tableMappingsPath = {"url", "mappings", "table"};
         
-        Set<String> names = factory.getSitenames();
+        Set<String> names = factory.getConfigNames();
         
         for(String name:names) {
             

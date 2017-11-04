@@ -29,7 +29,7 @@ import com.bc.webdatex.formatter.Formatter;
 public class TaafooURLFormatter
   implements Formatter<String>
 {
-  public String format(String e)
+  public String apply(String e)
   {
     int lenB4 = e.length();
     

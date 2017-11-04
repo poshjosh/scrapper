@@ -48,7 +48,7 @@ public class PrintJson {
     }
     
     public void print(Object [] jsonPath, boolean tidy) {
-        Set<String> sitenames = CapturerApp.getInstance().getConfigFactory().getSitenames();
+        Set<String> sitenames = CapturerApp.getInstance().getConfigFactory().getConfigNames();
         for(String sitename:sitenames) {
             print(sitename, jsonPath, tidy);
         }

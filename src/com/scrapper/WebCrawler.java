@@ -1,13 +1,13 @@
 package com.scrapper;
 
 import com.bc.json.config.JsonConfig;
+import com.bc.net.UrlUtil;
 import com.bc.util.XLogger;
 import com.bc.webdatex.filter.Filter;
 import com.scrapper.config.Config;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.util.HtmlContentFilter;
 import com.scrapper.util.HtmlLinkFilter;
-import com.scrapper.util.Util;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -16,7 +16,7 @@ import org.htmlparser.tags.FrameTag;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.ParserException;
 
-public class Crawler<E> extends ResumableUrlParser<E> {
+public class WebCrawler<E> extends ResumableCrawler<E> {
     
   private final boolean captureQueryLinks = true;
   
@@ -42,14 +42,14 @@ public class Crawler<E> extends ResumableUrlParser<E> {
   
   private final CapturerContext context;
   
-  private final Class cls = Crawler.class;
+  private final Class cls = WebCrawler.class;
   private final XLogger logger = XLogger.getInstance();
 
-  public Crawler(CapturerContext context) {
+  public WebCrawler(CapturerContext context) {
     this(context, true, false);
   }
   
-  public Crawler(CapturerContext context, boolean resumable, boolean toResume) {
+  public WebCrawler(CapturerContext context, boolean resumable, boolean toResume) {
       
     super(new ArrayList(), resumable, toResume);
       
@@ -70,8 +70,13 @@ public class Crawler<E> extends ResumableUrlParser<E> {
     } else {
       setStartUrl(url_start);
     }
-    
-    setUrlFilter(context.getCaptureUrlFilter());
+
+    final boolean strict = true;
+    if(strict) {
+        setUrlFilter(context.getScrappUrlFilter());
+    }else{
+        setUrlFilter(context.getCaptureUrlFilter());
+    }
     
     setFormatter(context.getUrlFormatter());
 
@@ -117,10 +122,10 @@ public class Crawler<E> extends ResumableUrlParser<E> {
           try {
            
             if(baseUrl_wwwFormat == null)  {
-                baseUrl_wwwFormat = Util.toWWWFormat(this.baseUrl);
+                baseUrl_wwwFormat = UrlUtil.toWWWFormat(this.baseUrl);
             } 
 
-            toBeCrawled = Util.toWWWFormat(link).startsWith(baseUrl_wwwFormat);
+            toBeCrawled = UrlUtil.toWWWFormat(link).startsWith(baseUrl_wwwFormat);
             
           } catch (MalformedURLException e) {
             toBeCrawled = false;
@@ -140,14 +145,13 @@ public class Crawler<E> extends ResumableUrlParser<E> {
           
         logger.log(Level.FINER, "#isToBeCrawled. Filtering with: {0}", cls, getUrlFilter().getClass());
 
-        toBeCrawled = getUrlFilter().accept(link);
+        toBeCrawled = getUrlFilter().test(link);
         
         logger.log(Level.FINER, "Accepted by URL Filter: {0}, Link: {1}", cls, toBeCrawled, link);
       }
     }
     
-    Level level = toBeCrawled ? Level.FINE : Level.FINER;
-    logger.log(level, "To be crawled: {0}, Link: {1}", cls, toBeCrawled, link);
+    logger.log(Level.FINER, "To be crawled: {0}, Link: {1}", cls, toBeCrawled, link);
     
     return toBeCrawled;
   }
@@ -158,7 +162,7 @@ public class Crawler<E> extends ResumableUrlParser<E> {
       this.htmlLinkFilter = new HtmlLinkFilter();
     }
     
-    if (this.htmlLinkFilter.accept(link)) {
+    if (this.htmlLinkFilter.test(link)) {
       return true;
     }
 
@@ -166,7 +170,7 @@ public class Crawler<E> extends ResumableUrlParser<E> {
       this.htmlContentFilter = new HtmlContentFilter();
     }
     
-    return this.htmlContentFilter.accept(link);
+    return this.htmlContentFilter.test(link);
   }
   
   class LinkCollectingLinkTag extends LinkTag {
@@ -176,25 +180,25 @@ public class Crawler<E> extends ResumableUrlParser<E> {
     @Override
     public void doSemanticAction() throws ParserException {
         
-      if ((!Crawler.this.startCollectingLinks) || (Crawler.this.stopCollectingLinks)) {
+      if ((!WebCrawler.this.startCollectingLinks) || (WebCrawler.this.stopCollectingLinks)) {
         return;
       }
       
       String link = getLink();
       
-      if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link))) {
+      if ((WebCrawler.this.isWithinCrawlLimit()) && (WebCrawler.this.isToBeCrawled(link))) {
           
-        synchronized (Crawler.this.pageLock){
+        synchronized (WebCrawler.this.pageLock){
             
-          if (!Crawler.this.getPageLinks().contains(link)){
+          if (!WebCrawler.this.getPageLinks().contains(link)){
 
-            boolean html = Crawler.this.isHtml(link);
+            boolean html = WebCrawler.this.isHtml(link);
             
             if (html) {
                 
               logger.log(Level.FINER, "Crawled: {0}, adding: {1}", cls, crawled, link);
               
-              Crawler.this.getPageLinks().add(link);
+              WebCrawler.this.getPageLinks().add(link);
               
               ++crawled;
             }
@@ -209,25 +213,25 @@ public class Crawler<E> extends ResumableUrlParser<E> {
     
     @Override
     public void doSemanticAction() throws ParserException {
-      if ((!Crawler.this.startCollectingLinks) || (Crawler.this.stopCollectingLinks)) {
+      if ((!WebCrawler.this.startCollectingLinks) || (WebCrawler.this.stopCollectingLinks)) {
         return;
       }
 
       String link = getFrameLocation();
 
-      if ((Crawler.this.isWithinCrawlLimit()) && (Crawler.this.isToBeCrawled(link))) {
+      if ((WebCrawler.this.isWithinCrawlLimit()) && (WebCrawler.this.isToBeCrawled(link))) {
           
-        synchronized (Crawler.this.pageLock) {
+        synchronized (WebCrawler.this.pageLock) {
             
-          if (!Crawler.this.getPageLinks().contains(link)) {
+          if (!WebCrawler.this.getPageLinks().contains(link)) {
 
-            boolean html = Crawler.this.isHtml(link);
+            boolean html = WebCrawler.this.isHtml(link);
             
             if (html) {
                 
               logger.log(Level.FINER, "Crawled: {0}, adding: {1}", cls, crawled, link);  
 
-              Crawler.this.getPageLinks().add(link);
+              WebCrawler.this.getPageLinks().add(link);
 
               ++crawled;
             }
@@ -317,9 +321,9 @@ public class Crawler<E> extends ResumableUrlParser<E> {
   @Override
   public void print(StringBuilder builder) {
     super.print(builder);
-    builder.append(", startCollectingLinks: ").append(this.startCollectingLinks);
-    builder.append(", stopCollectingLinks: ").append(this.stopCollectingLinks);
-    builder.append(", baseURL").append(this.baseUrl);
-    builder.append(", startURL").append(this.startUrl);
+//    builder.append(", startCollectingLinks: ").append(this.startCollectingLinks);
+//    builder.append(", stopCollectingLinks: ").append(this.stopCollectingLinks);
+    builder.append(", baseURL: ").append(this.baseUrl);
+    builder.append(", startURL: ").append(this.startUrl);
   }
 }

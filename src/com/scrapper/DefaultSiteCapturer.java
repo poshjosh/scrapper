@@ -1,6 +1,6 @@
 package com.scrapper;
 
-import com.bc.webdatex.URLParser;
+import com.bc.webdatex.BaseCrawler;
 import com.bc.json.config.JsonConfig;
 import com.bc.util.XLogger;
 import com.scrapper.config.Config;
@@ -94,7 +94,7 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     setLogin(true);
     setContext(context);
     
-    URLParser urlParser = createCrawler(context, urlList, resume, resumable);
+    BaseCrawler urlParser = createCrawler(context, urlList, resume, resumable);
     setUrlParser(urlParser);
     
     Scrapper scrapper = createScrapper(context, urlList, resume, resumable);
@@ -106,13 +106,13 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
     XLogger.getInstance().log(Level.FINE, "Created:: {0}", getClass(), this);
   }
   
-  protected URLParser createCrawler(
+  protected BaseCrawler createCrawler(
           CapturerContext context, List<String> urlList, 
           final boolean resume, final boolean resumable) {
-    ResumableUrlParser urlParser;
+    ResumableCrawler urlParser;
     
     if (urlList != null) {
-      urlParser = new ResumableUrlParser(urlList, resumable, resume);
+      urlParser = new ResumableCrawler(urlList, resumable, resume);
     }
     else {
       JsonConfig config = context.getConfig();
@@ -130,7 +130,7 @@ public class DefaultSiteCapturer extends BaseSiteCapturer {
           urlParser = new DirectSourcesParser(context, urllist);
         }
       } else {
-        urlParser = new Crawler(context, resumable, resume);
+        urlParser = new WebCrawler(context, resumable, resume);
       }
     }
     

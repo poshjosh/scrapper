@@ -30,7 +30,7 @@ import org.htmlparser.util.ParserException;
 public class Aliexpressfashion_imageformatter
   implements Formatter<String>, Serializable
 {
-  public String format(String html)
+  public String apply(String html)
   {
     XLogger.getInstance().log(Level.FINEST, "{0}. HTML: {1}", getClass(), html);
     String link = null;

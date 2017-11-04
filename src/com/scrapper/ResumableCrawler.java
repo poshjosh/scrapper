@@ -1,14 +1,14 @@
 package com.scrapper;
 
-import com.bc.webdatex.URLParser;
+import com.bc.webdatex.BaseCrawler;
 import com.bc.util.XLogger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
-public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
+public class ResumableCrawler<E> extends BaseCrawler<E> implements Resumable {
 
   private final boolean resumable;
   
@@ -16,15 +16,15 @@ public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
   
   private ResumeHandler resumeHandler;
   
-  public ResumableUrlParser() {
+  public ResumableCrawler() {
     this(new ArrayList(), true, false);
   }
 
-  public ResumableUrlParser(List<String> urls) {
+  public ResumableCrawler(List<String> urls) {
     this(urls, true, false);
   }
   
-  public ResumableUrlParser(List<String> urls, boolean resumable, boolean toResume) {
+  public ResumableCrawler(List<String> urls, boolean resumable, boolean toResume) {
       
     super(urls);
     
@@ -60,7 +60,7 @@ public class ResumableUrlParser<E> extends URLParser<E> implements Resumable {
   }
   
   @Override
-  protected void postParse(HtmlPageDom dom) {
+  protected void postParse(HtmlDocument dom) {
     if (!isResumable()) {
       return;
     }

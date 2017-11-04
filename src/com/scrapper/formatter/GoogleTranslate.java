@@ -45,7 +45,7 @@ public class GoogleTranslate
   }
   
 
-  public String format(String input)
+  public String apply(String input)
   {
     StringBuilder urlStr = getURL();
     try

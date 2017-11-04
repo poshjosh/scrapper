@@ -147,7 +147,7 @@ System.out.println("  Success: "+success);
     private Formatter<Map<String, Object>> getFormatter() {
         DefaultFormatter formatter = new DefaultFormatter(){
             @Override
-            public Map<String, Object> format(Map<String, Object> parameters) {
+            public Map<String, Object> apply(Map<String, Object> parameters) {
 
 XLogger.getInstance().log(Level.FINER, "BEFORE Params: {0}", 
                 this.getClass(), parameters);
@@ -170,7 +170,7 @@ XLogger.getInstance().log(Level.FINER, "AFTER: {0}", this.getClass(), copy);
                 // currency is formatted here and it is an integer columns
                 copy = this.formatCurrencyTypes(copy);
 
-                // We have to format type and other integer columns first
+                // We have to apply type and other integer columns first
                 // to avoid some problems 
                 //
                 copy = this.formatIntegerColumns(tableName, copy);

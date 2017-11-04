@@ -31,7 +31,7 @@ public class Aliexpressfashion_priceformatter
   }
   
 
-  public Map format(Map parameters)
+  public Map apply(Map parameters)
   {
     Object oval = parameters.get("price");
     

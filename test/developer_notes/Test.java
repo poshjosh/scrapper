@@ -318,13 +318,13 @@ System.out.println(new String(Character.toString('\u0080').getBytes("UTF-8")));
 
     private void n() {
         CompanyNameFormatter ex = new CompanyNameFormatter();
-System.out.println(ex.format("UNDP Nigeria Vacancies: Humanitarian Affairs Officer / Ecowas Liason Officer"));
+System.out.println(ex.apply("UNDP Nigeria Vacancies: Humanitarian Affairs Officer / Ecowas Liason Officer"));
 System.out.println(ex.getJobTitle());
 ex.reset();
-System.out.println(ex.format("Program Officer at Transition Monitoring Group"));
+System.out.println(ex.apply("Program Officer at Transition Monitoring Group"));
 System.out.println(ex.getJobTitle());
 ex.reset();
-System.out.println(ex.format("Transition Monitoring Group vacancy for National Coordinator"));
+System.out.println(ex.apply("Transition Monitoring Group vacancy for National Coordinator"));
 System.out.println(ex.getJobTitle());
     }
 

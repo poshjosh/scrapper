@@ -6,7 +6,7 @@ import com.scrapper.util.Util;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Level;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public abstract class AbstractPageDataConsumer implements PageDataConsumer, Serializable {
     
@@ -14,10 +14,10 @@ public abstract class AbstractPageDataConsumer implements PageDataConsumer, Seri
   private String defaultTableName;
   private Formatter<Map<String, Object>> formatter;
   
-  protected abstract boolean doConsume(HtmlPageDom pageDom, Map paramMap);
+  protected abstract boolean doConsume(HtmlDocument pageDom, Map paramMap);
   
   @Override
-  public boolean consume(HtmlPageDom pageDom, Map data)
+  public boolean consume(HtmlDocument pageDom, Map data)
   {
     XLogger.getInstance().log(Level.FINEST, " URL: {0}\nData: {1}", getClass(), pageDom == null ? null : pageDom.getURL(), data);
     
@@ -37,7 +37,7 @@ public abstract class AbstractPageDataConsumer implements PageDataConsumer, Seri
     return doConsume(pageDom, data);
   }
   
-  public boolean accept(HtmlPageDom page, Map data)
+  public boolean accept(HtmlDocument page, Map data)
   {
     if (data == null) {
       throw new NullPointerException();
@@ -53,20 +53,20 @@ public abstract class AbstractPageDataConsumer implements PageDataConsumer, Seri
     return accept;
   }
   
-  public Map format(HtmlPageDom page, Map data)
+  public Map format(HtmlDocument page, Map data)
   {
     addTableName(page, data);
     
     addExtraDetails(page, data);
     
     if (this.formatter != null) {
-      data = (Map)this.formatter.format(data);
+      data = (Map)this.formatter.apply(data);
     }
     
     return data;
   }
   
-  protected void addTableName(HtmlPageDom page, Map<String, Object> data)
+  protected void addTableName(HtmlDocument page, Map<String, Object> data)
   {
     String tablenameKey = getTableNameKey();
     
@@ -79,7 +79,7 @@ public abstract class AbstractPageDataConsumer implements PageDataConsumer, Seri
     data.put(tablenameKey, tablenameVal);
   }
   
-  protected void addExtraDetails(HtmlPageDom page, Map<String, Object> data)
+  protected void addExtraDetails(HtmlDocument page, Map<String, Object> data)
   {
     if (page == null) {
       return;

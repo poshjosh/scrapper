@@ -90,14 +90,14 @@ if(true) {
 
             DefaultUrlFilter duf = new DefaultUrlFilter();
             duf.setRequiredPattern(Pattern.compile("/\\d{4}/\\d{1,2}/\\d{1,2}/"));
-System.out.println(duf.accept("/2016/01/21/we-will-make-nigeria-work-again-buhari-promises/"));
-System.out.println(duf.accept("/2016/01/20/we-will-make-nigeria-work-again-buhari-promises/"));
-System.out.println(duf.accept("/2016/01/19/we-will-make-nigeria-work-again-buhari-promises/"));
+System.out.println(duf.test("/2016/01/21/we-will-make-nigeria-work-again-buhari-promises/"));
+System.out.println(duf.test("/2016/01/20/we-will-make-nigeria-work-again-buhari-promises/"));
+System.out.println(duf.test("/2016/01/19/we-will-make-nigeria-work-again-buhari-promises/"));
             duf.setRequiredPattern(null);
             duf.setUnwantedPattern(Pattern.compile("/\\d{4}/\\d{1,2}/\\d{1,2}/"));
-System.out.println(duf.accept("/2016/01/21/we-will-make-nigeria-work-again-buhari-promises/"));
-System.out.println(duf.accept("/2016/01/20/we-will-make-nigeria-work-again-buhari-promises/"));
-System.out.println(duf.accept("/2016/01/19/we-will-make-nigeria-work-again-buhari-promises/"));
+System.out.println(duf.test("/2016/01/21/we-will-make-nigeria-work-again-buhari-promises/"));
+System.out.println(duf.test("/2016/01/20/we-will-make-nigeria-work-again-buhari-promises/"));
+System.out.println(duf.test("/2016/01/19/we-will-make-nigeria-work-again-buhari-promises/"));
 if(true) {
     return;
 }            
@@ -155,7 +155,7 @@ System.out.println(dfmt.parse(s));
 
         ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
         
-        Set<String> sitenames = factory.getSitenames();
+        Set<String> sitenames = factory.getConfigNames();
         
         List<String> forUpdate = new ArrayList<String>();
         

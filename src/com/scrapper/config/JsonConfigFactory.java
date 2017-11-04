@@ -20,12 +20,15 @@ import java.net.SocketException;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.ParseException;
 
@@ -253,9 +256,9 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
   
   public Set<String> deleteOrphanSyncPairs() throws IOException, ParseException {
       
-    Set<String> sites = getSitenames();
+    Set<String> sites = getConfigNames();
     
-    Set<String> syncSites = getSyncSitenames();
+    Set<String> syncSites = getSyncConfigNames();
     
     HashMap<String, JsonConfig> toDelete = new HashMap();
     
@@ -335,8 +338,8 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     JsonConfig config = removeConfig(oldName);
     this.loadedConfigs.put(newName, new SimpleJsonConfig(newName, config.getDefaults(), config.getParent(), config.getPath())); 
     if (isRemote()) {
-      getSitenames().remove(oldName);
-      getSitenames().add(newName);
+      getConfigNames().remove(oldName);
+      getConfigNames().add(newName);
     }
     return config;
   }
@@ -347,7 +350,7 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     }
     JsonConfig config = (JsonConfig)this.loadedConfigs.remove(configName);
     if (isRemote()) {
-      getSitenames().remove(configName);
+      getConfigNames().remove(configName);
     }
     return config;
   }
@@ -414,7 +417,7 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
       }
       
 
-      getSitenames().add(sitename);
+      getConfigNames().add(sitename);
     }
     
     return config;
@@ -423,7 +426,7 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
   protected JsonConfig newConfig(String sitename, boolean create) throws IOException, ParseException {
     JsonConfig config = initConfig(sitename, create, true);
     if (isRemote()) {
-      getSitenames().add(sitename);
+      getConfigNames().add(sitename);
     }
     return config;
   }
@@ -448,7 +451,7 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
 
   public void syncAll(JsonConfigFilter srcFilter, JsonConfigFilter tgtFilter)
   {
-    Set<String> names = new HashSet(getSitenames());
+    Set<String> names = new HashSet(getConfigNames());
     
     names.remove(getDefaultConfigName());
     
@@ -484,7 +487,7 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     
     if (isRemote())
     {
-      getSitenames().add(configName);
+      getConfigNames().add(configName);
     }
     
     return config;
@@ -498,21 +501,32 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     return factory;
   }
   
-  public Set<String> getSyncSitenames() {
+  public Set<String> getSyncConfigNames() {
       
     JsonConfigFactory reverse = newSyncFactory();
     
-    return reverse.getSitenames();
+    return reverse.getConfigNames();
   }
   
-  public Set<String> getSitenames() {
+  public Set<String> getConfigNamesLessDefaultConfig() {
+      
+    final Predicate<String> filter = (sitename) -> !defaultConfigName.equals(sitename);
+
+    final Set<String> sites = Collections.unmodifiableSet(
+        getConfigNames().stream().filter(filter).collect(Collectors.toSet())    
+    );
+
+    return sites;
+  }
+  
+  public Set<String> getConfigNames() {
     if (isRemote()) {
-      return getRemoteSitenames();
+      return getRemoteConfigNames();
     }
-    return getLocalSitenames();
+    return getLocalConfigNames();
   }
   
-  protected Set<String> getRemoteSitenames() {
+  protected Set<String> getRemoteConfigNames() {
       
     if (this.remotesites_use_getter_to_access != null) {
       return this.remotesites_use_getter_to_access;
@@ -555,7 +569,7 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
     return this.remotesites_use_getter_to_access;
   }
   
-  protected Set<String> getLocalSitenames() {
+  protected Set<String> getLocalConfigNames() {
       
     final XLogger xlog = XLogger.getInstance();
     
@@ -615,6 +629,6 @@ XLogger.getInstance().log(Level.FINE, "Saving config for: {0}\n{1}\n{2}",
   
   @Override
   public String toString() {
-    return super.toString() + ". Site names: " + getSitenames();
+    return super.toString() + ". Site names: " + getConfigNames();
   }
 }

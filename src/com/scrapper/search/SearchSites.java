@@ -4,7 +4,7 @@ import com.scrapper.PageDataConsumer;
 import com.scrapper.util.ManagedTasks;
 import java.util.List;
 import java.util.Map;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public abstract class SearchSites extends ManagedTasks<SearchSite> {
     
@@ -36,7 +36,7 @@ public abstract class SearchSites extends ManagedTasks<SearchSite> {
       }
       
       @Override
-      protected void postParse(HtmlPageDom page) {
+      protected void postParse(HtmlDocument page) {
         SearchSites.this.postTaskUpdateTimeTaken(getName(), getLastRequestTime(), getLastRequestTimeTaken());
       }
     };

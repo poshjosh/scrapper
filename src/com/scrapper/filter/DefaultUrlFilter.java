@@ -88,7 +88,7 @@ public class DefaultUrlFilter
   }
 
   @Override
-  public boolean accept(String url)
+  public boolean test(String url)
   {
     url = format(url);
     
@@ -165,9 +165,7 @@ public class DefaultUrlFilter
     }
     finally
     {
-      Level level = (this.id != null) && (this.id.toLowerCase().contains("capture")) ? Level.FINER : Level.FINE;
-      
-      XLogger.getInstance().log(level, "Accepted: {0}, URL: {1}", getClass(), Boolean.valueOf(output), url);
+      XLogger.getInstance().log(Level.FINER, "Accepted: {0}, URL: {1}", getClass(), Boolean.valueOf(output), url);
     }
   }
   

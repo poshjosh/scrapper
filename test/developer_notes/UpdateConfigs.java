@@ -65,7 +65,7 @@ url.part1.replacements={"pleaseReplaceMe",["@url.counter.mappings.type.values"]}
             
             ScrapperConfigFactory factory = CapturerApp.getInstance().getConfigFactory();
             
-            Set<String> names = factory.getSitenames();
+            Set<String> names = factory.getConfigNames();
             
             for(String name:names) {
             

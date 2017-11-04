@@ -1,6 +1,6 @@
 package com.scrapper;
 
-import com.bc.webdatex.URLParser;
+import com.bc.webdatex.BaseCrawler;
 import com.bc.webdatex.locator.impl.TagLocatorImpl;
 import com.scrapper.context.CapturerContext;
 import com.scrapper.extractor.MultipleNodesExtractorIx;
@@ -54,7 +54,7 @@ public class CapturerAppTest {
             
             app.init(true);
             
-            Set<String> siteNames = app.getConfigFactory().getSitenames();
+            Set<String> siteNames = app.getConfigFactory().getConfigNames();
             
             int sitesExtracted = 0;
             final int sitesToExtract = 2;
@@ -199,7 +199,7 @@ System.out.println(this.getClass().getName()+". EXTRACT:\n"+nodeExtractor.getExt
     
     private NodeList parse(String site) 
             throws ParserException {
-        URLParser p = new URLParser();
+        BaseCrawler p = new BaseCrawler();
         String url = getUrl(site);
         NodeList nodes = p.parse(url);
         return nodes;

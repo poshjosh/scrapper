@@ -3,7 +3,7 @@ package com.scrapper;
 import com.scrapper.context.CapturerContext;
 import java.util.Map;
 import org.htmlparser.util.ParserException;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public class ResumableScrapper extends Scrapper implements Resumable {
   
@@ -28,7 +28,7 @@ public class ResumableScrapper extends Scrapper implements Resumable {
   }
   
   @Override
-  public Map extractData(HtmlPageDom page) throws ParserException {
+  public Map extractData(HtmlDocument page) throws ParserException {
       
     Map extractedData = super.extractData(page);
     

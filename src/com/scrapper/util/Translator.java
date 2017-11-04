@@ -100,7 +100,7 @@ public class Translator
     Formatter<String> fromFmt = getFormatter(from);
     
     if (fromFmt != null) {
-      word = (String)fromFmt.format(word);
+      word = (String)fromFmt.apply(word);
     }
     
     Set<String> frmKeys = frmBundle.keySet();
@@ -195,7 +195,7 @@ public class Translator
   public static class DeutschFormatter
     implements Formatter<String>
   {
-    public String format(String e)
+    public String apply(String e)
     {
       e = e.toLowerCase(Locale.GERMAN);
       e = e.replace("ä", "ae");

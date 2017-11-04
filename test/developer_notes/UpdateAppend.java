@@ -1,10 +1,10 @@
 package developer_notes;
 
 import com.bc.json.config.JsonConfig;
+import com.bc.net.UrlUtil;
 import com.scrapper.CapturerApp;
 import com.scrapper.config.Config;
 import com.scrapper.config.ScrapperConfigFactory;
-import com.scrapper.util.Util;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -41,13 +41,13 @@ public class UpdateAppend {
 System.out.println("Authority: "+url.getAuthority());
 System.out.println("Host: "+url.getHost());
 System.out.println("Ref: "+url.getRef());
-System.out.println(Util.toWWWFormat(url.toString()));
-System.out.println(Util.toWWWFormat("download.adibba.com"));
+System.out.println(UrlUtil.toWWWFormat(url.toString()));
+System.out.println(UrlUtil.toWWWFormat("download.adibba.com"));
     }
     
     private void update() throws IOException {
         
-        Set<String> sitenames = CapturerApp.getInstance().getConfigFactory().getSitenames();
+        Set<String> sitenames = CapturerApp.getInstance().getConfigFactory().getConfigNames();
         
         for(String s:sitenames) {
             update(s);

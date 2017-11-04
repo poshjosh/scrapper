@@ -66,7 +66,7 @@ System.out.println("syncAll");
     public void testSync_CapturerConfig() throws Exception {
 System.out.println("sync");
 //        ScrapperConfigFactory instance = CapturerApp.getInstance().getConfigFactory();
-//        String sitename = instance.getSitenames().iterator().next();
+//        String sitename = instance.getConfigNames().iterator().next();
 //        JsonConfig from = instance.getConfig(sitename);
 //        instance.sync(from);
     }
@@ -86,7 +86,7 @@ System.out.println("sync");
     public void testLoad_String() {
 System.out.println("load");
         ScrapperConfigFactory instance = CapturerApp.getInstance().getConfigFactory();
-        String sitename = instance.getSitenames().iterator().next();
+        String sitename = instance.getConfigNames().iterator().next();
         JsonConfig from = instance.getConfig(sitename);
     }
 
@@ -113,7 +113,7 @@ System.out.println("newConfig");
     public void testNewSyncPair() throws IOException {
 System.out.println("newSyncPair");
 //        ScrapperConfigFactory instance = CapturerApp.getInstance().getConfigFactory();
-//        String sitename = instance.getSitenames().iterator().next();
+//        String sitename = instance.getConfigNames().iterator().next();
 //        JsonConfig from = instance.getConfig(sitename);
 //        JsonConfig to = instance.newSyncPair(from.getName());
     }
@@ -125,7 +125,7 @@ System.out.println("newSyncPair");
     public void testGetAvailableSitenames() {
 System.out.println("getAvailableSitenames");
         ScrapperConfigFactory instance = CapturerApp.getInstance().getConfigFactory();
-        Set result = instance.getSitenames();
+        Set result = instance.getConfigNames();
     }
 
     /**
@@ -135,7 +135,7 @@ System.out.println("getAvailableSitenames");
     public void testGetContext_String() {
 System.out.println("getContext");
         ScrapperConfigFactory instance = CapturerApp.getInstance().getConfigFactory();
-        String name = instance.getSitenames().iterator().next();
+        String name = instance.getConfigNames().iterator().next();
         CapturerContext result = instance.getContext(name);
     }
 
@@ -146,7 +146,7 @@ System.out.println("getContext");
     public void testGetContext_CapturerConfig() {
 System.out.println("getContext");
         ScrapperConfigFactory instance = CapturerApp.getInstance().getConfigFactory();
-        String name = instance.getSitenames().iterator().next();
+        String name = instance.getConfigNames().iterator().next();
         JsonConfig config = instance.getConfig(name);
         CapturerContext result = instance.getContext(config);
     }

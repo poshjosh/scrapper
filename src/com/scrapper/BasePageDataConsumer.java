@@ -2,7 +2,7 @@ package com.scrapper;
 
 import java.net.URL;
 import java.util.Map;
-import com.bc.dom.HtmlPageDom;
+import com.bc.dom.HtmlDocument;
 
 public class BasePageDataConsumer extends AbstractPageDataConsumer {
     
@@ -27,7 +27,7 @@ public class BasePageDataConsumer extends AbstractPageDataConsumer {
   }
   
 
-  public boolean doConsume(HtmlPageDom page, Map data)
+  public boolean doConsume(HtmlDocument page, Map data)
   {
     Object productTable = data.get(getTableNameKey());
     

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ToTitleCase
   implements Formatter<String>, Serializable
 {
-  public String format(String input)
+  public String apply(String input)
   {
     String[] parts = input.split(" ");
     
